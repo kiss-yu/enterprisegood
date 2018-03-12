@@ -5,7 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Created by 11723 on 2017/5/4.
+ *
+ * @author 11723
+ * @date 2017/5/4
  */
 public class BaseModel<M extends BaseModel<M>> {
 
@@ -22,7 +24,7 @@ public class BaseModel<M extends BaseModel<M>> {
 
     private Object givePrivateValue(Object o,Field field) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Class clazz = o.getClass();
-        Method method = clazz.getMethod((field.getType().getSimpleName().matches(".*oolean.*")?"is":"get") + chanIndexZero(field.getName()));
+        Method method = clazz.getMethod((field.getType().getSimpleName().matches(".*boolean.*")?"is":"get") + chanIndexZero(field.getName()));
         return method.invoke(o);
     }
 
@@ -45,8 +47,9 @@ public class BaseModel<M extends BaseModel<M>> {
         Class clazz;
         Object dto;
         try {
-            String clazzName = this.getClass().getSimpleName().replaceFirst("Model","Dto");
-            clazz = Class.forName("com.nix.dto." + clazzName.substring(0,clazzName.indexOf("_")));
+            String clazzName = this.getClass().getName().replaceFirst("Model","Dto").
+                    replaceFirst("model","dto");
+            clazz = Class.forName(clazzName);
             dto = clazz.newInstance();
         } catch (Exception e) {
             e.printStackTrace();

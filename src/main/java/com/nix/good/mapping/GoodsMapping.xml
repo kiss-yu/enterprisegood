@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nix.good.dao.GoodsMapper">
+    <resultMap id="BaseResultMap" type="com.nix.good.model.GoodsModel">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <collection property="goodId" column="goodId" jdbcType="VARCHAR"/>
+        <collection property="name" column="name" jdbcType="VARCHAR"/>
+        <collection property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <collection property="inventory" column="inventory" jdbcType="DECIMAL"/>
+    </resultMap>
+</mapper>

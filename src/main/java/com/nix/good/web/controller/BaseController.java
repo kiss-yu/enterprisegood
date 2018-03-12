@@ -10,18 +10,21 @@ import org.springframework.context.ApplicationContext;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author 11723
+ */
 public class BaseController {
 	public static final String SUCCESS = "SUCCESS";
 	public static final String FAIL = "FAIL";
-
+	private Map<String,Object> map = new HashMap<>();
 	protected Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
-	@Autowired
-	protected ApplicationContext applicationContext;
-	@Autowired
-	protected HttpServletRequest request;
-	@Autowired
-	protected HttpServletResponse response;
-	@Autowired
-	protected ServletContext application;
+	protected Map<String,Object> render(String key,Object value) {
+		map.put(key,value);
+		return map;
+	}
+
 }

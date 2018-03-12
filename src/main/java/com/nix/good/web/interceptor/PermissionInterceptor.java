@@ -22,8 +22,8 @@ public class PermissionInterceptor implements HandlerInterceptor {
 		if (handler instanceof HandlerMethod) {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			Method method = handlerMethod.getMethod();
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-			return false;
+//			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+			return true;
 		}
 		return true;
 	}

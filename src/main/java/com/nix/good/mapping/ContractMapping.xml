@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nix.good.dao.ContractMapper">
+    <resultMap id="BaseResultMap" type="com.nix.good.model.ContractModel">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result property="contractId" column="contractId" jdbcType="VARCHAR"/>
+        <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <collection property="goodCountList" ofType="com.nix.good.model.GoodsCountModel" foreignColumn="contract">
+        </collection>
+    </resultMap>
+    <select id="select" parameterType="int" resultMap="BaseResultMap">
+        select * from `contract` where id = #{id,jdbcType=INTEGER}
+    </select>
+</mapper>
