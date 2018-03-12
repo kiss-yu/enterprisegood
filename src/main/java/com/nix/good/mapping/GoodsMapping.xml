@@ -89,16 +89,4 @@
     <select id="selectRoleLazy" parameterType="java.lang.String" resultType="com.nix.good.model.GoodsModel">
         SELECT g.* from `goods` AS g where g.goodId = #{goods,jdbcType=VARCHAR}
     </select>
-    <select id="list" resultMap="BaseResultMap">
-        select * from `goods`
-        <if test="conditions != null">
-            where ${conditions}
-        </if>
-        <if test="order != null and sort != null">
-            order by ${order} ${sort}
-        </if>
-        <if test="page != -1 and limit != -1">
-            limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
-        </if>
-    </select>
 </mapper>
