@@ -26,4 +26,9 @@
             limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
         </if>
     </select>
+
+    <select id="delete" parameterType="java.lang.Integer">
+        delete  from `member` where id = #{id,jdbcType=INTEGER}
+    </select>
+
 </mapper>

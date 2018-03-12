@@ -2,6 +2,7 @@ package com.nix.good.model;
 
 import com.nix.good.model.base.BaseModel;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -12,10 +13,12 @@ public class GoodsModel extends BaseModel<GoodsModel>{
     /**
      * 商品id
      * */
+    @NotNull
     private String goodId;
     /**
      * 商品名称
      * */
+    @NotNull
     private String name;
     /**
      * 商品添加日期
@@ -29,6 +32,7 @@ public class GoodsModel extends BaseModel<GoodsModel>{
     /**
      * 单价
      * */
+    @NotNull
     private BigDecimal price;
 
     public String getGoodId() {

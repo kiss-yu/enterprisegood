@@ -1,6 +1,5 @@
 package com.nix.good.service;
 
-import com.nix.good.dao.base.BaseMapper;
 import com.nix.good.model.base.BaseModel;
 import com.nix.good.util.SQLUtil;
 import com.nix.good.util.log.LogKit;
@@ -18,18 +17,38 @@ import java.util.List;
  * 实现了对继承{@link BaseModel}的model基础的增删改查接口
  */
 @Service
-public abstract class BaseService <M extends BaseModel<M>>{
-    protected BaseMapper<M> baseMapper;
+public class BaseService <M extends BaseModel<M>>{
 
-    protected abstract void init(BaseMapper<M> mBaseMapper);
 
-    public void add(M model) throws Exception {
+    /**
+     * 反射执行执行dao方法（有时间改为动态代理）
+     * @param methodName 需要执行的dao方法名
+     * @param clazzs 方法参数对象组类类型（为了反射时找到具体方法）
+     * @param objects 调用方法参数组（执行方法需要的参数）
+     * @return 返回方法执行结果
+     * @throws Exception 抛出反射执行过程中出现的异常
+     * */
+    private Object invokeMapperMethod(String methodName,Class[] clazzs,Object ... objects) throws Exception {
+        LogKit.info(this.getClass(),"执行" + methodName + "方法");
         try {
-            baseMapper.insert(model);
-        }catch (Exception e) {
+            Object o = SpringContextHolder.getBean(this.getClass().getSimpleName().toLowerCase().replaceFirst("service","Mapper"));
+            Class<?> clazz = o.getClass();
+            Method method = clazz.getMethod(methodName, clazzs);
+            return method.invoke(o,objects);
+        }catch (Exception e){
             throw e;
         }
-
+    }
+    /**
+     * 去dao中找具体的方法
+     * @param methodName 需要找的方法名
+     * @param model 与dao绑定的model类
+     * */
+    private void callInvoke(String methodName,M model) throws Exception {
+        invokeMapperMethod(methodName,new Class[]{model.getClass()},model);
+    }
+    public void add(M model) throws Exception {
+        callInvoke("insert",model);
     }
 
     /**
@@ -39,14 +58,9 @@ public abstract class BaseService <M extends BaseModel<M>>{
      * @throws Exception 删除失败抛出异常
      * */
     public void delete(Integer[] ids) throws Exception {
-        try {
-            for (Integer id:ids) {
-                delete(id);
-            }
-        }catch (Exception e) {
-            throw e;
+        for (Integer id:ids) {
+            delete(id);
         }
-
     }
     /**
      * 在数据库中删除一个对象
@@ -55,12 +69,7 @@ public abstract class BaseService <M extends BaseModel<M>>{
      * @throws Exception 删除失败抛出异常
      * */
     public void delete(Integer id) throws Exception {
-        try {
-            baseMapper.delete(id);
-        }catch (Exception e) {
-            throw e;
-        }
-
+        invokeMapperMethod("delete",new Class[]{Integer.class},id);
     }
     /**
      *
@@ -71,11 +80,7 @@ public abstract class BaseService <M extends BaseModel<M>>{
      *
      * */
     public void update(M model) throws Exception {
-        try {
-            baseMapper.update(model);
-        }catch (Exception e) {
-            throw e;
-        }
+        callInvoke("update",model);
     }
 
 
@@ -91,8 +96,9 @@ public abstract class BaseService <M extends BaseModel<M>>{
      * */
     public List<M> list(Integer page,Integer size,String order,String sort,String conditionsSql){
         try {
-            List<M> find = baseMapper.list(SQLUtil.getOffset(page,size), size,order,sort,conditionsSql);
-            return find;
+            Object find = invokeMapperMethod("list", new Class[]{Integer.class,Integer.class,String.class,String.class,String.class},
+                    SQLUtil.getOffset(page,size), size,order,sort,conditionsSql);
+            return (List<M>) find;
         }catch (Exception e){
             e.printStackTrace();
             return null;
@@ -108,8 +114,8 @@ public abstract class BaseService <M extends BaseModel<M>>{
      * */
     public M findById(Integer id){
         try {
-            M find = baseMapper.select(id);
-            return find;
+            Object find = invokeMapperMethod("select",new Class[]{Integer.class},id);
+            return (M) find;
         }catch (Exception e){
             e.printStackTrace();
             return null;

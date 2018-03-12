@@ -19,9 +19,4 @@ import java.util.Map;
 public class ContractController extends BaseController{
     @Autowired
     private ContractService contractService;
-
-    @RequestMapping("/{id}")
-    public Map<String,Object> select(@PathVariable Integer id) {
-        return render("all",contractService.findById(id));
-    }
 }

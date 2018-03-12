@@ -1,5 +1,6 @@
 package com.nix.good.controller;
 
+import com.nix.good.common.Role;
 import com.nix.good.model.MemberModel;
 import com.nix.good.service.impl.MemberService;
 import com.nix.good.util.MemberManager;
@@ -31,7 +32,7 @@ public class MemberController extends BaseController{
         if (member != null) {
             MemberManager.addUser(request,member);
         }
-        return render("user",member);
+        return render("user",member).build();
     }
 
     /**
@@ -48,47 +49,60 @@ public class MemberController extends BaseController{
     @RequestMapping("/create")
     public Map<String,Object> createMember(@ModelAttribute MemberModel memberModel,HttpServletRequest request,Boolean admin) {
         try {
-            if (memberModel.getRole() != MemberModel.Role.customer) {
+            if (memberModel.getRole() != MemberModel.Role.customer.ordinal()) {
                 if (!admin) {
-                    return render("code",FAIL);
+                    return render("code",FAIL).build();
                 }
-                if (MemberManager.getCurrentUser(request).getRole() != MemberModel.Role.admin &&
-                        MemberManager.getCurrentUser(request).getRole() != MemberModel.Role.customerMember) {
-                    return render("code",FAIL);
+                if (MemberManager.getCurrentUser(request).getRole() != MemberModel.Role.admin.ordinal() &&
+                        MemberManager.getCurrentUser(request).getRole() != MemberModel.Role.customerMember.ordinal()) {
+                    return render("code",FAIL).build();
                 }
             }
             memberService.add(memberModel);
             if (!admin) {
                 MemberManager.addUser(request,memberModel);
             }
-            return render("code",SUCCESS);
+            return render("code",SUCCESS).build();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return render("code",FAIL);
+        return render("code",FAIL).build();
     }
 
     /**
      * 删除用户
      * */
-    public Map<String,Object> delete(int id) {
+    @Role({0,3})
+    @RequestMapping("/delete/{id}")
+    public Map<String,Object> delete(@PathVariable("id") Integer id) {
         try {
             memberService.delete(id);
-            return render("code",SUCCESS);
+            return render("code",SUCCESS).build();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return render("code",FAIL);
+        return render("code",FAIL).build();
+    }
+
+    /**
+     * 查看用户信息
+     * */
+    @Role({0,3})
+    @RequestMapping("/{id}")
+    public Map<String,Object> memberMessage(@PathVariable("id") Integer id) {
+        return render("member",memberService.findById(id)).build();
     }
 
     /**
      * 获取用户列表
      * */
-    public Map<String,Object> list(@RequestParam(value = "page",defaultValue = "0") Integer page,
+    @Role({0,3})
+    @RequestMapping("/list/{page}")
+    public Map<String,Object> list(@PathVariable Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,
                                    @RequestParam(value = "order",defaultValue = "id") String order,
                                    @RequestParam(value = "sort",defaultValue = "ASC") String sort) {
         List<MemberModel> list = memberService.list(page,size,order,sort,null);
-        return render("list",list);
+        return render("list",list).build();
     }
 }

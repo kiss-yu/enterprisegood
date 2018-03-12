@@ -3,6 +3,10 @@ package com.nix.good.web.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.nix.good.common.Role;
+import com.nix.good.model.MemberModel;
+import com.nix.good.util.MemberManager;
+import org.mortbay.jetty.Response;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,8 +26,22 @@ public class PermissionInterceptor implements HandlerInterceptor {
 		if (handler instanceof HandlerMethod) {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			Method method = handlerMethod.getMethod();
-//			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-			return true;
+			Role role = method.getAnnotation(Role.class);
+			if (role != null) {
+				int[] roles = role.value();
+				MemberModel member = MemberManager.getCurrentUser(request);
+				if (member == null) {
+					response.sendError(Response.SC_UNAUTHORIZED,"权限不足");
+					return false;
+				}
+				for (int r:roles) {
+					if (member.getRole() == r) {
+						return true;
+					}
+				}
+				response.sendError(Response.SC_UNAUTHORIZED,"权限不足");
+				return false;
+			}
 		}
 		return true;
 	}

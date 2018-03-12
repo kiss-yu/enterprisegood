@@ -22,8 +22,11 @@ public class BaseController {
 	private Map<String,Object> map = new HashMap<>();
 	protected Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
-	protected Map<String,Object> render(String key,Object value) {
+	public BaseController render(String key,Object value) {
 		map.put(key,value);
+		return this;
+	}
+	public Map<String,Object> build() {
 		return map;
 	}
 

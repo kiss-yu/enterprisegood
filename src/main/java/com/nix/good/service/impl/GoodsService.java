@@ -1,19 +1,17 @@
 package com.nix.good.service.impl;
 
-import com.nix.good.dao.ContractMapper;
+import com.nix.good.dao.GoodsMapper;
 import com.nix.good.dao.base.BaseMapper;
-import com.nix.good.model.ContractModel;
+import com.nix.good.model.GoodsModel;
 import com.nix.good.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
-/**
- * @author 11723
- */
 @Service
-public class ContractService extends BaseService<ContractModel>{
+public class GoodsService extends BaseService<GoodsModel>{
     @Autowired
-    private ContractMapper contractMapper;
+    private GoodsMapper goodsMapper;
+
 }

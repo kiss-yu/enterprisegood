@@ -17,29 +17,6 @@ import org.apache.ibatis.plugin.Signature;
 public class AuditingInterceptor implements Interceptor {
 	@Override
 	public Object intercept(Invocation invocation) throws Throwable {
-//		MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
-//		SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
-//		if (SqlCommandType.INSERT == sqlCommandType) {
-//			Date now = new Date();
-//
-//			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//			HttpSession session = request.getSession();
-//			Integer userId = (Integer) session.getAttribute(UserManager.USER_ID);
-//
-//			Object object = invocation.getArgs()[1];
-//			doInjection(object, CreationTimestamp.class, now);
-//			doInjection(object, CreationOperator.class, userId);
-//		} else if (SqlCommandType.UPDATE == sqlCommandType) {
-//			Date now = new Date();
-//
-//			HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//			HttpSession session = request.getSession();
-//			Integer userId = (Integer) session.getAttribute(UserManager.USER_ID);
-//
-//			Object object = invocation.getArgs()[1];
-//			doInjection(object, UpdateTimestamp.class, now);
-//			doInjection(object, UpdateOperator.class, userId);
-//		}
 		return invocation.proceed();
 	}
 	
