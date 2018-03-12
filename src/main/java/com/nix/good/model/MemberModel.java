@@ -11,13 +11,24 @@ import javax.validation.constraints.NotNull;
  * @author 11723
  */
 public class MemberModel extends BaseModel<MemberModel> {
+    public enum Role{
+        admin,
+        contractMember,
+        salesMember,
+        customerMember,
+        customer
+    }
+
     /**
      * 用户登录Id
      * */
+    @NotNull
     private String memberId;
     /**
      * 登录密码
      * */
+    @NotNull
+//    @Length(min = 32,max = 32)
     private String password;
     private String name;
     /**
@@ -28,7 +39,8 @@ public class MemberModel extends BaseModel<MemberModel> {
      * 3 客户部用户
      * 4 客户
      * */
-    private Integer role;
+    @NotNull
+    private Role role;
     private Boolean sex;
     private Integer age;
 
@@ -56,11 +68,11 @@ public class MemberModel extends BaseModel<MemberModel> {
         this.name = name;
     }
 
-    public Integer getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(Integer role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

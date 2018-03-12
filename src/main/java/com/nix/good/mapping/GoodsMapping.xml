@@ -3,9 +3,9 @@
 <mapper namespace="com.nix.good.dao.GoodsMapper">
     <resultMap id="BaseResultMap" type="com.nix.good.model.GoodsModel">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <collection property="goodId" column="goodId" jdbcType="VARCHAR"/>
-        <collection property="name" column="name" jdbcType="VARCHAR"/>
-        <collection property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
-        <collection property="inventory" column="inventory" jdbcType="DECIMAL"/>
+        <result property="goodId" column="goodId" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <result property="inventory" column="inventory" jdbcType="DECIMAL"/>
     </resultMap>
 </mapper>

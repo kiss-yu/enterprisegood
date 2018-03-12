@@ -10,7 +10,20 @@
         <result property="sex" column="sex" jdbcType="BIT"/>
         <result property="age" column="age" jdbcType="INTEGER"/>
     </resultMap>
-    <select id="select" parameterType="int" resultMap="BaseResultMap">
-        select * from `member` where id = #{id,jdbcType=INTEGER}
+    <select id="login" resultMap="BaseResultMap">
+        SELECT * FROM `member` AS m WHERE m.memberId=#{memberId,jdbcType=VARCHAR} AND m.password=#{password,jdbcType=VARCHAR}
+    </select>
+
+    <select id="list" resultMap="BaseResultMap">
+        select * from `member`
+        <if test="conditions != null">
+            where ${conditions}
+        </if>
+        <if test="order != null and sort != null">
+            order by ${order} ${sort}
+        </if>
+        <if test="page != -1 and limit != -1">
+            limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
     </select>
 </mapper>

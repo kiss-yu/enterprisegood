@@ -5,10 +5,25 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result property="contractId" column="contractId" jdbcType="VARCHAR"/>
         <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
-        <collection property="goodCountList" ofType="com.nix.good.model.GoodsCountModel" foreignColumn="contract">
-        </collection>
+        <association property="customer" javaType="com.nix.good.model.MemberModel">
+            <result property="memberId" column="memberId" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="role" column="role" jdbcType="INTEGER"/>
+            <result property="sex" column="sex" jdbcType="BIT"/>
+            <result property="age" column="age" jdbcType="INTEGER"/>
+        </association>
+        <association property="admin" column="admin" javaType="com.nix.good.model.MemberModel">
+            <result property="memberId" column="memberId" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="role" column="role" jdbcType="INTEGER"/>
+            <result property="sex" column="sex" jdbcType="BIT"/>
+            <result property="age" column="age" jdbcType="INTEGER"/>
+        </association>
     </resultMap>
+
     <select id="select" parameterType="int" resultMap="BaseResultMap">
-        select * from `contract` where id = #{id,jdbcType=INTEGER}
+        select * from `contract` as c where c.id = #{id,jdbcType=INTEGER}
     </select>
 </mapper>

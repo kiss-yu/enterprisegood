@@ -1,12 +1,13 @@
 package com.nix.good.model;
 
+import com.nix.good.dao.base.BaseMapper;
 import com.nix.good.model.base.BaseModel;
 
 /**
  * @author 11723
  * 中间表 合同-商品（多对多）
  */
-public class GoodsCountModel{
+public class GoodsCountModel extends BaseModel<GoodsCountModel>{
     private ContractModel contract;
     private GoodsCountModel goods;
     private Integer count;

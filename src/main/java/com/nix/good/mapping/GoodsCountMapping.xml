@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nix.good.dao.GoodsCountMapper">
+    <resultMap id="BaseResultMap" type="com.nix.good.model.GoodsCountModel">
+        <result property="count" column="count" jdbcType="INTEGER"/>
+        <association property="contract" javaType="com.nix.good.model.ContractModel">
+            <result property="contractId" column="contractId" jdbcType="VARCHAR"/>
+            <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        </association>
+        <association property="goods" javaType="com.nix.good.model.GoodsModel">
+            <result property="goodId" column="goodId" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+            <result property="inventory" column="inventory" jdbcType="DECIMAL"/>
+        </association>
+    </resultMap>
+</mapper>

@@ -14,8 +14,7 @@ public class MemberService extends BaseService<MemberModel>{
     @Autowired
     private MemberMapper memberMapper;
 
-    @Override
-    public MemberModel findById(Integer id) {
-        return memberMapper.select(id);
+    public MemberModel login(String memberId,String password) {
+        return memberMapper.login(memberId,password);
     }
 }
