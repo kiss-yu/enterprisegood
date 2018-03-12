@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/loginPage.css" />
+    <title>用户登录-企业客户和信息管理系统</title>
+    <script type="text/javascript" src="../js/loginPage.js"></script>
+</head>
+<body>
+
+<div id="header">
+    <div class="header_title">
+        <span class="title_con">企业客户和信息管理系统</span>
+    </div>
+</div>
+
+<div id="content">
+    <div class="con">
+        <div class="con_title">
+            <span class="con_title_sp">欢迎登录企业客户和信息管理系统</span>
+        </div>
+        <div class="con_panel">
+            <div class="con_input">
+                <span>用户名：</span><input type="text" placeholder="账号" id="account"/>
+            </div>
+            <div class="con_input">
+                <span>密&nbsp;&nbsp;&nbsp;&nbsp;码：</span><input type="text" placeholder="密码" id="password"/>
+            </div>
+            <div class="con_select" id="counttype">
+                <input type="radio" name="t1" value="系统管理员" />系统管理员
+                <input type="radio" name="t1" value="合同部" />合同部
+                <input type="radio" name="t1" value="销售部" />销售部
+                <input type="radio" name="t1" value="客户部" />客户部
+                <input type="radio" name="t1" value="客户" />客户
+            </div>
+            <input type="button" value="登    录" class="submit-btn" onclick="checkLogin()"/>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
