@@ -6,6 +6,87 @@
         <result property="goodId" column="goodId" jdbcType="VARCHAR"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
-        <result property="inventory" column="inventory" jdbcType="DECIMAL"/>
+        <result property="inventory" column="inventory" jdbcType="INTEGER"/>
+        <result property="price" column="price" jdbcType="DECIMAL"/>
     </resultMap>
+    <insert id="insert">
+        insert into `goods`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gooId != null">
+                `goodId`,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="createDate != null">
+                `createDate`,
+            </if>
+            <if test="inventory != null">
+                `inventory`,
+            </if>
+            <if test="price != null">
+                `price`,
+            </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gooId != null">
+                #{gooId},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="inventory != null">
+                #{inventory},
+            </if>
+            <if test="price != null">
+                #{price},
+            </if>
+        </trim>
+    </insert>
+    <delete id="delete">
+        DELETE FROM `goods` WHERE id = #{id}
+    </delete>
+    <update id="update">
+        UPDATE `goods`
+        SET
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gooId != null">
+                gooId = #{gooId},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="createDate != null">
+                createDate = #{createDate},
+            </if>
+            <if test="inventory != null">
+                inventory = #{inventory},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+        </trim>
+    </update>
+    <select id="select">
+        SELECT * FROM `goods` WHERE id=#{id}
+    </select>
+    <select id="list" resultMap="BaseResultMap">
+        select * from `goods`
+        <if test="conditions != null">
+            where ${conditions}
+        </if>
+        <if test="order != null and sort != null">
+            order by ${order} ${sort}
+        </if>
+        <if test="page != -1 and limit != -1">
+            limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectRoleLazy" parameterType="java.lang.String" resultType="com.nix.good.model.GoodsModel">
+        SELECT g.* from `goods` AS g where g.goodId = #{goods,jdbcType=VARCHAR}
+    </select>
 </mapper>

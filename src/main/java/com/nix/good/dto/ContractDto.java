@@ -1,15 +1,32 @@
-package com.nix.good.model;
+package com.nix.good.dto;
 
-import com.nix.good.model.base.BaseModel;
+import com.nix.good.model.ContractModel;
+import com.nix.good.model.GoodsCountModel;
+import com.nix.good.model.MemberModel;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author 11723
- */
-public class ContractModel extends BaseModel<ContractModel>{
+public class ContractDto {
+
+    public ContractDto(ContractModel model) {
+        this.contractId = model.getContractId();
+        this.createDate = model.getCreateDate();
+        this.customer = model.getCustomer();
+        this.admin = model.getAdmin();
+        List<GoodsCountDto> list = new ArrayList<>();
+        List<GoodsCountModel> models = model.getGoodCountList();
+        if (models != null) {
+            for (GoodsCountModel goodsCountModel : models) {
+                list.add(new GoodsCountDto(goodsCountModel));
+            }
+        }
+        this.goodCountList = list;
+    }
+
+
     /**
      * 合同编号
      * */
@@ -22,7 +39,7 @@ public class ContractModel extends BaseModel<ContractModel>{
     /**
      * 合同商品列表
      * */
-    private List<GoodsCountModel> goodCountList;
+    private List<GoodsCountDto> goodCountList;
     /**
      * 合同客户
      * */
@@ -50,11 +67,11 @@ public class ContractModel extends BaseModel<ContractModel>{
         this.createDate = createDate;
     }
 
-    public List<GoodsCountModel> getGoodCountList() {
+    public List<GoodsCountDto> getGoodCountList() {
         return goodCountList;
     }
 
-    public void setGoodCountList(List<GoodsCountModel> goodCountList) {
+    public void setGoodCountList(List<GoodsCountDto> goodCountList) {
         this.goodCountList = goodCountList;
     }
 

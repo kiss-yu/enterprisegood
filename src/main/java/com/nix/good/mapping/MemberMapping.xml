@@ -31,4 +31,77 @@
         delete  from `member` where id = #{id,jdbcType=INTEGER}
     </select>
 
+    <insert id="insert" parameterType="com.nix.good.model.MemberModel">
+        insert into `member`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                `memberId`,
+            </if>
+            <if test="password != null">
+                `password`,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="role != null">
+                `role`,
+            </if>
+            <if test="sex != null">
+                `sex`,
+            </if>
+            <if test="age != null">
+                `age`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                #{role,jdbcType=INTEGER},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=BIT},
+            </if>
+            <if test="age != null">
+                #{age,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.nix.good.model.MemberModel">
+        UPDATE `mmeber`
+        SET
+        <trim prefix="" suffix="" suffixOverrides=",">
+            <if test="memberId != null">
+                `memberId` = #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                `password` = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                `role` = #{role,jdbcType=INTEGER},
+            </if>
+            <if test="sex != null">
+                `sex` = #{sex,jdbcType=BIT},
+            </if>
+            <if test="age != null">
+                `age` = #{age,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </update>
+    <select id="selectRoleLazyCustomer" parameterType="java.lang.String" resultType="com.nix.good.model.MemberModel">
+        SELECT m.* from `member` AS m where m.memberId = #{customer,jdbcType=VARCHAR}
+    </select>
+    <select id="selectRoleLazyAdmin" parameterType="java.lang.String" resultType="com.nix.good.model.MemberModel">
+        SELECT m.* from `member` AS m where m.memberId = #{admin,jdbcType=VARCHAR}
+    </select>
 </mapper>

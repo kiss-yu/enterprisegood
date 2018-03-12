@@ -94,6 +94,28 @@ public class MemberController extends BaseController{
     }
 
     /**
+     * 修改用户信息
+     * */
+    @Role({0,1,2,3,4})
+    @RequestMapping("/update")
+    public Map<String,Object> update(@ModelAttribute MemberModel memberModel,HttpServletRequest request) {
+        MemberModel currentMember = MemberManager.getCurrentUser(request);
+        if (currentMember == null || !currentMember.getId().equals(memberModel.getId())) {
+            return render("code",FAIL)
+                    .render("msg","非法修改").build();
+        }
+        try {
+            memberService.update(memberModel);
+            render("code",SUCCESS)
+                    .render("member",memberModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+            render("code",FAIL);
+        }
+        return build();
+    }
+
+    /**
      * 获取用户列表
      * */
     @Role({0,3})

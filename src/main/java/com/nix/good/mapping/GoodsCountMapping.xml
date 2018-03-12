@@ -3,15 +3,19 @@
 <mapper namespace="com.nix.good.dao.GoodsCountMapper">
     <resultMap id="BaseResultMap" type="com.nix.good.model.GoodsCountModel">
         <result property="count" column="count" jdbcType="INTEGER"/>
-        <association property="contract" javaType="com.nix.good.model.ContractModel">
+        <association property="contract" column="contract" javaType="com.nix.good.model.ContractModel" select="com.nix.good.dao.ContractMapper.selectRoleLazy">
             <result property="contractId" column="contractId" jdbcType="VARCHAR"/>
             <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
         </association>
-        <association property="goods" javaType="com.nix.good.model.GoodsModel">
+        <association property="goods" column="goods" javaType="com.nix.good.model.GoodsModel" select="com.nix.good.dao.GoodsMapper.selectRoleLazy">
             <result property="goodId" column="goodId" jdbcType="VARCHAR"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
-            <result property="inventory" column="inventory" jdbcType="DECIMAL"/>
+            <result property="inventory" column="inventory" jdbcType="INTEGER"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
         </association>
     </resultMap>
+    <select id="selectRoleLazy" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM `contract_goods` AS cg WHERE cg.contract = #{contractId,jdbcType=VARCHAR};
+    </select>
 </mapper>

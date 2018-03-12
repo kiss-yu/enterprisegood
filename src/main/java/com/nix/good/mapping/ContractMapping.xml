@@ -5,25 +5,27 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result property="contractId" column="contractId" jdbcType="VARCHAR"/>
         <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
-        <association property="customer" javaType="com.nix.good.model.MemberModel">
-            <result property="memberId" column="memberId" jdbcType="VARCHAR"/>
-            <result property="password" column="password" jdbcType="VARCHAR"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="role" column="role" jdbcType="INTEGER"/>
-            <result property="sex" column="sex" jdbcType="BIT"/>
-            <result property="age" column="age" jdbcType="INTEGER"/>
-        </association>
-        <association property="admin" column="admin" javaType="com.nix.good.model.MemberModel">
-            <result property="memberId" column="memberId" jdbcType="VARCHAR"/>
-            <result property="password" column="password" jdbcType="VARCHAR"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="role" column="role" jdbcType="INTEGER"/>
-            <result property="sex" column="sex" jdbcType="BIT"/>
-            <result property="age" column="age" jdbcType="INTEGER"/>
-        </association>
+        <association property="customer" column="customer" javaType="com.nix.good.model.MemberModel" select="com.nix.good.dao.MemberMapper.selectRoleLazyCustomer"/>
+        <association property="admin" column="admin" javaType="com.nix.good.model.MemberModel" select="com.nix.good.dao.MemberMapper.selectRoleLazyAdmin"/>
+        <collection property="goodCountList" column="contractId" javaType="java.util.List" select="com.nix.good.dao.GoodsCountMapper.selectRoleLazy"/>
     </resultMap>
 
     <select id="select" parameterType="int" resultMap="BaseResultMap">
         select * from `contract` as c where c.id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="list" resultMap="BaseResultMap">
+        select * from `contract`
+        <if test="conditions != null">
+            where ${conditions}
+        </if>
+        <if test="order != null and sort != null">
+            order by ${order} ${sort}
+        </if>
+        <if test="page != -1 and limit != -1">
+            limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+    </select>
+    <select id="selectRoleLazy" parameterType="java.lang.String" resultType="com.nix.good.model.ContractModel">
+        SELECT c.* from `contract` AS c where c.contractId = #{contract,jdbcType=VARCHAR}
     </select>
 </mapper>

@@ -9,7 +9,7 @@ import com.nix.good.model.base.BaseModel;
  */
 public class GoodsCountModel extends BaseModel<GoodsCountModel>{
     private ContractModel contract;
-    private GoodsCountModel goods;
+    private GoodsModel goods;
     private Integer count;
 
     public ContractModel getContract() {
@@ -20,11 +20,11 @@ public class GoodsCountModel extends BaseModel<GoodsCountModel>{
         this.contract = contract;
     }
 
-    public GoodsCountModel getGoods() {
+    public GoodsModel getGoods() {
         return goods;
     }
 
-    public void setGoods(GoodsCountModel good) {
+    public void setGoods(GoodsModel good) {
         this.goods = good;
     }
 
