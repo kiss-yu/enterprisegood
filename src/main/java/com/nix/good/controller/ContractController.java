@@ -1,8 +1,10 @@
 package com.nix.good.controller;
 
 import com.nix.good.common.Role;
+import com.nix.good.dao.MemberMapper;
 import com.nix.good.dto.ContractDto;
 import com.nix.good.model.ContractModel;
+import com.nix.good.model.GoodsModel;
 import com.nix.good.model.MemberModel;
 import com.nix.good.service.impl.ContractService;
 import com.nix.good.util.MemberManager;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -92,5 +95,24 @@ public class ContractController extends BaseController{
             render("code",FAIL);
         }
         return build();
+    }
+
+    /**
+     * 获取商品列表
+     * */
+    @Role({0,2,4})
+    @RequestMapping("/list/{page}")
+    public Map<String,Object> list(@PathVariable Integer page,
+                                   @RequestParam(value = "size",defaultValue = "20") Integer size,
+                                   @RequestParam(value = "order",defaultValue = "id") String order,
+                                   @RequestParam(value = "sort",defaultValue = "ASC") String sort,
+                                   HttpServletRequest request) {
+        List<ContractModel> list;
+        if (MemberManager.getCurrentUser(request).getRole() == 4) {
+            list = contractService.list(page,size,order,sort," customer = " + MemberManager.getCurrentUser(request).getMemberId());
+        }else {
+            list = contractService.list(page,size,order,sort,null);
+        }
+        return render("list",list).build();
     }
 }

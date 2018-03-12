@@ -80,7 +80,7 @@ public class GoodsController extends BaseController{
     }
 
     /**
-     * 获取用户列表
+     * 获取商品列表
      * */
     @Role({0,1,2,3,4})
     @RequestMapping("/list/{page}")

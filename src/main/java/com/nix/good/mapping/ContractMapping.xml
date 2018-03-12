@@ -28,4 +28,16 @@
     <select id="selectRoleLazy" parameterType="java.lang.String" resultType="com.nix.good.model.ContractModel">
         SELECT c.* from `contract` AS c where c.contractId = #{contract,jdbcType=VARCHAR}
     </select>
+    <select id="list" resultMap="BaseResultMap">
+        select * from `contract`
+        <if test="conditions != null">
+            where ${conditions}
+        </if>
+        <if test="order != null and sort != null">
+            order by ${order} ${sort}
+        </if>
+        <if test="page != -1 and limit != -1">
+            limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+    </select>
 </mapper>
