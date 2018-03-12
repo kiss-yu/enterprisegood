@@ -1,1 +1,29 @@
-/target
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.log
+# Idea Project Files #
+*.iml
+*gitignore
+/out/
+*.sql
+*.classpath
+*.project
+*/.settings/
+/.settings/
+# Image Files #
+*.jpg
+.idea/
+*.png
+*.gif
+/bin/
+*.gz
+*.log.*
+
+/jfinalshop-4.0-pay/src/test/
+target/
+logs/
+archive.zip
