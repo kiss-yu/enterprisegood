@@ -7,7 +7,6 @@
 *.log
 # Idea Project Files #
 *.iml
-*gitignore
 /out/
 *.sql
 *.classpath
