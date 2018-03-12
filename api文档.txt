@@ -1,0 +1,84 @@
+用户相关api
+{
+    ------------------------------------------------
+    登录：/member/login.do POST
+    参数：memberId,password（password前端md5加密传输）
+    返回：
+    登录失败{"member",null}
+    登录成功
+    {
+        "member": {
+            "id": 2,
+            "memberId": "002",
+            "password": "0001",
+            "name": "管理",
+            "role": 1,
+            "sex": true,
+            "age": 1
+        }
+    }
+    ------------------------------------------------
+    注销：/member/logout.do
+    参数：无
+    返回：无
+    ------------------------------------------------
+    添加用户/注册用户:/member/create.do POST
+    参数：MemberModel memberModel,Boolean admin（memberModel MemberModel的必须属性看MemberModel类，admon true管理员添加用户，false用户自己注册）
+    返回：
+        失败：{"code":0}
+        成功：{"code":1,"member":MemberModel对象} 如果是注册用户才有member，成功后不需要登录直接跳转主页
+    ------------------------------------------------
+    删除用户：/member/delete/{id}.do
+    参数：id直接放在url里{id}
+    返回：
+        失败：{"code":0}
+        成功：{"code":1}
+    ------------------------------------------------
+    查看用户信息：/member/{id}.do
+    参数：id直接放在url里{id}
+    返回：{"member",MemberModel}
+    ------------------------------------------------
+    修改用户信息：/member/update.do POST
+    参数：MemberModel memberModel
+    返回：
+        失败：{"code":0,"msg":msg}
+        成功：{"code",1}
+    ------------------------------------------------
+    用户列表：/member/{page}.do
+    参数：int page 当前页数
+         int size 当前页显示列表数目
+         String order 按照那个字段排序
+         String sort ASC 顺序 DESC 逆序
+    返回：
+    {
+        "list": [
+            {
+                "id": 1,
+                "memberId": "001",
+                "password": "0001",
+                "name": "客户",
+                "role": 0,
+                "sex": true,
+                "age": 1
+            },
+            {
+                "id": 2,
+                "memberId": "002",
+                "password": "0001",
+                "name": "管理",
+                "role": 1,
+                "sex": true,
+                "age": 1
+            },
+            {
+                "id": 3,
+                "memberId": "admin",
+                "password": "21232f297a57a5a743894a0e4a801fc3",
+                "name": "管理员",
+                "role": 0,
+                "sex": true,
+                "age": 1
+            }
+        ]
+    }
+}

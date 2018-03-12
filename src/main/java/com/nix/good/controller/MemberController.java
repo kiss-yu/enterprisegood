@@ -32,7 +32,7 @@ public class MemberController extends BaseController{
         if (member != null) {
             MemberManager.addUser(request,member);
         }
-        return render("user",member).build();
+        return render("member",member).build();
     }
 
     /**
@@ -46,7 +46,7 @@ public class MemberController extends BaseController{
     /**
      * 注册/添加用户
      * */
-    @RequestMapping("/create")
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Map<String,Object> createMember(@ModelAttribute MemberModel memberModel,HttpServletRequest request,Boolean admin) {
         try {
             if (memberModel.getRole() != MemberModel.Role.customer.ordinal()) {
@@ -61,6 +61,7 @@ public class MemberController extends BaseController{
             memberService.add(memberModel);
             if (!admin) {
                 MemberManager.addUser(request,memberModel);
+                render("member",memberModel);
             }
             return render("code",SUCCESS).build();
         } catch (Exception e) {
