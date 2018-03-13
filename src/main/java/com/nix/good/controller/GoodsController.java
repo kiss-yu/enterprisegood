@@ -18,7 +18,7 @@ public class GoodsController extends BaseController{
      * 添加商品
      * */
     @Role({0,2})
-    @RequestMapping("/add")
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
     public Map<String,Object> add(@ModelAttribute GoodsModel goodsModel) {
         try {
             goodsService.add(goodsModel);
@@ -36,7 +36,7 @@ public class GoodsController extends BaseController{
      * 删除商品
      * */
     @Role({0,2})
-    @RequestMapping("/delete/{id}")
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
     public Map<String,Object> delete(@PathVariable("id") Integer id) {
         try {
             goodsService.delete(id);
@@ -50,7 +50,7 @@ public class GoodsController extends BaseController{
      * 修改
      * */
     @Role({0,2})
-    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    @RequestMapping(value = "/update",method = RequestMethod.PUT)
     public Map<String,Object> update(@ModelAttribute GoodsModel goodsModel) {
         try {
             goodsService.update(goodsModel);
@@ -83,7 +83,7 @@ public class GoodsController extends BaseController{
      * 获取商品列表
      * */
     @Role({0,1,2,3,4})
-    @RequestMapping("/list/{page}")
+    @RequestMapping(value = "/list/{page}",method = RequestMethod.POST)
     public Map<String,Object> list(@PathVariable Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,
                                    @RequestParam(value = "order",defaultValue = "id") String order,

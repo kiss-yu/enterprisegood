@@ -30,7 +30,7 @@ public class ContractController extends BaseController{
      * 创建合同
      * */
     @Role({0,2})
-    @RequestMapping(value = "/create")
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Map<String,Object> create(@ModelAttribute ContractModel contractModel) {
         try {
             contractService.add(contractModel);
@@ -46,7 +46,7 @@ public class ContractController extends BaseController{
      * 删除合同
      * */
     @Role({0,2})
-    @RequestMapping("/delete/{id}")
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
     public Map<String,Object> delete(@PathVariable("id") Integer id) {
         try {
             contractService.delete(id);
@@ -61,7 +61,7 @@ public class ContractController extends BaseController{
      * 修改
      * */
     @Role({0,2})
-    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    @RequestMapping(value = "/update",method = RequestMethod.PUT)
     public Map<String,Object> update(@ModelAttribute ContractModel model) {
         try {
             contractService.update(model);
@@ -101,7 +101,7 @@ public class ContractController extends BaseController{
      * 获取商品列表
      * */
     @Role({0,2,4})
-    @RequestMapping("/list/{page}")
+    @RequestMapping(value = "/list/{page}",method = RequestMethod.POST)
     public Map<String,Object> list(@PathVariable Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,
                                    @RequestParam(value = "order",defaultValue = "id") String order,

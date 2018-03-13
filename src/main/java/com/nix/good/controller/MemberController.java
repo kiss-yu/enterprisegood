@@ -5,7 +5,6 @@ import com.nix.good.model.MemberModel;
 import com.nix.good.service.impl.MemberService;
 import com.nix.good.util.MemberManager;
 import com.nix.good.web.controller.BaseController;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -74,7 +73,7 @@ public class MemberController extends BaseController{
      * 删除用户
      * */
     @Role({0,3})
-    @RequestMapping("/delete/{id}")
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
     public Map<String,Object> delete(@PathVariable("id") Integer id) {
         try {
             memberService.delete(id);
@@ -89,7 +88,7 @@ public class MemberController extends BaseController{
      * 查看用户信息
      * */
     @Role({0,3})
-    @RequestMapping("/{id}")
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public Map<String,Object> memberMessage(@PathVariable("id") Integer id) {
         return render("member",memberService.findById(id)).build();
     }
@@ -98,7 +97,7 @@ public class MemberController extends BaseController{
      * 修改用户信息
      * */
     @Role({0,1,2,3,4})
-    @RequestMapping("/update")
+    @RequestMapping(value = "/update",method = RequestMethod.PUT)
     public Map<String,Object> update(@ModelAttribute MemberModel memberModel,HttpServletRequest request) {
         MemberModel currentMember = MemberManager.getCurrentUser(request);
         if (currentMember == null || !currentMember.getId().equals(memberModel.getId())) {
@@ -120,7 +119,7 @@ public class MemberController extends BaseController{
      * 获取用户列表
      * */
     @Role({0,3})
-    @RequestMapping("/list/{page}")
+    @RequestMapping(value = "/list/{page}",method = RequestMethod.POST)
     public Map<String,Object> list(@PathVariable Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,
                                    @RequestParam(value = "order",defaultValue = "id") String order,

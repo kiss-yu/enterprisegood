@@ -1,50 +1,90 @@
 用户相关api
 {
     ------------------------------------------------
-    登录：/member/login.do POST
-    参数：memberId,password（password前端md5加密传输）
+    用户属性：
+     /**
+         * 用户登录Id
+         * */
+        private String memberId;
+        /**
+         * 登录密码
+         * */
+        private String password;
+        private String name;
+        /**
+         * 权限值
+         * 0 系统管理员
+         * 1 合同部用户
+         * 2 销售部用户
+         * 3 客户部用户
+         * 4 客户
+         * */
+        private Integer role;
+        /**
+        * 性别
+        * true 男
+        * false 女
+        */
+        private Boolean sex;
+        /**
+        * 年龄
+        */
+        private Integer age;
+    ------------------------------------------------
+    登录：/member/login.do
+    方法：POST
+    参数：{
+            "memberId":"admin",
+            "password":"md5(admin)"
+        }（password前端md5加密传输）
     返回：
-    登录失败{"member",null}
-    登录成功
-    {
-        "member": {
-            "id": 2,
-            "memberId": "002",
-            "password": "0001",
-            "name": "管理",
-            "role": 1,
-            "sex": true,
-            "age": 1
+        登录失败{"member",null}
+        登录成功
+        {
+            "member": {
+                "id": 用户数据库的id,
+                "memberId": 用户id（用户名）,
+                "password": 密码,
+                "name": 姓名,
+                "role": 权限值,
+                "sex": 性别,
+                "age": 年龄
+            }
         }
-    }
     ------------------------------------------------
     注销：/member/logout.do
+    方法：任意
     参数：无
     返回：无
     ------------------------------------------------
-    添加用户/注册用户:/member/create.do POST
+    添加用户/注册用户:/member/create.do
+    方法：POST
     参数：MemberModel memberModel,Boolean admin（memberModel MemberModel的必须属性看MemberModel类，admon true管理员添加用户，false用户自己注册）
     返回：
         失败：{"code":0}
         成功：{"code":1,"member":MemberModel对象} 如果是注册用户才有member，成功后不需要登录直接跳转主页
     ------------------------------------------------
     删除用户：/member/delete/{id}.do
+    方法：DELETE
     参数：id直接放在url里{id}
     返回：
         失败：{"code":0}
         成功：{"code":1}
     ------------------------------------------------
     查看用户信息：/member/{id}.do
+    方法：GET
     参数：id直接放在url里{id}
     返回：{"member",MemberModel}
     ------------------------------------------------
-    修改用户信息：/member/update.do POST
+    修改用户信息：/member/update.do
+    方法：PUT
     参数：MemberModel memberModel
     返回：
         失败：{"code":0,"msg":msg}
         成功：{"code",1}
     ------------------------------------------------
     用户列表：/member/{page}.do
+    方法：POST
     参数：int page 当前页数
          int size 当前页显示列表数目
          String order 按照那个字段排序
@@ -81,4 +121,8 @@
             }
         ]
     }
+}
+产品部分API：
+{
+
 }
