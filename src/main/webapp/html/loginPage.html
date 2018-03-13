@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../css/loginPage.css" />
     <title>用户登录-企业客户和信息管理系统</title>
-    <script type="text/javascript" src="../resourse/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../resources/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../resources/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../resources/md5.js"></script>
     <script type="text/javascript" src="../js/loginPage.js"></script>
 </head>
 <body>
@@ -20,22 +22,19 @@
         <div class="con_title">
             <span class="con_title_sp">欢迎登录企业客户和信息管理系统</span>
         </div>
-        <div class="con_panel">
-            <div class="con_input">
-                <span>用户名：</span><input type="text" placeholder="账号" id="account"/>
+        <form action="/member/login" method="post" id="loginForm">
+            <div class="con_panel">
+                <div class="con_input">
+                    <span>用户名：</span><input type="text" placeholder="账号" id="account" name="memberId"/>
+                </div>
+                <div class="con_input">
+                    <span>密&nbsp;&nbsp;&nbsp;&nbsp;码：</span>
+                    <input type="password" placeholder="密码" id="password" />
+                    <input type="password" name="password" hidden/>
+                </div>
+                <input type="button" value="登    录" class="submit-btn" onclick="checkLogin()" />
             </div>
-            <div class="con_input">
-                <span>密&nbsp;&nbsp;&nbsp;&nbsp;码：</span><input type="password" placeholder="密码" id="password"/>
-            </div>
-            <div class="con_select" id="counttype">
-                <input type="radio" name="type" value="0" />系统管理员
-                <input type="radio" name="type" value="1" />合同部
-                <input type="radio" name="type" value="2" />销售部
-                <input type="radio" name="type" value="3" />客户部
-                <input type="radio" name="type" value="4" />客户
-            </div>
-            <input type="button" id="btnSubmit" value="登    录" class="submit-btn" onclick="checkLogin()"/>
-        </div>
+        </form>
     </div>
 </div>
 

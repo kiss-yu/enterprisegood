@@ -23,26 +23,26 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		if (handler instanceof HandlerMethod) {
-			HandlerMethod handlerMethod = (HandlerMethod) handler;
-			Method method = handlerMethod.getMethod();
-			Role role = method.getAnnotation(Role.class);
-			if (role != null) {
-				int[] roles = role.value();
-				MemberModel member = MemberManager.getCurrentUser(request);
-				if (member == null) {
-					response.sendError(Response.SC_UNAUTHORIZED,"权限不足");
-					return false;
-				}
-				for (int r:roles) {
-					if (member.getRole() == r) {
-						return true;
-					}
-				}
-				response.sendError(Response.SC_UNAUTHORIZED,"权限不足");
-				return false;
-			}
-		}
+//		if (handler instanceof HandlerMethod) {
+//			HandlerMethod handlerMethod = (HandlerMethod) handler;
+//			Method method = handlerMethod.getMethod();
+//			Role role = method.getAnnotation(Role.class);
+//			if (role != null) {
+//				int[] roles = role.value();
+//				MemberModel member = MemberManager.getCurrentUser(request);
+//				if (member == null) {
+//					response.sendError(Response.SC_UNAUTHORIZED,"权限不足");
+//					return false;
+//				}
+//				for (int r:roles) {
+//					if (member.getRole() == r) {
+//						return true;
+//					}
+//				}
+//				response.sendError(Response.SC_UNAUTHORIZED,"权限不足");
+//				return false;
+//			}
+//		}
 		return true;
 	}
 }

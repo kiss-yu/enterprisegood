@@ -1,40 +1,37 @@
-function checkInputMassage() {
-    var massage = {};
+function checkInput() {
     if($('#account').val() == null || $('#account').val() == ''){
-        alert('请输入账号！');
-        return;
+        alert('请输入用户名！');
+        return false;
     }
     if($('#password').val() == null || $('#password').val() == ''){
         alert('请输入密码！');
-        return;
+        return false;
     }
-    if($("input[name=type]:checked").val() == null) {
-        alert('请选择用户类型！');
-        return;
+    if($('#password').val().length < 2){
+        alert('密码必须超过6位！');
+        return false;
     }
-    else {
-        massage.account = $('#account').val();
-        massage.password = $('#password').val();
-        massage.grade = $("input[name=t1]:checked").val();
-        return massage;
-    }
+    return true;
 }
-function checkLogin(){
-    var parame = checkInputMassage();
 
-    $.ajax({
-        url : '/member/login.do',
-        method : 'POST',
-        data : parame,
-        success : function (o) {
-            console.log(o);
-            if(o.logintype == 0){
-                alert('用户名或者密码错误！')
-            }else if (o.logintype == 1){
-                alert('您不是合法用户，请登陆后再进入!');
-            }else /*if(o.logintype == 2)*/{
-                window.location.href = "../html/loginSuccess.html";
+function checkLogin(){
+    if(checkInput()) {
+        $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
+        $.ajax({
+            type: 'post',
+            url: "/member/login.do",
+            dataType: 'json',
+            data: $('#loginForm').serialize(),
+            success: function (data) {
+                if (data.member != null) {
+                    console.log(data.member);
+                    location.href = "../html/loginSuccess.html";
+                }else{
+                    alert('用户名或者密码错误！');
+                }
+            },
+            error: function () {
             }
-        }
-    });
+        });
+    }
 }
