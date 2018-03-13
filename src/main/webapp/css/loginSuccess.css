@@ -1,0 +1,8 @@
+@charset "utf-8";
+body{padding: 0px;margin: 0px;}
+#header{width: auto;min-height: 70px;line-height: 70px;}
+#header{border-bottom: medium solid #39A631;}
+span.title_con{font-family:"微软雅黑";font-style: normal;font-size: 2em;font-weight:800 ;color: #39A631;padding-left: 1em;}
+#editbtn,#addbtn,#deletebtn{float: right !important;margin-right: 20px;margin-top: 8px;}
+#searchbtn{margin-top: 8px;margin-left: 30px;}
+#search{position: relative;left: 25px;top: 5px;width: 250px !important;height: 33px; !important;}
