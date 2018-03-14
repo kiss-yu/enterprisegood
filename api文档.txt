@@ -85,7 +85,7 @@
         失败：{"code":0,"msg":msg}
         成功：{"code",1}
     ------------------------------------------------
-    用户列表：/member/{page}.do
+    用户列表：/member/list.do
     方法：POST
     参数：int page 当前页数
          int size 当前页显示列表数目
