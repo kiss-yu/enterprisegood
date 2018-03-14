@@ -7,7 +7,10 @@
 *.log
 # Idea Project Files #
 *.iml
+<<<<<<< HEAD
 *gitignore
+=======
+>>>>>>> f5980d15cb7823c27d3938d0d4b6548a094e6356
 /out/
 *.sql
 *.classpath
@@ -16,6 +19,10 @@
 /.settings/
 # Image Files #
 *.jpg
+<<<<<<< HEAD
+=======
+.idea/
+>>>>>>> f5980d15cb7823c27d3938d0d4b6548a094e6356
 *.png
 *.gif
 /bin/

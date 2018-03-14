@@ -27,6 +27,7 @@ public class MemberController extends BaseController{
      * */
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public Map<String,Object> login(String memberId, String password, HttpServletRequest request) {
+        System.out.println("login"  + this.hashCode());
         MemberModel member = memberService.login(memberId,password);
         if (member != null) {
             MemberManager.addUser(request,member);
@@ -125,6 +126,7 @@ public class MemberController extends BaseController{
                                    @RequestParam(value = "order",defaultValue = "id") String order,
                                    @RequestParam(value = "sort",defaultValue = "ASC") String sort) {
         List<MemberModel> list = memberService.list(page,size,order,sort,null);
+        System.out.println("list" + this.hashCode());
         return render("list",list).build();
     }
 }

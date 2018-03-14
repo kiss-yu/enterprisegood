@@ -27,7 +27,9 @@ public class BaseController {
 		return this;
 	}
 	public Map<String,Object> build() {
-		return map;
+		Map bMap = new HashMap(map);
+		map = new HashMap<>();
+		return bMap;
 	}
 
 
