@@ -26,12 +26,10 @@ public class ContractModel extends BaseModel<ContractModel>{
     /**
      * 合同客户
      * */
-    @NotNull
     private MemberModel customer;
     /**
      * 合同签约管理
      * */
-    @NotNull
     private MemberModel admin;
 
     public String getContractId() {

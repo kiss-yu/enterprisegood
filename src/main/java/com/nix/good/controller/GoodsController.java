@@ -18,7 +18,7 @@ public class GoodsController extends BaseController{
      * 添加商品
      * */
     @Role({0,2})
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Map<String,Object> add(@ModelAttribute GoodsModel goodsModel) {
         try {
             goodsService.add(goodsModel);

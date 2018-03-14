@@ -1,3 +1,5 @@
+只要是xxxModel的java对象时  都表示对象的json
+
 用户相关api
 {
     ------------------------------------------------
@@ -124,5 +126,99 @@
 }
 产品部分API：
 {
+    产品属性：
+    /**
+     * 商品id
+     * */
+    @NotNull
+    private String goodId;
+    /**
+     * 商品名称
+     * */
+    @NotNull
+    private String name;
+    /**
+     * 商品添加日期
+     * */
+    private Date createDate;
+    /**
+     * 库存
+     * */
+    private Integer inventory;
 
+    /**
+     * 单价
+     * */
+    @NotNull
+    private BigDecimal price;
+    ------------------------------------------------
+    添加产品：/goods/create.do
+    方法：POST
+    参数：GoodsModel
+    返回：
+        成功：{"code":1,"goods":GoodsModel}
+        失败：{"code":0,"goods":GoodsModel}
+    ------------------------------------------------
+    删除产品：/goods/delete/{id}.do
+    方法：DELETE
+    参数：id直接放在url里{id}
+    返回：
+        成功：{"code":1}
+        失败：{"code":0}
+    ------------------------------------------------
+    修改商品：/goods/update.do
+    方法：PUT
+    参数：GoodsModel
+    返回：
+        成功：{"code":1,"goods":GoodsModel}
+        失败：{"code":0}
+    ------------------------------------------------
+    查看商品：/goods/{id}.do
+    方法：GET
+    参数：id直接放在url里{id}
+    返回：
+        成功：{"code":1,"goods":GoodsModel}
+        失败：{"code":0}
+    ------------------------------------------------
+    商品列表：/goods/list.do
+    方法：POST
+    参数：int page 当前页数
+         int size 当前页显示列表数目
+         String order 按照那个字段排序
+         String sort ASC 顺序 DESC 逆序
+    返回：
+        {"list":
+            [
+                {GoodsModel},
+                {GoodsModel},
+                {GoodsModel}
+            ]
+        }
+}
+合同部分API：
+{
+    合同属性：
+        /**
+         * 合同编号
+         * */
+        @NotNull
+        private String contractId;
+        /**
+         * 合同创建日期
+         * */
+        private Date createDate;
+        /**
+         * 合同商品列表
+         * */
+        private List<GoodsCountModel> goodCountList;
+        /**
+         * 合同客户
+         * */
+        @NotNull
+        private MemberModel customer;
+        /**
+         * 合同签约管理
+         * */
+        @NotNull
+        private MemberModel admin;
 }
