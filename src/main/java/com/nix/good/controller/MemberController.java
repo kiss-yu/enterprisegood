@@ -120,8 +120,8 @@ public class MemberController extends BaseController{
      * 获取用户列表
      * */
     @Role({0,3})
-    @RequestMapping(value = "/list/{page}",method = RequestMethod.POST)
-    public Map<String,Object> list(@PathVariable Integer page,
+    @RequestMapping(value = "/list",method = RequestMethod.POST)
+    public Map<String,Object> list(@RequestParam(value = "page",defaultValue = "1")  Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,
                                    @RequestParam(value = "order",defaultValue = "id") String order,
                                    @RequestParam(value = "sort",defaultValue = "ASC") String sort) {
