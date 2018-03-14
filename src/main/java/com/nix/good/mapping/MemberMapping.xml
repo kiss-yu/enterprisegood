@@ -13,7 +13,9 @@
     <select id="login" resultMap="BaseResultMap">
         SELECT * FROM `member` AS m WHERE m.memberId=#{memberId,jdbcType=VARCHAR} AND m.password=#{password,jdbcType=VARCHAR}
     </select>
-
+    <select id="select" resultMap="BaseResultMap">
+        SELECT * FROM `member` WHERE id=#{id}
+    </select>
     <select id="list" resultMap="BaseResultMap">
         select * from `member`
         <if test="conditions != null">

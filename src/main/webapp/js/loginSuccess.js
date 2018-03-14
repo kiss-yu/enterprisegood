@@ -1,5 +1,4 @@
 var param = {};
-var pagenumber = 1;
 $(function() {
     $('#table').bootstrapTable({
         method: 'POST',
@@ -11,13 +10,13 @@ $(function() {
         cache : false,// 禁用 AJAX 数据缓存
         sortName : 'id',// 定义排序列
         sortOrder : 'asc',// 定义排序方式 getRceiptlistWithPaging
-        url : '/member/list/'+ pagenumber +'.do',// 服务器数据的加载地址
+        url : '/member/list.do',// 服务器数据的加载地址
         sidePagination : 'server',// 设置在哪里进行分页
         /*showRefresh: true, */ //显示刷新按钮
         contentType : 'application/json',// 发送到服务器的数据编码类型
         dataType : 'json',// 服务器返回的数据类型
         queryParams: function queryParams(params) {
-            param.page = pagenumber;
+            param.page = (params.offset/params.limit) + 1;
             param.size=params.limit;
             param.sort = params.sort; // 排序列名
             param.order = params.order; // 排位命令（desc，asc）

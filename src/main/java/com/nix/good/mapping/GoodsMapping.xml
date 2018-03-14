@@ -70,7 +70,7 @@
             </if>
         </trim>
     </update>
-    <select id="select">
+    <select id="select" resultMap="BaseResultMap">
         SELECT * FROM `goods` WHERE id=#{id}
     </select>
     <select id="list" resultMap="BaseResultMap">
