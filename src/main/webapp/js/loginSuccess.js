@@ -25,7 +25,9 @@ $(function() {
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backData)
+            console.log(backData);
+            console.log(backData.list.length);
+            showList(backData.list,param.size);
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.list);
         },
@@ -123,5 +125,10 @@ function judgeRole(role) {
     }
     if(role == 4){
         return '客户';
+    }
+}
+function showList(list,size) {
+    if(list.length < size){
+
     }
 }

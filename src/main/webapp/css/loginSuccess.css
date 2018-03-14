@@ -13,3 +13,4 @@ td{font-size: 16px;color: #333333;}
 .pagination-detail{font-size: 14px !important;color: #999999 !important;}
 .dropdown-toggle{color: #999999 !important;line-height: 5px !important;height: 25px;}
 .btn-default:hover{color: #333333 !important;}
+.fixed-table-pagination {display: none !important;}
