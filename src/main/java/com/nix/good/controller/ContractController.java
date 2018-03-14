@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Controller
 @ResponseBody
-@RequestMapping("/Contract")
+@RequestMapping("/contract")
 public class ContractController extends BaseController{
     @Autowired
     private ContractService contractService;
@@ -108,11 +108,11 @@ public class ContractController extends BaseController{
                                    @RequestParam(value = "sort",defaultValue = "ASC") String sort,
                                    HttpServletRequest request) {
         List<ContractModel> list;
-        if (MemberManager.getCurrentUser(request).getRole() == 4) {
-            list = contractService.list(page,size,order,sort," customer = " + MemberManager.getCurrentUser(request).getMemberId());
-        }else {
+//        if (MemberManager.getCurrentUser(request).getRole() == 4) {
+//            list = contractService.list(page,size,order,sort," customer = " + MemberManager.getCurrentUser(request).getMemberId());
+//        }else {
             list = contractService.list(page,size,order,sort,null);
-        }
+//        }
         return render("list",list).build();
     }
 }

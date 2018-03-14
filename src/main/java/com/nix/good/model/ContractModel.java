@@ -31,6 +31,18 @@ public class ContractModel extends BaseModel<ContractModel>{
      * 合同签约管理
      * */
     private MemberModel admin;
+    /**
+     * 是否完成签约
+     * */
+    private Boolean finish;
+
+    public Boolean getFinsh() {
+        return finish;
+    }
+
+    public void setFinsh(Boolean finish) {
+        this.finish = finish;
+    }
 
     public String getContractId() {
         return contractId;

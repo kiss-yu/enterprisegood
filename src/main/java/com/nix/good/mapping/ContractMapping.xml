@@ -5,6 +5,7 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result property="contractId" column="contractId" jdbcType="VARCHAR"/>
         <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <result property="finish" column="finish" jdbcType="BIT"/>
         <association property="customer" column="customer" javaType="com.nix.good.model.MemberModel" select="com.nix.good.dao.MemberMapper.selectRoleLazyCustomer"/>
         <association property="admin" column="admin" javaType="com.nix.good.model.MemberModel" select="com.nix.good.dao.MemberMapper.selectRoleLazyAdmin"/>
         <collection property="goodCountList" column="contractId" javaType="java.util.List" select="com.nix.good.dao.GoodsCountMapper.selectRoleLazy"/>

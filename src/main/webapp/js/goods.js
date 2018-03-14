@@ -10,7 +10,7 @@ $(function() {
         cache : false,// 禁用 AJAX 数据缓存
         sortName : 'id',// 定义排序列
         sortOrder : 'asc',// 定义排序方式 getRceiptlistWithPaging
-        url : '/member/list.do',// 服务器数据的加载地址
+        url : '/goods/list.do',// 服务器数据的加载地址
         sidePagination : 'server',// 设置在哪里进行分页
         /*showRefresh: true, */ //显示刷新按钮
         contentType : 'application/json',// 发送到服务器的数据编码类型
@@ -30,7 +30,6 @@ $(function() {
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.list);
         },
-        // data:[{"id":1,"memberId":"1","password":"123456","name":"1","role":1,"sex":true,"age":1},{"id":2,"memberId":"2","password":"222222","name":"2","role":2,"sex":true,"age":1},{"id":3,"memberId":"admin","password":"21232f297a57a5a743894a0e4a801fc3","name":"管理员","role":0,"sex":true,"age":1}],
         columns : [ {
             checkbox : true,
             align : 'center',// 水平居中显示
@@ -52,50 +51,30 @@ $(function() {
             width : '1',// 宽度
             visible : false
         }, {
-            field : 'memberId',// 返回值名称
-            title : 'memberId',// 列名
+            field : 'goodId',// 返回值名称
+            title : '商品编号',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '1',// 宽度
-            visible : false
         }, {
-            field : 'password',// 返回值名称
-            title : 'password',// 列名
+            field : 'createDate',// 返回值名称
+            title : '创建日期',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '1',// 宽度
-            visible : false
         }, {
-            field : 'name',// 返回值名称
-            title : '姓名',// 列名
+            field : 'inventory',// 返回值名称
+            title : '库存',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '10',// 宽度
         },  {
-            field : 'role',// 返回值名称
-            title : '角色',// 列名
+            field : 'price',// 返回值名称
+            title : '单价',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '15',// 宽度
-            formatter: function (value, row, index) {
-                return judgeRole(value);
-            }
         }, {
-            field : 'sex',// 返回值名称
-            title : '性别',// 列名
-            align : 'center',// 水平居中显示
-            valign : 'middle',// 垂直居中显示
-            width : '15',// 宽度
-            formatter: function (value, row, index) {
-                return value == true ? '男' : '女';
-            }
-        }, {
-            field : 'age',// 返回值名称
-            title : '年龄',// 列名
-            align : 'center',// 水平居中显示
-            valign : 'middle',// 垂直居中显示
-            width : '5',// 宽度
-        },{
             field : '',// 返回值名称
             title : '操作',// 列名
             align : 'center',// 水平居中显示
@@ -111,23 +90,6 @@ $(function() {
         /* 事件 */
     });
 });
-function judgeRole(role) {
-    if(role == 0){
-        return '系统管理员';
-    }
-    if(role == 1){
-        return '合同部用户';
-    }
-    if(role == 2){
-        return '销售部用户';
-    }
-    if(role == 3){
-        return '客户部用户';
-    }
-    if(role == 4){
-        return '客户';
-    }
-}
 function showList(list,size) {
     if(list.length < size){
 
