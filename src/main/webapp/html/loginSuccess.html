@@ -8,11 +8,8 @@
     <link rel="stylesheet" href="../resources/bootstrap-table.css" />
     <script type="text/javascript" src="../resources/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="../resources/bootstrap.js"></script>
-    <script type="text/javascript" src="../resources/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
-    <script type="text/javascript" src="../js/loginSuccess.js"></script>
-
 </head>
 <body>
 
@@ -28,42 +25,11 @@
     </div>
 </div>
 
-<div id="center">
-    <input type="text" class="searchbox" id="search"/>
-    <button type="button" class="btn btn-primary" id="searchbtn">查找</button>
-    <button type="button" class="btn btn-primary rightmeau" id="deletebtn">删除</button>
-    <button type="button" class="btn btn-primary rightmeau" id="addbtn">添加</button>
+<div class="middle">
+    <iframe src="../html/memberPage.html" width='100%' height='100%' overflow:hidden; frameborder='0' scrolling="no" id="iframe"></iframe>
 </div>
 
-<div class="tableStyle">
-    <table id="table" class="table table-hover">
-    </table>
-</div>
-<form id="info-form">
-    <div class="infoOperate" id="infoOperate">
-        <input id="id" name="id" hidden>
-        <input id="memberId" name="memberId" hidden>
-        <div id="infoOperatetitle"></div>
-        <div class="info">姓名<input type="text" id="namebox" name="name"/></div>
-        <div class="info">角色
-            <select id="selectRole" name="role">
-                <option value="0">系统管理员</option>
-                <option value="1">合同部用户</option>
-                <option value="2">销售部用户</option>
-                <option value="3">客户部用户</option>
-                <option value="4">用户</option>
-            </select>
-        </div>
-        <div class="info">性别
-            <select id="sexbox" name="sex">
-                <option value="0">男</option>
-                <option value="1">女</option>
-            </select>
-        </div>
-        <div class="info">年龄<input type="text" id="agebox" name="age"/></div>
-        <input type="button" class="btn btn-default" id="cancel" onclick="dismiss()" value="取消" name="">
-        <input type="button" class="btn btn-primary" id="enable" value="确认" name="">
-    </div>
+    <script type="text/javascript" src="../js/loginSuccess.js"></script>
 </form>
 </body>
 </html>

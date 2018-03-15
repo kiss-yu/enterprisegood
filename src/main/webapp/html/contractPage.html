@@ -10,14 +10,11 @@
     <script type="text/javascript" src="../resources/bootstrap.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
-    <script type="text/javascript" src="../js/contract.js"></script>
 </head>
 <body>
 
-<div id="header">
-    <div class="header_title">
-        <span class="title_con">合同管理</span>
-    </div>
+<div class="header_title">
+    <span class="title_con second_title_con">合同管理</span>
 </div>
 
 <div id="center">
@@ -26,10 +23,24 @@
     <button type="button" class="btn btn-primary rightmeau" id="deletebtn">删除</button>
     <button type="button" class="btn btn-primary rightmeau" id="addbtn">添加</button>
 </div>
+
 <div class="tableStyle">
     <table id="table" class="table table-hover">
     </table>
 </div>
 
+<form id="info-form">
+    <div class="infoOperate" id="infoOperate">
+        <input id="id" name="id" hidden>
+        <div id="infoOperatetitle"></div>
+        <div class="info">合同编号<input type="text" id="contractIdbox" name="contractId"/></div>
+        <div class="info">创建日期<input type="text" id="createDatebox" name="createDate"/></div>
+        <div class="info">客户姓名<input type="text" id="customer.namebox" name="customer.nameDate"/></div>
+        <div class="info">签约同意管理姓名<input type="text" id="admin.namebox" name="admin.nameDate"/></div>
+        <input type="button" class="btn btn-default" id="cancel" onclick="dismiss()" value="取消" name="">
+        <input type="button" class="btn btn-primary" id="enable" value="确认" name="">
+    </div>
+</form>
+<script type="text/javascript" src="../js/contract.js"></script>
 </body>
 </html>

@@ -2,18 +2,65 @@ var param = {};
 $(function() {
     $('#searchbtn').attr('onclick','search()');
     $('#addbtn').click(function (){
-        $('#goodIdbox').val();
-        $('#createDatebox').val();
-        $('#inventorybox').val();
-        $('#pricebox').val();
+        $('#namebox').val();
+        $('#selectRole').val();
+        $('#sexbox').val();
+        $('#agebox').val();
         $('#infoOperatetitle').text('添加');
         $('#enable').attr('onclick','enableAdd()');
         $('#enable').css('display','block');
         $("#infoOperate").css('display','block');
     });
-    getGoodList();
+    getMemberList();
 });
-function getGoodList() {
+function enableAdd() {
+    if(checkInput()){
+        $.ajax({
+            type: 'POST',
+            url: "/member/create.do",
+            dataType: 'json',
+            data: $("#info-form").serialize(),
+            success: function (o) {
+                console.log(o);
+                if (o.code == 'SUCCESS') {
+                    console.log(o.msg);
+                    alert('修改成功!');
+                    $('#enable').removeAttr('onclick');
+                    $("#infoOperate").css('display','none');
+                }else if(o.code == 'FAIL'){
+                    alert('修改失败！' + o.msg == null ? '' : o.msg);
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+}
+function search() {
+    var info = $('#search').val();
+    if(info == null || info == ''){
+        $.ajax({
+            type: 'POST',
+            url: "/member/create.do",
+            dataType: 'json',
+            data: $("#info-form").serialize(),
+            success: function (o) {
+                console.log(o);
+                if (o.code == 'SUCCESS') {
+                    console.log(o.msg);
+                    alert('修改成功!');
+                    $('#enable').removeAttr('onclick');
+                    $("#infoOperate").css('display','none');
+                }else if(o.code == 'FAIL'){
+                    alert('修改失败！' + o.msg == null ? '' : o.msg);
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+}
+function getMemberList() {
     $('#table').bootstrapTable({
         method: 'POST',
         striped : true,// 隔行变色效果
@@ -24,7 +71,7 @@ function getGoodList() {
         cache : false,// 禁用 AJAX 数据缓存
         sortName : 'id',// 定义排序列
         sortOrder : 'asc',// 定义排序方式 getRceiptlistWithPaging
-        url : '/goods/list.do',// 服务器数据的加载地址
+        url : '/member/list.do',// 服务器数据的加载地址
         sidePagination : 'server',// 设置在哪里进行分页
         /*showRefresh: true, */ //显示刷新按钮
         contentType : 'application/json',// 发送到服务器的数据编码类型
@@ -39,9 +86,11 @@ function getGoodList() {
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
             console.log(backData);
+            console.log(backData.list.length);
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.list);
         },
+        // data:[{"id":1,"memberId":"1","password":"123456","name":"1","role":1,"sex":true,"age":1},{"id":2,"memberId":"2","password":"222222","name":"2","role":2,"sex":true,"age":1},{"id":3,"memberId":"admin","password":"21232f297a57a5a743894a0e4a801fc3","name":"管理员","role":0,"sex":true,"age":1}],
         columns : [ {
             checkbox : true,
             align : 'center',// 水平居中显示
@@ -51,7 +100,7 @@ function getGoodList() {
             title: '序号',//标题  可不加
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '2',// 宽度
+            width : '5',// 宽度
             formatter: function (value, row, index) {
                 return index+1;
             }
@@ -63,35 +112,55 @@ function getGoodList() {
             width : '1',// 宽度
             visible : false
         }, {
-            field : 'goodId',// 返回值名称
-            title : '商品编号',// 列名
+            field : 'memberId',// 返回值名称
+            title : 'memberId',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '1',// 宽度
+            visible : false
         }, {
-            field : 'createDate',// 返回值名称
-            title : '创建日期',// 列名
+            field : 'password',// 返回值名称
+            title : 'password',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '1',// 宽度
+            visible : false
         }, {
-            field : 'inventory',// 返回值名称
-            title : '库存',// 列名
+            field : 'name',// 返回值名称
+            title : '姓名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '10',// 宽度
         },  {
-            field : 'price',// 返回值名称
-            title : '单价',// 列名
+            field : 'role',// 返回值名称
+            title : '角色',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '15',// 宽度
+            formatter: function (value, row, index) {
+                return getRole(value);
+            }
         }, {
+            field : 'sex',// 返回值名称
+            title : '性别',// 列名
+            align : 'center',// 水平居中显示
+            valign : 'middle',// 垂直居中显示
+            width : '15',// 宽度
+            formatter: function (value, row, index) {
+                return value == true ? '男' : '女';
+            }
+        }, {
+            field : 'age',// 返回值名称
+            title : '年龄',// 列名
+            align : 'center',// 水平居中显示
+            valign : 'middle',// 垂直居中显示
+            width : '5',// 宽度
+        },{
             field : '',// 返回值名称
             title : '操作',// 列名
             align : 'center',// 水平居中显示
             valign :'middle',// 垂直居中显示
-            width : '10',// 宽度
+            width : '5',// 宽度
             formatter: function (value, row, index) {
                 return "<button onclick='show("+JSON.stringify(row)+")'>查看</button>" +
                     "<button onclick='edit("+JSON.stringify(row)+")'>编辑</button>" +
@@ -102,84 +171,55 @@ function getGoodList() {
         /* 事件 */
     });
 }
-function enableAdd() {
-    if(checkInput()){
-        $.ajax({
-            type: 'POST',
-            url: "/goods/create.do",
-            dataType: 'json',
-            data: $("#info-form").serialize(),
-            success: function (o) {
-                console.log(o);
-                if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
-                    alert('修改成功!' + o.goods == null ? '' : o.goods);
-                    $('#enable').removeAttr('onclick');
-                    $("#infoOperate").css('display','none');
-                }else if(o.code == 'FAIL'){
-                    alert('修改失败！' + o.goods == null ? '' : o.goods);
-                }
-            },
-            error: function () {
-            }
-        });
+function getRole(data) {
+
+    if(data == 0){
+        return '系统管理员';
+    }else if(data == 1){
+        return '合同部用户';
+    }else if(data == 2){
+        return '销售部用户';
+    }else if(data == 3){
+        return '客户部用户';
+    }else if(data == 4){
+        return '用户';
+    }else if(data == '系统管理员'){
+        return 0;
+    }else if(data == '合同部用户'){
+        return 1;
+    }else if(data == '销售部用户'){
+        return 2;
+    }else if(data == '客户部用户'){
+        return 3;
+    }else if(data == '用户'){
+        return 4;
     }
 }
-function search() {
-    var info = $('#search').val();
-    if(info == null || info == ''){
-        $.ajax({
-            type: 'POST',
-            url: "/goods/create.do",
-            dataType: 'json',
-            data: $("#info-form").serialize(),
-            success: function (o) {
-                console.log(o);
-                if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
-                    alert('修改成功!' + o.goods == null ? '' : o.goods);
-                    $('#enable').removeAttr('onclick');
-                    $("#infoOperate").css('display','none');
-                }else if(o.code == 'FAIL'){
-                    alert('修改失败！' + o.goods == null ? '' : o.goods);
-                }
-            },
-            error: function () {
-            }
-        });
-    }
-}
+
 function checkInput() {
-    if($('#goodIdbox').val() == null || $('#goodIdbox').val() == ''){
-        alert('请输入商品编号！');
+    if($('#namebox').val() == null || $('#namebox').val() == ''){
+        alert('请输入姓名！');
         return false;
     }
-    if($('#createDatebox').val() == null || $('#createDatebox').val() == ''){
-        alert('请输入创建日期！');
-        return false;
-    }
-    if($('#inventorybox').val() == null || $('#inventorybox').val() == ''){
-        alert('请输入库存！');
-        return false;
-    }
-    if($('#pricebox').val() == null || $('#pricebox').val() == ''){
-        alert('请输入单价！');
+    if($('#agebox').val() == null || $('#agebox').val() == ''){
+        alert('请输入年龄！');
         return false;
     }
     return true;
 }
 /*展示方法*/
 function show(data) {
-    $('#infoOperatetitle').text('查看');
-    $("#goodIdbox").attr("disabled","true");
-    $("#createDatebox").attr("disabled","true");
-    $("#inventorybox").attr("disabled","true");
-    $("#pricebox").attr("disabled","true");
 
-    $('#goodIdbox').val(data.goodId);
-    $('#createDatebox').val(data.createDate);
-    $('#inventorybox').val(data.inventory);
-    $('#pricebox').val(data.price);
+    $('#infoOperatetitle').text('查看');
+    $("#namebox").attr("disabled","true");
+    $("#selectRole").attr("disabled","true");
+    $("#sexbox").attr("disabled","true");
+    $("#agebox").attr("disabled","true");
+
+    $('#namebox').val(data.name);
+    $('#selectRole').val(data.role);
+    $('#sexbox').val(data.sex ? 0 : 1);
+    $('#agebox').val(data.age);
     $('#enable').css('display','none');
     $("#infoOperate").css('display','block');
 
@@ -191,15 +231,16 @@ function dismiss() {
 function edit(data) {
 
     $('#infoOperatetitle').text('编辑');
-    $("#goodIdbox").removeAttr("disabled");
-    $("#createDatebox").removeAttr("disabled");
-    $("#inventorybox").removeAttr("disabled");
-    $("#pricebox").removeAttr("disabled");
+    $("#namebox").removeAttr("disabled");
+    $("#selectRole").removeAttr("disabled");
+    $("#sexbox").removeAttr("disabled");
+    $("#agebox").removeAttr("disabled");
     $("#id").val(data.id);
-    $("#goodIdbox").val(data.goodId);
-    $('#createDatebox').val(data.createDate);
-    $('#inventorybox').val(data.inventory);
-    $('#pricebox').val(data.price);
+    $("#memberId").val(data.memberId);
+    $('#namebox').val(data.name);
+    $('#selectRole').val(data.role);
+    $('#sexbox').val(data.sex ? 0 : 1);
+    $('#agebox').val(data.age);
 
     $('#enable').attr('onclick','enableEdit()');
 
@@ -210,18 +251,18 @@ function enableEdit() {
     if(checkInput()){
         $.ajax({
             type: 'put',
-            url: "/goods/update.do",
+            url: "/member/update.do",
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
                 console.log(o);
                 if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
-                    alert('修改成功!'  + o.goods == null ? '' : o.goods);
+                    console.log(o.msg);
+                    alert('修改成功!');
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
                 }else if(o.code == 'FAIL'){
-                    alert('修改失败！');
+                    alert('修改失败！' + o.msg == null ? '' : o.msg);
                 }
             },
             error: function () {
@@ -233,14 +274,15 @@ function del(data) {
     if(confirm('确认删除?') == true){
         $.ajax({
             method:'DELETE',
-            url: '/goods/delete/'+ data.id +'.do',
+            url: '/member/delete.do',
+            data:data.id,
             success : function(o) {
                 console.log(o.code);
                 if (o.code == 'FAIL') {
-                    alert("删除失败");
+                    alert("删除失败" + data.msg == null ? '' : data.msg);
                 }else if(o.code == 'SUCCESS'){
                     alert("删除成功");
-                    getGoodList();
+                    getMemberList();
                 }
             }
         });
@@ -263,14 +305,14 @@ function delSelects() {
         if(confirm('确认删除所有选中数据?') == true){
             $.ajax({
                 method:'DELETE',
-                url: '/member/delete/'+ id +'.do',
+                url: '/member/delete.do',
                 success : function(o) {
                     console.log(o.code);
                     if (o.code == 'FAIL') {
-                        alert("删除失败");
+                        alert("删除失败"  + o.msg == null ? '' : o.msg);
                     }else if(o.code == 'SUCCESS'){
                         alert("删除成功");
-                        getGoodList();
+                        getMemberList();
                     }
                 }
             });
