@@ -74,8 +74,8 @@ public class MemberController extends BaseController{
      * 删除用户
      * */
     @Role({0,3})
-    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
-    public Map<String,Object> delete(@PathVariable("id") Integer id) {
+    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
+    public Map<String,Object> delete(@RequestParam(value = "id",defaultValue = "null") Integer[] id) {
         try {
             memberService.delete(id);
             return render("code",SUCCESS).build();

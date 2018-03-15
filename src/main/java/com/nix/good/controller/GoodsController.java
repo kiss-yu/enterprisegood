@@ -39,8 +39,8 @@ public class GoodsController extends BaseController{
      * 删除商品
      * */
     @Role({0,2})
-    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
-    public Map<String,Object> delete(@PathVariable("id") Integer id) {
+    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
+    public Map<String,Object> delete(@RequestParam(value = "id",defaultValue = "null") Integer[] id) {
         try {
             goodsService.delete(id);
             return render("code",SUCCESS).build();
