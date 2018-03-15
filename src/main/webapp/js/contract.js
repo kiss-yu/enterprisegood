@@ -265,29 +265,25 @@ function del(data) {
 }
 function delSelects() {
     var data = $('#table').bootstrapTable('getSelections');
-
     if (data.length == 0) {
         alert("请至少选中一条数据");
         return;
     }else{
-        var ids = "";
+        var ids = new Array();
         for (var i = 0; i < data.length; i++) {
-            ids += data[i].ID + ",";
+            ids.push(data[i].id);
         }
-
-        var id=ids.substring(0, (ids.length - 1));
-
         if(confirm('确认删除所有选中数据?') == true){
             $.ajax({
-                method:'DELETE',
-                url: '/member/delete/'+ id +'.do',
+                method:'POST',
+                url: '/contract/delete.do',
+                data:{id:ids},
+                traditional:true,
                 success : function(o) {
-                    console.log(o.code);
                     if (o.code == 'FAIL') {
                         alert("删除失败");
                     }else if(o.code == 'SUCCESS'){
                         alert("删除成功");
-                        getMemberList();
                     }
                 }
             });
