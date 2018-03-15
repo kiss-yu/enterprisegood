@@ -83,4 +83,16 @@ public class ContractModel extends BaseModel<ContractModel>{
     public void setAdmin(MemberModel admin) {
         this.admin = admin;
     }
+
+    @Override
+    public String toString() {
+        return "ContractModel{" +
+                "contractId='" + contractId + '\'' +
+                ", createDate=" + createDate +
+                ", goodCountList=" + goodCountList +
+                ", customer=" + customer +
+                ", admin=" + admin +
+                ", finish=" + finish +
+                '}';
+    }
 }

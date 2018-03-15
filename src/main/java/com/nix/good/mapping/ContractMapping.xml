@@ -35,7 +35,17 @@
             <if test="createDate != null">
                 `createDate`,
             </if>
+            <if test="finish != null">
+                `finish`,
+            </if>
+            <if test="customer != null">
+                `customer`,
+            </if>
+            <if test="admin != null">
+                `admin`,
+            </if>
         </trim>
+        VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="contractId != null">
                 #{contractId},
@@ -43,8 +53,29 @@
             <if test="createDate != null">
                 #{createDate},
             </if>
+            <if test="finish != null">
+                #{finish},
+            </if>
+            <if test="customer != null">
+                #{customer.memberId},
+            </if>
+            <if test="admin != null">
+                #{admin.memberId},
+            </if>
         </trim>
     </insert>
+    <update id="update">
+        UPDATE `contract`
+        SET
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createDate != null">
+                `createDate` = #{createDate},
+            </if>
+            <if test="finish != null">
+                `finish` = #{finish},
+            </if>
+        </trim>
+    </update>
     <delete id="delete">
         DELETE FROM `contract` WHERE id=#{id}
     </delete>

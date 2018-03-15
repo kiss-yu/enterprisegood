@@ -55,7 +55,8 @@
                 `age`,
             </if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="memberId != null">
                 #{memberId,jdbcType=VARCHAR},
             </if>
@@ -77,12 +78,9 @@
         </trim>
     </insert>
     <update id="update" parameterType="com.nix.good.model.MemberModel">
-        UPDATE `mmeber`
+        UPDATE `member`
         SET
         <trim prefix="" suffix="" suffixOverrides=",">
-            <if test="memberId != null">
-                `memberId` = #{memberId,jdbcType=VARCHAR},
-            </if>
             <if test="password != null">
                 `password` = #{password,jdbcType=VARCHAR},
             </if>
@@ -99,6 +97,7 @@
                 `age` = #{age,jdbcType=INTEGER},
             </if>
         </trim>
+        WHERE id = #{id}
     </update>
     <select id="selectRoleLazyCustomer" parameterType="java.lang.String" resultType="com.nix.good.model.MemberModel">
         SELECT m.* from `member` AS m where m.memberId = #{customer,jdbcType=VARCHAR}

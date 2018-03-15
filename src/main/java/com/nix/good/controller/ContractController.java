@@ -7,6 +7,7 @@ import com.nix.good.model.ContractModel;
 import com.nix.good.model.GoodsModel;
 import com.nix.good.model.MemberModel;
 import com.nix.good.service.impl.ContractService;
+import com.nix.good.service.impl.MemberService;
 import com.nix.good.util.MemberManager;
 import com.nix.good.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,36 @@ import java.util.Map;
 public class ContractController extends BaseController{
     @Autowired
     private ContractService contractService;
+    @Autowired
+    private MemberService memberService;
     /**
      * 创建合同
      * */
     @Role({0,2})
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public Map<String,Object> create(@ModelAttribute ContractModel contractModel) {
+    public Map<String,Object> create(@ModelAttribute ContractModel contractModel,
+                                     @RequestParam(value = "consumerId",defaultValue = "null") Integer consumerId,
+                                     @RequestParam(value = "adminId",defaultValue = "null") Integer adminId,
+            HttpServletRequest request) {
         try {
-            contractService.add(contractModel);
+            MemberModel currentMember = MemberManager.getCurrentUser(request);
+            if (currentMember.getRole() == MemberModel.Role.admin.ordinal()) {
+                MemberModel consumer = memberService.findById(consumerId);
+                MemberModel admin = memberService.findById(adminId);
+                if (consumer == null || admin == null) {
+                    render("code",FAIL);
+                }else {
+                    contractModel.setCustomer(consumer);
+                    contractModel.setAdmin(admin);
+                }
+            } else if (currentMember.getRole() == MemberModel.Role.customer.ordinal()) {
+                contractModel.setCustomer(currentMember);
+            } else if (currentMember.getRole() == MemberModel.Role.contractMember.ordinal()) {
+                MemberModel consumer = memberService.findById(consumerId);
+                contractModel.setCustomer(consumer);
+            }else {
+                return render("code",FAIL).build();
+            }
             render("code",SUCCESS)
                     .render("contract",contractModel);
         } catch (Exception e) {
@@ -42,6 +65,26 @@ public class ContractController extends BaseController{
         }
         return build();
     }
+
+    /**
+     * 合同部用户确定签约合同
+     * */
+    @Role({0,2})
+    @RequestMapping(value = "/signing",method = RequestMethod.POST)
+    public Map<String,Object> signingContract(@ModelAttribute ContractModel contractModel,HttpServletRequest request) {
+        try {
+            MemberModel admin = MemberManager.getCurrentUser(request);
+            if (admin != null) {
+                contractModel.setAdmin(admin);
+                contractService.update(contractModel);
+                return render("code",SUCCESS).build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return render("code",FAIL).render("msg","非法签约").build();
+    }
+
     /**
      * 删除合同
      * */

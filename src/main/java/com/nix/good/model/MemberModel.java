@@ -90,4 +90,15 @@ public class MemberModel extends BaseModel<MemberModel> {
         this.age = age;
     }
 
+    @Override
+    public String toString() {
+        return "MemberModel{" +
+                "memberId='" + memberId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", role=" + role +
+                ", sex=" + sex +
+                ", age=" + age +
+                '}';
+    }
 }

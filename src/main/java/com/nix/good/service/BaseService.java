@@ -45,9 +45,12 @@ public class BaseService <M extends BaseModel<M>>{
      * @param model 与dao绑定的model类
      * */
     private void callInvoke(String methodName,M model) throws Exception {
-        invokeMapperMethod(methodName,new Class[]{model.getClass()},model);
+        invokeMapperMethod(methodName,new Class[]{BaseModel.class},model);
     }
     public void add(M model) throws Exception {
+        if (model == null) {
+            throw new Exception("model cannot is null");
+        }
         callInvoke("insert",model);
     }
 
@@ -58,6 +61,9 @@ public class BaseService <M extends BaseModel<M>>{
      * @throws Exception 删除失败抛出异常
      * */
     public void delete(Integer[] ids) throws Exception {
+        if (ids == null) {
+            throw new Exception("ids cannot is null");
+        }
         for (Integer id:ids) {
             delete(id);
         }
@@ -69,6 +75,9 @@ public class BaseService <M extends BaseModel<M>>{
      * @throws Exception 删除失败抛出异常
      * */
     public void delete(Integer id) throws Exception {
+        if (id == null) {
+            throw new Exception("id cannot is null");
+        }
         invokeMapperMethod("delete",new Class[]{Integer.class},id);
     }
     /**
@@ -80,6 +89,9 @@ public class BaseService <M extends BaseModel<M>>{
      *
      * */
     public void update(M model) throws Exception {
+        if (model == null) {
+            return;
+        }
         callInvoke("update",model);
     }
 
@@ -117,7 +129,6 @@ public class BaseService <M extends BaseModel<M>>{
             Object find = invokeMapperMethod("select",new Class[]{Integer.class},id);
             return (M) find;
         }catch (Exception e){
-            e.printStackTrace();
             return null;
         }
     }
