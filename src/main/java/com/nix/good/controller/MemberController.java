@@ -129,8 +129,15 @@ public class MemberController extends BaseController{
     public Map<String,Object> list(@RequestParam(value = "page",defaultValue = "1")  Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,
                                    @RequestParam(value = "order",defaultValue = "id") String order,
-                                   @RequestParam(value = "sort",defaultValue = "ASC") String sort) {
-        List<MemberModel> list = memberService.list(page,size,order,sort,null);
+                                   @RequestParam(value = "sort",defaultValue = "ASC") String sort,
+                                   @RequestParam(value = "field",defaultValue = "") String field,
+                                   @RequestParam(value = "content",defaultValue = "") String content) {
+        List<MemberModel> list;
+        if (!field.isEmpty() && !content.isEmpty()) {
+            list = memberService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
+        }else {
+            list = memberService.list(page,size,order,sort,null);
+        }
         return render("list",list).build();
     }
 }

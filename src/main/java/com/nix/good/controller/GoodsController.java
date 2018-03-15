@@ -2,6 +2,7 @@ package com.nix.good.controller;
 
 import com.nix.good.common.Role;
 import com.nix.good.model.GoodsModel;
+import com.nix.good.model.MemberModel;
 import com.nix.good.service.impl.GoodsService;
 import com.nix.good.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,8 +90,15 @@ public class GoodsController extends BaseController{
     public Map<String,Object> list(@RequestParam(value = "page",defaultValue = "1")  Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,
                                    @RequestParam(value = "order",defaultValue = "id") String order,
-                                   @RequestParam(value = "sort",defaultValue = "ASC") String sort) {
-        List<GoodsModel> list = goodsService.list(page,size,order,sort,null);
+                                   @RequestParam(value = "sort",defaultValue = "ASC") String sort,
+                                   @RequestParam(value = "field",defaultValue = "") String field,
+                                   @RequestParam(value = "content",defaultValue = "") String content) {
+        List<GoodsModel> list;
+        if (!field.isEmpty() && !content.isEmpty()) {
+            list = goodsService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
+        }else {
+            list = goodsService.list(page,size,order,sort,null);
+        }
         return render("list",list).build();
     }
 }

@@ -150,12 +150,22 @@ public class ContractController extends BaseController{
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,
                                    @RequestParam(value = "order",defaultValue = "id") String order,
                                    @RequestParam(value = "sort",defaultValue = "ASC") String sort,
+                                   @RequestParam(value = "field",defaultValue = "") String field,
+                                   @RequestParam(value = "content",defaultValue = "") String content,
                                    HttpServletRequest request) {
         List<ContractModel> list;
         if (MemberManager.getCurrentUser(request).getRole() == 4) {
-            list = contractService.list(page,size,order,sort," customer = " + MemberManager.getCurrentUser(request).getMemberId());
+            if (!field.isEmpty() && !content.isEmpty()) {
+                list = contractService.list(page,size,order,sort,"`" + field + "`" + " like %" + content + "%" + " and " + " customer = " + MemberManager.getCurrentUser(request).getMemberId());
+            }else {
+                list = contractService.list(page,size,order,sort," customer = " + MemberManager.getCurrentUser(request).getMemberId());
+            }
         }else {
-            list = contractService.list(page,size,order,sort,null);
+            if (!field.isEmpty() && !content.isEmpty()) {
+                list = contractService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
+            }else {
+                list = contractService.list(page,size,order,sort,null);
+            }
         }
         return render("list",list).build();
     }
