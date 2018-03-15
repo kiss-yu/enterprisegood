@@ -273,7 +273,7 @@ function enableEdit() {
 function del(data) {
     if(confirm('确认删除?') == true){
         $.ajax({
-            method:'DELETE',
+            method:'POST',
             url: '/member/delete.do',
             data:data.id,
             success : function(o) {

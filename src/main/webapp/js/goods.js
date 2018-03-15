@@ -232,7 +232,7 @@ function enableEdit() {
 function del(data) {
     if(confirm('确认删除?') == true){
         $.ajax({
-            method:'DELETE',
+            method:'POST',
             url: '/goods/delete/'+ data.id +'.do',
             success : function(o) {
                 console.log(o.code);

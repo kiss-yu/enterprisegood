@@ -1,5 +1,4 @@
 $(function () {
-    $('#iframe').attr('src','../html/memberPage.html');
     $('#memberinfo').click(function (){
         $('#iframe').attr('src','../html/memberPage.html');
     });

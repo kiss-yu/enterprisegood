@@ -2,11 +2,20 @@ var param = {};
 $(function() {
     $('#searchbtn').attr('onclick','search()');
     $('#addbtn').click(function (){
-        $('#contractIdbox').val();
-        $('#createDatebox').val();
-        $('#customer.namebox').val();
-        $('#admin.namebox').val();
+
+        $("#contractIdbox").removeAttr("disabled");
+        $("#createDatebox").removeAttr("disabled");
+        $("#finish").removeAttr("disabled");
+        $("#customer").removeAttr("disabled");
+        $("#admin").removeAttr("disabled");
+
         $('#infoOperatetitle').text('添加');
+        $('#contractIdbox').val("");
+        $('#id').val("");
+        $('#createDatebox').val("");
+        $('#finish').val(0);
+        $('#customer').val("");
+        $('#admin').val("");
         $('#enable').attr('onclick','enableAdd()');
         $('#enable').css('display','block');
         $("#infoOperate").css('display','block');
@@ -74,7 +83,16 @@ function getContractList() {
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '15',// 宽度
-        }, {
+        },{
+            field : 'finish',// 返回值名称
+            title : '签约状态',// 列名
+            align : 'center',// 水平居中显示
+            valign : 'middle',// 垂直居中显示
+            width : '15',// 宽度
+            formatter: function (value, row, index) {
+                return value == true ? '已签约' : '未签约';
+            }
+        },  {
             field : 'customer.name',// 返回值名称
             title : '客户姓名',// 列名
             align : 'center',// 水平居中显示
@@ -106,18 +124,17 @@ function enableAdd() {
     if(checkInput()){
         $.ajax({
             type: 'POST',
-            url: "/goods/create.do",
+            url: "/contract/create.do",
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
                 console.log(o);
                 if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
-                    alert('修改成功!' + o.goods == null ? '' : o.goods);
+                    alert('添加成功!' );
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
                 }else if(o.code == 'FAIL'){
-                    alert('修改失败！' + o.goods == null ? '' : o.goods);
+                    alert('添加失败！');
                 }
             },
             error: function () {
@@ -130,18 +147,17 @@ function search() {
     if(info == null || info == ''){
         $.ajax({
             type: 'POST',
-            url: "/goods/create.do",
+            url: "/contract/create.do",
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
                 console.log(o);
                 if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
-                    alert('修改成功!' + o.goods == null ? '' : o.goods);
+                    alert('修改成功!');
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
                 }else if(o.code == 'FAIL'){
-                    alert('修改失败！' + o.goods == null ? '' : o.goods);
+                    alert('修改失败！');
                 }
             },
             error: function () {
@@ -150,7 +166,7 @@ function search() {
     }
 }
 function checkInput() {
-    if($('#goodIdbox').val() == null || $('#goodIdbox').val() == ''){
+    if($('#contractIdbox').val() == null || $('#goodIdbox').val() == ''){
         alert('请输入商品编号！');
         return false;
     }
@@ -158,28 +174,22 @@ function checkInput() {
         alert('请输入创建日期！');
         return false;
     }
-    if($('#inventorybox').val() == null || $('#inventorybox').val() == ''){
-        alert('请输入库存！');
-        return false;
-    }
-    if($('#pricebox').val() == null || $('#pricebox').val() == ''){
-        alert('请输入单价！');
-        return false;
-    }
     return true;
 }
 /*展示方法*/
 function show(data) {
     $('#infoOperatetitle').text('查看');
-    $("#goodIdbox").attr("disabled","true");
+    $("#contractIdbox").attr("disabled","true");
     $("#createDatebox").attr("disabled","true");
-    $("#inventorybox").attr("disabled","true");
-    $("#pricebox").attr("disabled","true");
+    $("#finish").attr("disabled","true");
+    $("#customer").attr("disabled","true");
+    $("#admin").attr("disabled","true");
 
-    $('#goodIdbox').val(data.goodId);
+    $('#contractIdbox').val(data.contractId);
     $('#createDatebox').val(data.createDate);
-    $('#inventorybox').val(data.inventory);
-    $('#pricebox').val(data.price);
+    $('#customer').val(data.customer.memberId);
+    $('#admin').val(data.admin.name);
+    $('#finish').val(data.finish ? 1 : 0);
     $('#enable').css('display','none');
     $("#infoOperate").css('display','block');
 
@@ -190,16 +200,22 @@ function dismiss() {
 }
 function edit(data) {
 
-    $('#infoOperatetitle').text('编辑');
-    $("#goodIdbox").removeAttr("disabled");
+
+    $("#contractIdbox").removeAttr("disabled");
     $("#createDatebox").removeAttr("disabled");
-    $("#inventorybox").removeAttr("disabled");
-    $("#pricebox").removeAttr("disabled");
-    $("#id").val(data.id);
-    $("#goodIdbox").val(data.goodIdbox);
-    $('#createDatebox').val(data.createDatebox);
-    $('#inventorybox').val(data.inventorybox);
-    $('#pricebox').val(data.pricebox);
+    $("#finish").removeAttr("disabled");
+    $("#customer").removeAttr("disabled");
+    $("#admin").removeAttr("disabled");
+
+    $('#infoOperatetitle').text('编辑');
+    $('#contractIdbox').val(data.contractId);
+    $('#id').val(data.id);
+    $('#createDatebox').val(data.createDate);
+    $('#finish').val(data.finish ? 1 : 0);
+    $('#customer').val(data.customer.memberId);
+    $('#admin').val(data.admin.memberId);
+    $('#enable').css('display','block');
+    $("#infoOperate").css('display','block');
 
     $('#enable').attr('onclick','enableEdit()');
 
@@ -210,14 +226,14 @@ function enableEdit() {
     if(checkInput()){
         $.ajax({
             type: 'put',
-            url: "/goods/update.do",
+            url: "/contract/update.do",
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
                 console.log(o);
                 if (o.code == 'SUCCESS') {
                     console.log(o.goods);
-                    alert('修改成功!'  + o.goods == null ? '' : o.goods);
+                    alert('修改成功!');
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
                 }else if(o.code == 'FAIL'){
@@ -232,8 +248,9 @@ function enableEdit() {
 function del(data) {
     if(confirm('确认删除?') == true){
         $.ajax({
-            method:'DELETE',
-            url: '/goods/delete/'+ data.id +'.do',
+            method:'POST',
+            url: '/contract/delete.do',
+            data:'id=' + data.id,
             success : function(o) {
                 console.log(o.code);
                 if (o.code == 'FAIL') {

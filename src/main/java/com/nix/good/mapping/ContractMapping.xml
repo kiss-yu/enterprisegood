@@ -67,7 +67,7 @@
     <update id="update">
         UPDATE `contract`
         SET
-        <trim prefix="(" suffix=")" suffixOverrides=",">
+        <trim prefix=" " suffixOverrides=",">
             <if test="contractId != null">
                 `contractId` = #{contractId},
             </if>
@@ -85,6 +85,9 @@
             </if>
         </trim>
     </update>
+    <select id="selectByStringId" parameterType="java.lang.String"  resultMap="BaseResultMap">
+        SELECT * FROM `contract` WHERE contractId=#{id}
+    </select>
     <delete id="delete">
         DELETE FROM `contract` WHERE id=#{id}
     </delete>

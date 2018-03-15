@@ -133,4 +133,13 @@ public class BaseService <M extends BaseModel<M>>{
         }
     }
 
+    public M findById(String id){
+        try {
+            Object find = invokeMapperMethod("selectByStringId",new Class[]{String.class},id);
+            return (M) find;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.nix.good.model;
 
 import com.nix.good.model.base.BaseModel;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -18,6 +19,7 @@ public class ContractModel extends BaseModel<ContractModel>{
     /**
      * 合同创建日期
      * */
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createDate;
     /**
      * 合同商品列表
@@ -36,11 +38,11 @@ public class ContractModel extends BaseModel<ContractModel>{
      * */
     private Boolean finish;
 
-    public Boolean getFinsh() {
+    public Boolean getFinish() {
         return finish;
     }
 
-    public void setFinsh(Boolean finish) {
+    public void setFinish(Boolean finish) {
         this.finish = finish;
     }
 

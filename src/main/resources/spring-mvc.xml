@@ -14,7 +14,6 @@
 	<!-- 启动SpringMVC的注解功能，完成请求和注解POJO的映射 -->
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 	</bean>
-
 	<!-- 注册验证器 -->
 	<mvc:annotation-driven validator="validator">
 		<mvc:message-converters register-defaults="true">
@@ -33,7 +32,7 @@
 					<bean class="com.nix.good.util.CustomMapper">
 						<property name="dateFormat">
 							<bean class="java.text.SimpleDateFormat">
-								<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"></constructor-arg>
+								<constructor-arg type="java.lang.String" value="yyyy-MM-dd"></constructor-arg>
 							</bean>
 						</property>
 					</bean>

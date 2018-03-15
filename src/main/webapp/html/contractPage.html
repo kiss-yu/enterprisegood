@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="../css/loginSuccess.css" />
     <link rel="stylesheet" href="../resources/bootstrap.min.css" />
     <link rel="stylesheet" href="../resources/bootstrap-table.css" />
+    <link rel="stylesheet" href="../resources/bootstrap-datetimepicker.min.css" />
     <script type="text/javascript" src="../resources/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../resources/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="../resources/bootstrap.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
@@ -31,16 +33,23 @@
 
 <form id="info-form">
     <div class="infoOperate" id="infoOperate">
-        <input id="id" name="id" hidden>
         <div id="infoOperatetitle"></div>
+        <input type="text" id = "id" name="id" hidden/>
         <div class="info">合同编号<input type="text" id="contractIdbox" name="contractId"/></div>
-        <div class="info">创建日期<input type="text" id="createDatebox" name="createDate"/></div>
-        <div class="info">客户姓名<input type="text" id="customer.namebox" name="customer.nameDate"/></div>
-        <div class="info">签约同意管理姓名<input type="text" id="admin.namebox" name="admin.nameDate"/></div>
+        <div class="info">创建日期<input class="input_time" id="createDatebox" name="createDate"/></div>
+        <div class="info">签约状态
+            <select id="finish" name="finish">
+                <option value="1">已签约</option>
+                <option value="0">未签约</option>
+            </select>
+        </div>
+        <div class="info">客户id<input type="text" id="customer" name="consumerId"/></div>
+        <div class="info">签约管理Id<input type="text" id="admin"  name="adminId"/></div>
         <input type="button" class="btn btn-default" id="cancel" onclick="dismiss()" value="取消" name="">
         <input type="button" class="btn btn-primary" id="enable" value="确认" name="">
     </div>
 </form>
 <script type="text/javascript" src="../js/contract.js"></script>
+<script type="text/javascript" src="../js/time.js"></script>
 </body>
 </html>

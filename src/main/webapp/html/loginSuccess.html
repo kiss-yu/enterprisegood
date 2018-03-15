@@ -26,10 +26,16 @@
 </div>
 
 <div class="middle">
-    <iframe src="../html/memberPage.html" width='100%' height='100%' overflow:hidden; frameborder='0' scrolling="no" id="iframe"></iframe>
+    <iframe width='100%' height='100%' overflow:hidden; frameborder='0' scrolling="no" id="iframe"></iframe>
 </div>
 
     <script type="text/javascript" src="../js/loginSuccess.js"></script>
 </form>
+<script>
+    var member = JSON.parse(sessionStorage.getItem("member"));
+    switch (member.role) {
+        case 4:$("#memberinfo").css("display","none");$("#sellinfo").css("display","none");break;
+    }
+</script>
 </body>
 </html>

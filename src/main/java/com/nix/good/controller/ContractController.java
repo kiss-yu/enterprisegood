@@ -34,8 +34,8 @@ public class ContractController extends BaseController{
     @Role({0,2})
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Map<String,Object> create(@ModelAttribute ContractModel contractModel,
-                                     @RequestParam(value = "consumerId",defaultValue = "null") Integer consumerId,
-                                     @RequestParam(value = "adminId",defaultValue = "null") Integer adminId,
+                                     @RequestParam(value = "consumerId",defaultValue = "") String consumerId,
+                                     @RequestParam(value = "adminId",defaultValue = "") String adminId,
             HttpServletRequest request) {
         try {
             MemberModel currentMember = MemberManager.getCurrentUser(request);
@@ -90,8 +90,8 @@ public class ContractController extends BaseController{
      * 删除合同
      * */
     @Role({0,2})
-    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
-    public Map<String,Object> delete(@RequestParam(value = "id",defaultValue = "null") Integer[] id) {
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    public Map<String,Object> delete(@RequestParam(value = "id") Integer[] id) {
         try {
             contractService.delete(id);
             return render("code",SUCCESS).build();
@@ -106,8 +106,15 @@ public class ContractController extends BaseController{
      * */
     @Role({0,2})
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
-    public Map<String,Object> update(@ModelAttribute ContractModel model) {
+    public Map<String,Object> update(@ModelAttribute ContractModel model,
+                                     @RequestParam(value = "consumerId",defaultValue = "-1") Integer consumerId,
+                                     @RequestParam(value = "adminId",defaultValue = "-1") Integer adminId,
+                                     HttpServletRequest request) {
         try {
+            MemberModel consumer = memberService.findById(consumerId);
+            MemberModel admin = memberService.findById(adminId);
+            model.setAdmin(admin);
+            model.setCustomer(consumer);
             contractService.update(model);
             render("code",SUCCESS)
                     .render("contract",model);
@@ -154,19 +161,19 @@ public class ContractController extends BaseController{
                                    @RequestParam(value = "content",defaultValue = "") String content,
                                    HttpServletRequest request) {
         List<ContractModel> list;
-        if (MemberManager.getCurrentUser(request).getRole() == 4) {
-            if (!field.isEmpty() && !content.isEmpty()) {
-                list = contractService.list(page,size,order,sort,"`" + field + "`" + " like %" + content + "%" + " and " + " customer = " + MemberManager.getCurrentUser(request).getMemberId());
-            }else {
-                list = contractService.list(page,size,order,sort," customer = " + MemberManager.getCurrentUser(request).getMemberId());
-            }
-        }else {
+//        if (MemberManager.getCurrentUser(request).getRole() == 4) {
+//            if (!field.isEmpty() && !content.isEmpty()) {
+//                list = contractService.list(page,size,order,sort,"`" + field + "`" + " like %" + content + "%" + " and " + " customer = " + MemberManager.getCurrentUser(request).getMemberId());
+//            }else {
+//                list = contractService.list(page,size,order,sort," customer = " + MemberManager.getCurrentUser(request).getMemberId());
+//            }
+//        }else {
             if (!field.isEmpty() && !content.isEmpty()) {
                 list = contractService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
             }else {
                 list = contractService.list(page,size,order,sort,null);
             }
-        }
+//        }
         return render("list",list).build();
     }
 }

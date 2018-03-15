@@ -39,8 +39,8 @@ public class GoodsController extends BaseController{
      * 删除商品
      * */
     @Role({0,2})
-    @RequestMapping(value = "/delete",method = RequestMethod.DELETE)
-    public Map<String,Object> delete(@RequestParam(value = "id",defaultValue = "null") Integer[] id) {
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    public Map<String,Object> delete(@RequestParam(value = "id") Integer[] id) {
         try {
             goodsService.delete(id);
             return render("code",SUCCESS).build();
@@ -56,6 +56,7 @@ public class GoodsController extends BaseController{
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
     public Map<String,Object> update(@ModelAttribute GoodsModel goodsModel) {
         try {
+            System.out.println(goodsModel);
             goodsService.update(goodsModel);
             render("code",SUCCESS)
                     .render("goods",goodsModel);

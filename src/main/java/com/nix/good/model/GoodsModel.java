@@ -1,6 +1,7 @@
 package com.nix.good.model;
 
 import com.nix.good.model.base.BaseModel;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ public class GoodsModel extends BaseModel<GoodsModel>{
     /**
      * 商品添加日期
      * */
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createDate;
     /**
      * 库存
