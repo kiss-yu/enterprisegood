@@ -14,3 +14,10 @@ td{font-size: 16px;color: #333333;}
 .dropdown-toggle{color: #999999 !important;line-height: 5px !important;height: 25px;}
 .btn-default:hover{color: #333333 !important;}
 .fixed-table-pagination {display: none !important;}
+.infobtn{float: right;margin-right: 50px;}
+.infoOperate{display:none;background-color: #d9d8d7;width: 400px;height: 300px;border: 1px solid rgb(57,166,49);border-radius: 6px;position: fixed;top:100px;left: 39%;}
+#infoOperatetitle{height: 50px;width: 100%;font-size: 30px;line-height: 50px;background-color: #8EC172;text-align: center;}
+.infoOperate .info{margin: 15px 15px 0 100px;}
+#enable{float: right;margin: 20px 70px 0 0;}
+#cancel{float: right;margin: 20px 100px 0 0;}
+#selectRole,#sexbox{width: 174px;height: 26px;}

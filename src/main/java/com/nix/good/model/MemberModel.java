@@ -22,13 +22,11 @@ public class MemberModel extends BaseModel<MemberModel> {
     /**
      * 用户登录Id
      * */
-    @NotNull
+//    @NotNull
     private String memberId;
     /**
      * 登录密码
      * */
-    @NotNull
-//    @Length(min = 32,max = 32)
     private String password;
     private String name;
     /**
@@ -39,7 +37,7 @@ public class MemberModel extends BaseModel<MemberModel> {
      * 3 客户部用户
      * 4 客户
      * */
-    @NotNull
+//    @NotNull
     private Integer role;
     private Boolean sex;
     private Integer age;

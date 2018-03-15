@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.enterprise.inject.Model;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +99,7 @@ public class MemberController extends BaseController{
      * */
     @Role({0,1,2,3,4})
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
-    public Map<String,Object> update(@ModelAttribute MemberModel memberModel,HttpServletRequest request) {
+    public Map<String,Object> update(@ModelAttribute MemberModel memberModel, HttpServletRequest request) {
         MemberModel currentMember = MemberManager.getCurrentUser(request);
         if (currentMember == null || !currentMember.getId().equals(memberModel.getId())) {
             return render("code",FAIL)

@@ -17,6 +17,12 @@
 <div id="header">
     <div class="header_title">
         <span class="title_con">企业客户和信息管理系统</span>
+        <div class="infobtn">
+            <input type="button" class="btn btn-default" id="memberinfo" value="人员信息"/>
+            <input type="button" class="btn btn-default" id="goodsinfo" value="产品信息"/>
+            <input type="button" class="btn btn-default" id="contractinfo" value="合同信息"/>
+            <input type="button" class="btn btn-default" id="sellinfo" value="销售信息"/>
+        </div>
     </div>
 </div>
 
@@ -26,10 +32,36 @@
     <button type="button" class="btn btn-primary rightmeau" id="deletebtn">删除</button>
     <button type="button" class="btn btn-primary rightmeau" id="addbtn">添加</button>
 </div>
+
 <div class="tableStyle">
     <table id="table" class="table table-hover">
     </table>
 </div>
-
+<form id="info-form">
+    <div class="infoOperate" id="infoOperate">
+        <input id="id" name="id" hidden>
+        <input id="memberId" name="memberId" hidden>
+        <div id="infoOperatetitle"></div>
+        <div class="info">姓名<input type="text" id="namebox" name="name"/></div>
+        <div class="info">角色
+            <select id="selectRole" name="role">
+                <option value="0">系统管理员</option>
+                <option value="1">合同部用户</option>
+                <option value="2">销售部用户</option>
+                <option value="3">客户部用户</option>
+                <option value="4">用户</option>
+            </select>
+        </div>
+        <div class="info">性别
+            <select id="sexbox" name="sex">
+                <option value="0">男</option>
+                <option value="1">女</option>
+            </select>
+        </div>
+        <div class="info">年龄<input type="text" id="agebox" name="age"/></div>
+        <input type="button" class="btn btn-default" id="cancel" onclick="dismiss()" value="取消" name="">
+        <input type="button" class="btn btn-primary" id="enable" value="确认" name="">
+    </div>
+</form>
 </body>
 </html>
