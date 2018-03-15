@@ -7,6 +7,7 @@ import com.nix.good.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 @RestController
@@ -21,6 +22,7 @@ public class GoodsController extends BaseController{
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Map<String,Object> add(@ModelAttribute GoodsModel goodsModel) {
         try {
+            goodsModel.setCreateDate(new Date());
             goodsService.add(goodsModel);
             return render("code",SUCCESS)
                     .render("goods",goodsModel)

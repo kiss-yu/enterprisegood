@@ -100,16 +100,16 @@ public class MemberController extends BaseController{
     @Role({0,1,2,3,4})
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
     public Map<String,Object> update(@ModelAttribute MemberModel memberModel, HttpServletRequest request) {
-//        MemberModel currentMember = MemberManager.getCurrentUser(request);
-//        if (currentMember == null) {
-//            return render("code",FAIL)
-//                    .render("msg","非法修改").build();
-//        }else {
-//            if (currentMember.getRole() != MemberModel.Role.admin.ordinal() && !currentMember.getId().equals(memberModel.getId())) {
-//                return render("code",FAIL)
-//                        .render("msg","非法修改").build();
-//            }
-//        }
+        MemberModel currentMember = MemberManager.getCurrentUser(request);
+        if (currentMember == null) {
+            return render("code",FAIL)
+                    .render("msg","非法修改").build();
+        }else {
+            if (currentMember.getRole() != MemberModel.Role.admin.ordinal() && !currentMember.getId().equals(memberModel.getId())) {
+                return render("code",FAIL)
+                        .render("msg","非法修改").build();
+            }
+        }
         try {
             memberService.update(memberModel);
             render("code",SUCCESS)

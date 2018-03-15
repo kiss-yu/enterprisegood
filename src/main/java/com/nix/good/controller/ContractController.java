@@ -1,10 +1,8 @@
 package com.nix.good.controller;
 
 import com.nix.good.common.Role;
-import com.nix.good.dao.MemberMapper;
 import com.nix.good.dto.ContractDto;
 import com.nix.good.model.ContractModel;
-import com.nix.good.model.GoodsModel;
 import com.nix.good.model.MemberModel;
 import com.nix.good.service.impl.ContractService;
 import com.nix.good.service.impl.MemberService;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -57,8 +56,10 @@ public class ContractController extends BaseController{
             }else {
                 return render("code",FAIL).build();
             }
+            contractModel.setCreateDate(new Date());
             render("code",SUCCESS)
                     .render("contract",contractModel);
+            contractService.add(contractModel);
         } catch (Exception e) {
             e.printStackTrace();
             render("code",FAIL);
@@ -151,11 +152,11 @@ public class ContractController extends BaseController{
                                    @RequestParam(value = "sort",defaultValue = "ASC") String sort,
                                    HttpServletRequest request) {
         List<ContractModel> list;
-//        if (MemberManager.getCurrentUser(request).getRole() == 4) {
-//            list = contractService.list(page,size,order,sort," customer = " + MemberManager.getCurrentUser(request).getMemberId());
-//        }else {
+        if (MemberManager.getCurrentUser(request).getRole() == 4) {
+            list = contractService.list(page,size,order,sort," customer = " + MemberManager.getCurrentUser(request).getMemberId());
+        }else {
             list = contractService.list(page,size,order,sort,null);
-//        }
+        }
         return render("list",list).build();
     }
 }

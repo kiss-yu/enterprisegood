@@ -68,11 +68,20 @@
         UPDATE `contract`
         SET
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="contractId != null">
+                `contractId` = #{contractId},
+            </if>
             <if test="createDate != null">
                 `createDate` = #{createDate},
             </if>
             <if test="finish != null">
                 `finish` = #{finish},
+            </if>
+            <if test="customer != null">
+                `customer` = #{customer.memberId},
+            </if>
+            <if test="admin != null">
+                `admin` = #{admin.memberId},
             </if>
         </trim>
     </update>
