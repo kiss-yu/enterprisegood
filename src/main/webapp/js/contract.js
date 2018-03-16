@@ -1,22 +1,12 @@
 var param = {};
-var member = JSON.parse(sessionStorage.getItem("member"));
 $(function() {
     $('#searchbtn').attr('onclick','search()');
     $('#addbtn').click(function (){
-
-        $("#contractIdbox").removeAttr("disabled");
-        $("#createDatebox").removeAttr("disabled");
-        $("#finish").removeAttr("disabled");
-        $("#customer").removeAttr("disabled");
-        $("#admin").removeAttr("disabled");
-
+        $('#contractIdbox').val('');
+        $('#createDatebox').val('');
+        $('#customer.namebox').val('');
+        $('#admin.namebox').val('');
         $('#infoOperatetitle').text('添加');
-        $('#contractIdbox').val("");
-        $('#id').val("");
-        $('#createDatebox').val("");
-        $('#finish').val(0);
-        $('#customer').val("");
-        $('#admin').val("");
         $('#enable').attr('onclick','enableAdd()');
         $('#enable').css('display','block');
         $("#infoOperate").css('display','block');
@@ -83,44 +73,35 @@ function getContractList() {
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '15',// 宽度
-        },{
-            field : 'finish',// 返回值名称
-            title : '签约状态',// 列名
-            align : 'center',// 水平居中显示
-            valign : 'middle',// 垂直居中显示
-            width : '10',// 宽度
-            formatter: function (value, row, index) {
-                return value == true ? '已签约' : '未签约';
-            }
-        },  {
+        }, {
             field : 'customer.name',// 返回值名称
             title : '客户姓名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '10',// 宽度
+            width : '15',// 宽度
         },  {
             field : 'admin.name',// 返回值名称
-            title : '签约管理',// 列名
+            title : '签约同意管理姓名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '10',// 宽度
+            width : '15',// 宽度
         }, {
             field : '',// 返回值名称
-            title : '    操作    ',// 列名
+            title : '操作',// 列名
             align : 'center',// 水平居中显示
             valign :'middle',// 垂直居中显示
-            width : '35',// 宽度
+            width : '25',// 宽度
             formatter: function (value, row, index) {
                 return "<button onclick='show("+JSON.stringify(row)+")'>查看</button>" +
-                    "<button onclick='edit("+JSON.stringify(row)+"," + index + ")'>编辑</button>" +
-                    "<button onclick='del("+JSON.stringify(row)+")'>删除</button>" +
-                    (row.finish ||  member == null || (member.role != 0 && member.role != 1)? ("") : ("<button onclick='signing("+JSON.stringify(row)+")'>签约</button>"));
+                    "<button onclick='edit("+JSON.stringify(row)+")'>编辑</button>" +
+                    "<button onclick='del("+JSON.stringify(row)+")'>删除</button>";
             }
         }]
         // 列配置项,详情请查看 列参数 表格
         /* 事件 */
     });
 }
+<<<<<<< HEAD
 function signing(data) {
     $.ajax({
         type: 'POST',
@@ -141,21 +122,23 @@ function signing(data) {
         }
     });
 }
+=======
+>>>>>>> origin/master
 function enableAdd() {
     if(checkInput()){
         $.ajax({
             type: 'POST',
-            url: "/contract/create.do",
+            url: "/goods/create.do",
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
                 if (o.code == 'SUCCESS') {
-                    alert('添加成功!' );
-                    $('#table').bootstrapTable('append', o.contract);
+                    console.log(o.goods);
+                    alert('修改成功!' + o.goods == null ? '' : o.goods);
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
                 }else if(o.code == 'FAIL'){
-                    alert('添加失败！');
+                    alert('修改失败！' + o.goods == null ? '' : o.goods);
                 }
             },
             error: function () {
@@ -164,6 +147,7 @@ function enableAdd() {
     }
 }
 function search() {
+<<<<<<< HEAD
     $.ajax({
         type: 'post',
         url: "/contract/list.do",
@@ -173,14 +157,33 @@ function search() {
             if (o.code == 'SUCCESS') {
                 $('#table').bootstrapTable('removeAll');
                 $('#table').bootstrapTable('append', o.list);
+=======
+    var info = $('#search').val();
+    if(info == null || info == ''){
+        $.ajax({
+            type: 'POST',
+            url: "/goods/create.do",
+            dataType: 'json',
+            data: $("#info-form").serialize(),
+            success: function (o) {
+                console.log(o);
+                if (o.code == 'SUCCESS') {
+                    console.log(o.goods);
+                    alert('修改成功!' + o.goods == null ? '' : o.goods);
+                    $('#enable').removeAttr('onclick');
+                    $("#infoOperate").css('display','none');
+                }else if(o.code == 'FAIL'){
+                    alert('修改失败！' + o.goods == null ? '' : o.goods);
+                }
+            },
+            error: function () {
+>>>>>>> origin/master
             }
-        },
-        error: function () {
-        }
-    });
+        });
+    }
 }
 function checkInput() {
-    if($('#contractIdbox').val() == null || $('#goodIdbox').val() == ''){
+    if($('#goodIdbox').val() == null || $('#goodIdbox').val() == ''){
         alert('请输入商品编号！');
         return false;
     }
@@ -188,66 +191,67 @@ function checkInput() {
         alert('请输入创建日期！');
         return false;
     }
+    if($('#inventorybox').val() == null || $('#inventorybox').val() == ''){
+        alert('请输入库存！');
+        return false;
+    }
+    if($('#pricebox').val() == null || $('#pricebox').val() == ''){
+        alert('请输入单价！');
+        return false;
+    }
     return true;
 }
 /*展示方法*/
 function show(data) {
     $('#infoOperatetitle').text('查看');
-    $("#contractIdbox").attr("disabled","true");
+    $("#goodIdbox").attr("disabled","true");
     $("#createDatebox").attr("disabled","true");
-    $("#finish").attr("disabled","true");
-    $("#customer").attr("disabled","true");
-    $("#admin").attr("disabled","true");
+    $("#inventorybox").attr("disabled","true");
+    $("#pricebox").attr("disabled","true");
 
-    $('#contractIdbox').val(data.contractId);
+    $('#goodIdbox').val(data.goodId);
     $('#createDatebox').val(data.createDate);
-    $('#customer').val(data.customer.memberId);
-    $('#admin').val(data.admin.name);
-    $('#finish').val(data.finish ? 1 : 0);
+    $('#inventorybox').val(data.inventory);
+    $('#pricebox').val(data.price);
     $('#enable').css('display','none');
     $("#infoOperate").css('display','block');
 
 }
 function dismiss() {
+    $("#goodIdbox").removeAttr("disabled");
+    $("#createDatebox").removeAttr("disabled");
+    $("#inventorybox").removeAttr("disabled");
+    $("#pricebox").removeAttr("disabled");
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
 }
-function edit(data,index) {
-
-    $("#contractIdbox").removeAttr("disabled");
-    $("#createDatebox").removeAttr("disabled");
-    $("#finish").removeAttr("disabled");
-    $("#customer").removeAttr("disabled");
-    $("#admin").removeAttr("disabled");
+function edit(data) {
 
     $('#infoOperatetitle').text('编辑');
-    $('#contractIdbox').val(data.contractId);
-    $('#id').val(data.id);
-    $('#createDatebox').val(data.createDate);
-    $('#finish').val(data.finish ? 1 : 0);
-    $('#customer').val(data.customer.memberId);
-    $('#admin').val(data.admin.memberId);
-    $('#enable').css('display','block');
-    $("#infoOperate").css('display','block');
+    $("#id").val(data.id);
+    $("#goodIdbox").val(data.goodIdbox);
+    $('#createDatebox').val(data.createDatebox);
+    $('#inventorybox').val(data.inventorybox);
+    $('#pricebox').val(data.pricebox);
 
-    $('#enable').attr('onclick','enableEdit(' + index+ ')');
+    $('#enable').attr('onclick','enableEdit()');
 
     $("#infoOperate").css('display','block');
 
 }
-function enableEdit(index) {
+function enableEdit() {
     if(checkInput()){
         $.ajax({
             type: 'put',
-            url: "/contract/update.do",
+            url: "/goods/update.do",
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
                 if (o.code == 'SUCCESS') {
-                    alert('修改成功!');
+                    console.log(o.goods);
+                    alert('修改成功!'  + o.goods == null ? '' : o.goods);
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
-                    $('#table').bootstrapTable('updateRow', {index: index,row: o.contract});
                 }else if(o.code == 'FAIL'){
                     alert('修改失败！');
                 }
@@ -257,18 +261,20 @@ function enableEdit(index) {
         });
     }
 }
-function del(data,index) {
+function del(data) {
     if(confirm('确认删除?') == true){
+        var id = new Array();
+        id.push(data.id)
         $.ajax({
-            method:'POST',
+            method:'DELETE',
             url: '/contract/delete.do',
-            data:'id=' + data.id,
+            data:id,
             success : function(o) {
                 if (o.code == 'FAIL') {
                     alert("删除失败");
                 }else if(o.code == 'SUCCESS'){
-                    $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
                     alert("删除成功");
+                    getMemberList();
                 }
             }
         });
@@ -276,6 +282,7 @@ function del(data,index) {
 }
 function delSelects() {
     var data = $('#table').bootstrapTable('getSelections');
+
     if (data.length == 0) {
         alert("请至少选中一条数据");
         return;
@@ -284,18 +291,19 @@ function delSelects() {
         for (var i = 0; i < data.length; i++) {
             ids.push(data[i].id);
         }
+
         if(confirm('确认删除所有选中数据?') == true){
             $.ajax({
-                method:'POST',
+                method:'DELETE',
                 url: '/contract/delete.do',
-                data:{id:ids},
-                traditional:true,
+                data:ids,
                 success : function(o) {
+                    console.log(o.code);
                     if (o.code == 'FAIL') {
                         alert("删除失败");
                     }else if(o.code == 'SUCCESS'){
-                        $('#table').bootstrapTable('remove', {field: 'id', values: ids});
                         alert("删除成功");
+                        getMemberList();
                     }
                 }
             });

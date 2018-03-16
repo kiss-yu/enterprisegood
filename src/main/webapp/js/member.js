@@ -2,10 +2,10 @@ var param = {};
 $(function() {
     $('#searchbtn').attr('onclick','search()');
     $('#addbtn').click(function (){
-        $('#namebox').val();
+        $('#namebox').val('');
         $('#selectRole').val();
         $('#sexbox').val();
-        $('#agebox').val();
+        $('#agebox').val('');
         $('#infoOperatetitle').text('添加');
         $('#enable').attr('onclick','enableAdd()');
         $('#enable').css('display','block');
@@ -225,16 +225,16 @@ function show(data) {
 
 }
 function dismiss() {
+	$("#namebox").removeAttr("disabled");
+    $("#selectRole").removeAttr("disabled");
+    $("#sexbox").removeAttr("disabled");
+    $("#agebox").removeAttr("disabled");
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
 }
 function edit(data) {
 
     $('#infoOperatetitle').text('编辑');
-    $("#namebox").removeAttr("disabled");
-    $("#selectRole").removeAttr("disabled");
-    $("#sexbox").removeAttr("disabled");
-    $("#agebox").removeAttr("disabled");
     $("#id").val(data.id);
     $("#memberId").val(data.memberId);
     $('#namebox').val(data.name);
@@ -273,7 +273,7 @@ function enableEdit() {
 function del(data) {
     if(confirm('确认删除?') == true){
         $.ajax({
-            method:'POST',
+            method:'DELETE',
             url: '/member/delete.do',
             data:data.id,
             success : function(o) {
