@@ -100,7 +100,7 @@ public class MemberController extends BaseController{
      * 修改用户信息
      * */
     @Role({0,1,2,3,4})
-    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Map<String,Object> update(@ModelAttribute MemberModel memberModel, HttpServletRequest request) {
         MemberModel currentMember = MemberManager.getCurrentUser(request);
         if (currentMember == null) {

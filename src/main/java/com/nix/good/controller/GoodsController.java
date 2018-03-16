@@ -53,7 +53,7 @@ public class GoodsController extends BaseController{
      * 修改
      * */
     @Role({0,2})
-    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Map<String,Object> update(@ModelAttribute GoodsModel goodsModel) {
         try {
             System.out.println(goodsModel);
