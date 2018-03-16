@@ -68,7 +68,7 @@ public class MemberController extends BaseController{
                 MemberManager.addUser(request,memberModel);
                 render("member",memberModel);
             }
-            return render("code",SUCCESS).build();
+            return render("code",SUCCESS).render("member",memberModel).build();
         } catch (Exception e) {
             e.printStackTrace();
         }
