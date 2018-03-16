@@ -15,4 +15,9 @@ $(function () {
         $('#iframe').attr('src','../html/goodsPage.html');
         $('#showWelcome').css('display','none');
     });
-})
+    $("#exit").click(function () {
+        $(location).attr("href","loginPage.html");
+    })
+
+
+});
