@@ -24,7 +24,7 @@ function checkLogin(){
             data: $('#loginForm').serialize(),
             success: function (data) {
                 if (data.member != null) {
-                    console.log(data.member);
+                    sessionStorage.setItem("member",JSON.stringify(data.member));
                     location.href = "../html/loginSuccess.html";
                 }else{
                     alert('用户名或者密码错误！');

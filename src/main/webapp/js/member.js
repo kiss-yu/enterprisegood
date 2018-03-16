@@ -25,12 +25,12 @@ function enableAdd() {
             success: function (o) {
                 console.log(o);
                 if (o.code === 'SUCCESS') {
-                    console.log(o.msg);
-                    alert('修改成功!');
+                    alert('添加成功!');
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
+                    $('#table').bootstrapTable('prepend', o.member);
                 }else if(o.code === 'FAIL'){
-                    alert('修改失败！' + o.msg == null ? '' : o.msg);
+                    alert('添加失败！');
                 }
             },
             error: function () {
@@ -164,7 +164,7 @@ function getMemberList() {
             width : '5',// 宽度
             formatter: function (value, row, index) {
                 return "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='show("+JSON.stringify(row)+")' value='详情'>" +
-                    "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='edit("+JSON.stringify(row)+")' value='编辑'>" +
+                    "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='edit("+JSON.stringify(row)+","+index +")' value='编辑'>" +
                     "<input class='btn btn-danger' type='button' onclick='del("+JSON.stringify(row)+")' value='删除'>";
             }
         }]
@@ -235,7 +235,7 @@ function dismiss() {
     $('#enable').css('display','block');
 }
 
-function edit(data) {
+function edit(data,index) {
 
     $('#infoOperatetitle').text('编辑');
     $("#id").val(data.id);
@@ -245,13 +245,13 @@ function edit(data) {
     $('#sexbox').val(data.sex ? 0 : 1);
     $('#agebox').val(data.age);
 
-    $('#enable').attr('onclick','enableEdit()');
+    $('#enable').attr('onclick','enableEdit('+index+')');
 
     $("#infoOperate").css('display','block');
 
 }
 
-function enableEdit() {
+function enableEdit(index) {
     if(checkInput()){
         $.ajax({
             type: 'put',
@@ -265,6 +265,9 @@ function enableEdit() {
                     alert('修改成功!');
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
+
+                    $('#table').bootstrapTable('updateRow', {index: index, row: o.member});
+
                 }else if(o.code === 'FAIL'){
                     alert('修改失败！' + o.msg == null ? '' : o.msg);
                 }
@@ -277,17 +280,17 @@ function enableEdit() {
 
 function del(data) {
     if(confirm('确认删除?') === true){
+        console.log(data.id);
         $.ajax({
-            method:'DELETE',
-            url: '/member/delete.do',
-            data:data.id,
+            method:'POST',
+            url: '/member/delete.do?id=' + data.id,
             success : function(o) {
                 console.log(o.code);
                 if (o.code === 'FAIL') {
-                    alert("删除失败" + data.msg == null ? '' : data.msg);
+                    alert("删除失败" );
                 }else if(o.code === 'SUCCESS'){
                     alert("删除成功");
-                    getMemberList();
+                    $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
                 }
             }
         });
@@ -300,24 +303,23 @@ function delSelects() {
         alert("请至少选中一条数据");
         return;
     }else{
-        var ids = "";
+        var ids = new Array();
         for (var i = 0; i < data.length; i++) {
-            ids += data[i].ID + ",";
+            ids.push(data.id);
         }
-
-        var id=ids.substring(0, (ids.length - 1));
-
         if(confirm('确认删除所有选中数据?') === true){
             $.ajax({
-                method:'DELETE',
+                method:'POST',
                 url: '/member/delete.do',
+                data:{id:ids},
+                traditional:true,
                 success : function(o) {
                     console.log(o.code);
                     if (o.code === 'FAIL') {
-                        alert("删除失败"  + o.msg == null ? '' : o.msg);
+                        alert("删除失败" );
                     }else if(o.code === 'SUCCESS'){
                         alert("删除成功");
-                        getMemberList();
+                        $('#table').bootstrapTable('remove', {field: 'id', values: ids});
                     }
                 }
             });

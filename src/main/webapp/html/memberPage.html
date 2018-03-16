@@ -20,7 +20,7 @@
 <div id="center">
     <input type="text" class="searchbox" id="search"/>
     <button type="button" class="btn btn-primary" id="searchbtn">查找</button>
-    <button type="button" class="btn btn-primary rightmeau" id="deletebtn" onclick="delSelects()">删除用户</button>
+    <button type="button" class="btn btn-danger rightmeau" id="deletebtn" onclick="delSelects()">删除用户</button>
     <button type="button" class="btn btn-primary rightmeau" id="addbtn">添加用户</button>
 </div>
 <div class="tableStyle">
@@ -30,11 +30,12 @@
 <form id="info-form">
     <div class="infoOperate" id="infoOperate">
         <input id="id" name="id" hidden>
-        <input id="memberId" name="memberId" hidden>
         <div id="infoOperatetitle"></div>
+        <div class="info">用户名
+            <input id="memberId" name="memberId" ></div>
         <div class="info">姓名<input type="text" id="namebox" name="name"/></div>
         <div class="info">角色
-            <select id="selectRole" name="role">
+            <select id="selectRole" name="value">
                 <option value="0">系统管理员</option>
                 <option value="1">合同部用户</option>
                 <option value="2">销售部用户</option>
