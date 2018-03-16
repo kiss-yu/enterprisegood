@@ -17,17 +17,29 @@
     <span class="title_con second_title_con">用户信息</span>
 </div>
 
-<div id="center">
-    <select name="filed">
-        <option value="name">姓名</option>
-        <option value="memberId">用户名</option>
-        <option value="age">年龄</option>
-    </select>
-    <input type="text" class="searchbox" id="search" name="content"/>
-    <button type="button" class="btn btn-primary" id="searchbtn">查找</button>
-    <button type="button" class="btn btn-danger rightmeau" id="deletebtn" onclick="delSelects()">删除用户</button>
-    <button type="button" class="btn btn-primary rightmeau" id="addbtn">添加用户</button>
-</div>
+<form id="center" class="form-horizontal">
+    <div class="col-sm-1" style="margin-left: 40px">
+        <button type="button" class="btn btn-primary form-control" id="addbtn">添加用户</button>
+    </div>
+    <div class="col-sm-1">
+        <button type="button" class="btn btn-danger form-control" id="deletebtn" onclick="delSelects()">删除用户</button>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-1">
+            <select name="filed" class="form-control">
+                <option value="name">姓名</option>
+                <option value="memberId">用户名</option>
+                <option value="age">年龄</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" id="search" name="content" placeholder="请输入关键字查询"/>
+        </div>
+        <div class="col-sm-1">
+            <button type="button" class="btn btn-primary form-control" id="searchbtn">查询</button>
+        </div>
+    </div>
+</form>
 <div class="tableStyle">
     <table id="table" class="table table-hover"></table>
 </div>
@@ -53,7 +65,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">角色</label>
             <div class="col-sm-8">
-                <select class="form-control" id="selectRole" name="value" style="font-size: 10px">
+                <select class="form-control" id="selectRole" name="value">
                     <option value="0">系统管理员</option>
                     <option value="1">合同部用户</option>
                     <option value="2">销售部用户</option>
@@ -66,7 +78,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">性别</label>
             <div class="col-sm-8">
-                <select class="form-control" id="sexbox" name="sex" style="font-size: 10px">
+                <select class="form-control" id="sexbox" name="sex">
                     <option value="0">男</option>
                     <option value="1">女</option>
                 </select>
