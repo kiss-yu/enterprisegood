@@ -49,12 +49,12 @@ public class MemberController extends BaseController{
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Map<String,Object> createMember(@ModelAttribute MemberModel memberModel,HttpServletRequest request,Boolean admin) {
         try {
-            if (memberModel.getRole() != MemberModel.Role.customer.ordinal()) {
+            if (memberModel.getRole().getValue() != MemberModel.Role.customer.ordinal()) {
                 if (!admin) {
                     return render("code",FAIL).build();
                 }
-                if (MemberManager.getCurrentUser(request).getRole() != MemberModel.Role.admin.ordinal() &&
-                        MemberManager.getCurrentUser(request).getRole() != MemberModel.Role.customerMember.ordinal()) {
+                if (MemberManager.getCurrentUser(request).getRole().getValue() != MemberModel.Role.admin.ordinal() &&
+                        MemberManager.getCurrentUser(request).getRole().getValue() != MemberModel.Role.customerMember.ordinal()) {
                     return render("code",FAIL).build();
                 }
             }
@@ -105,7 +105,7 @@ public class MemberController extends BaseController{
             return render("code",FAIL)
                     .render("msg","非法修改").build();
         }else {
-            if (currentMember.getRole() != MemberModel.Role.admin.ordinal() && !currentMember.getId().equals(memberModel.getId())) {
+            if (currentMember.getRole().getValue() != MemberModel.Role.admin.ordinal() && !currentMember.getId().equals(memberModel.getId())) {
                 return render("code",FAIL)
                         .render("msg","非法修改").build();
             }

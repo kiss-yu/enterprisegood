@@ -206,7 +206,7 @@ function edit(data) {
     $("#infoOperate").css('display','block');
 
 }
-function enableEdit() {
+function enableEdit(index) {
     if(checkInput()){
         $.ajax({
             type: 'put',
@@ -214,10 +214,8 @@ function enableEdit() {
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
-                console.log(o);
                 if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
-                    alert('修改成功!'  + o.goods == null ? '' : o.goods);
+                    alert('修改成功!');
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
                 }else if(o.code == 'FAIL'){

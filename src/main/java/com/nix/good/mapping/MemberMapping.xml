@@ -6,9 +6,9 @@
         <result property="memberId" column="memberId" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="role" column="role" jdbcType="INTEGER"/>
         <result property="sex" column="sex" jdbcType="BIT"/>
         <result property="age" column="age" jdbcType="INTEGER"/>
+        <association property="role" column="role" javaType="com.nix.good.model.RoleModel" select="com.nix.good.dao.RoleMapper.selectRoleLazy"/>
     </resultMap>
     <select id="login" resultMap="BaseResultMap">
         SELECT * FROM `member` AS m WHERE m.memberId=#{memberId,jdbcType=VARCHAR} AND m.password=#{password,jdbcType=VARCHAR}
@@ -107,5 +107,9 @@
     </select>
     <select id="selectRoleLazyAdmin" parameterType="java.lang.String" resultType="com.nix.good.model.MemberModel">
         SELECT m.* from `member` AS m where m.memberId = #{admin,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectRoleLazy" parameterType="java.lang.String" resultType="com.nix.good.model.MemberModel">
+        SELECT m.* from `member` AS m where m.memberId = #{memberId,jdbcType=VARCHAR}
     </select>
 </mapper>

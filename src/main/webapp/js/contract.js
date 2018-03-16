@@ -101,7 +101,6 @@ function getContractList() {
         /* 事件 */
     });
 }
-<<<<<<< HEAD
 function signing(data) {
     $.ajax({
         type: 'POST',
@@ -122,8 +121,6 @@ function signing(data) {
         }
     });
 }
-=======
->>>>>>> origin/master
 function enableAdd() {
     if(checkInput()){
         $.ajax({
@@ -147,7 +144,6 @@ function enableAdd() {
     }
 }
 function search() {
-<<<<<<< HEAD
     $.ajax({
         type: 'post',
         url: "/contract/list.do",
@@ -157,30 +153,9 @@ function search() {
             if (o.code == 'SUCCESS') {
                 $('#table').bootstrapTable('removeAll');
                 $('#table').bootstrapTable('append', o.list);
-=======
-    var info = $('#search').val();
-    if(info == null || info == ''){
-        $.ajax({
-            type: 'POST',
-            url: "/goods/create.do",
-            dataType: 'json',
-            data: $("#info-form").serialize(),
-            success: function (o) {
-                console.log(o);
-                if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
-                    alert('修改成功!' + o.goods == null ? '' : o.goods);
-                    $('#enable').removeAttr('onclick');
-                    $("#infoOperate").css('display','none');
-                }else if(o.code == 'FAIL'){
-                    alert('修改失败！' + o.goods == null ? '' : o.goods);
-                }
-            },
-            error: function () {
->>>>>>> origin/master
             }
-        });
-    }
+        }
+    });
 }
 function checkInput() {
     if($('#goodIdbox').val() == null || $('#goodIdbox').val() == ''){

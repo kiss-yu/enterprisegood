@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nix.good.dao.SalesLogMapper">
+    <resultMap id="BaseResultMap" type="com.nix.good.model.SalesLogModel">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="createDate" jdbcType="TIMESTAMP"/>
+        <result property="describe" column="describe" jdbcType="INTEGER"/>
+        <result property="count" column="count" jdbcType="INTEGER"/>
+        <association property="contract" column="contractId" javaType="com.nix.good.model.ContractModel" select="com.nix.good.dao.ContractMapper.selectRoleLazy"/>
+        <association property="good" column="goodId" javaType="com.nix.good.model.GoodsModel" select="com.nix.good.dao.GoodsMapper.selectRoleLazy"/>
+        <association property="member" column="memberId" javaType="com.nix.good.model.MemberModel" select="com.nix.good.dao.MemberMapper.selectRoleLazy"/>
+    </resultMap>
+    <insert id="insert">
+        insert into `salesLog`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createDate != null">
+                `createDate`,
+            </if>
+            <if test="describe != null">
+                `describe`,
+            </if>
+            <if test="count != null">
+                `count`,
+            </if>
+            <if test="contract != null">
+                `contractId`,
+            </if>
+            <if test="good != null">
+                `goodId`,
+            </if>
+            <if test="member != null">
+                `memberId`,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="describe != null">
+                #{describe},
+            </if>
+            <if test="count != null">
+                #{count},
+            </if>
+            <if test="contract != null">
+                #{contract.contractId},
+            </if>
+            <if test="good != null">
+                #{good.goodId},
+            </if>
+            <if test="member != null">
+                #{member.memberId},
+            </if>
+        </trim>
+    </insert>
+    <delete id="delete">
+        DELETE FROM `salesLog` WHERE id = #{id}
+    </delete>
+    <update id="update">
+        UPDATE `salesLog`
+        SET
+        <trim prefix=" " suffixOverrides=",">
+            <if test="createDate != null">
+                createDate = #{createDate},
+            </if>
+            <if test="describe != null">
+                `describe` = #{describe},
+            </if>
+            <if test="count != null">
+                `count` = #{describe},
+            </if>
+            <if test="contract != null">
+                contractId = #{contract.contractId},
+            </if>
+            <if test="good != null">
+                goodId = #{good.goodId},
+            </if>
+            <if test="member != null">
+                memberId = #{member.memberId},
+            </if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+    <select id="select" resultMap="BaseResultMap">
+        SELECT * FROM `salesLog` WHERE id=#{id}
+    </select>
+    <select id="list" resultMap="BaseResultMap">
+        select * from `salesLog`
+        <if test="conditions != null">
+            where ${conditions}
+        </if>
+        <if test="order != null and sort != null">
+            order by ${order} ${sort}
+        </if>
+        <if test="offset != -1 and limit != -1">
+            limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+        </if>
+    </select>
+</mapper>

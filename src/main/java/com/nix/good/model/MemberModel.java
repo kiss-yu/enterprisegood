@@ -16,7 +16,8 @@ public class MemberModel extends BaseModel<MemberModel> {
         contractMember,
         salesMember,
         customerMember,
-        customer
+        customer,
+        goodMember
     }
 
     /**
@@ -36,9 +37,10 @@ public class MemberModel extends BaseModel<MemberModel> {
      * 2 销售部用户
      * 3 客户部用户
      * 4 客户
+     * 5 产品部用户
      * */
 //    @NotNull
-    private Integer role;
+    private RoleModel role;
     private Boolean sex;
     private Integer age;
 
@@ -66,11 +68,11 @@ public class MemberModel extends BaseModel<MemberModel> {
         this.name = name;
     }
 
-    public Integer getRole() {
+    public RoleModel getRole() {
         return role;
     }
 
-    public void setRole(Integer role) {
+    public void setRole(RoleModel role) {
         this.role = role;
     }
 
