@@ -39,7 +39,7 @@ public class ContractController extends BaseController{
             HttpServletRequest request) {
         try {
             MemberModel currentMember = MemberManager.getCurrentUser(request);
-            if (currentMember.getRole() == MemberModel.Role.admin.ordinal()) {
+            if (currentMember.getRole().getValue() == MemberModel.Role.admin.ordinal()) {
                 MemberModel consumer = memberService.findById(consumerId);
                 MemberModel admin = memberService.findById(adminId);
                 if (consumer == null || admin == null) {
@@ -48,9 +48,9 @@ public class ContractController extends BaseController{
                     contractModel.setCustomer(consumer);
                     contractModel.setAdmin(admin);
                 }
-            } else if (currentMember.getRole() == MemberModel.Role.customer.ordinal()) {
+            } else if (currentMember.getRole().getValue() == MemberModel.Role.customer.ordinal()) {
                 contractModel.setCustomer(currentMember);
-            } else if (currentMember.getRole() == MemberModel.Role.contractMember.ordinal()) {
+            } else if (currentMember.getRole().getValue() == MemberModel.Role.contractMember.ordinal()) {
                 MemberModel consumer = memberService.findById(consumerId);
                 contractModel.setCustomer(consumer);
             }else {
@@ -133,7 +133,7 @@ public class ContractController extends BaseController{
     public Map<String,Object> select(@PathVariable("id") Integer id,HttpServletRequest request) {
         ContractModel model = contractService.findById(id);
         MemberModel currentMember = MemberManager.getCurrentUser(request);
-        if (currentMember.getRole() == 4 && !model.getCustomer().getId().equals(currentMember.getId())) {
+        if (currentMember.getRole().getValue() == 4 && !model.getCustomer().getId().equals(currentMember.getId())) {
             return render("code",FAIL)
                     .render("msg","不合法")
                     .build();
