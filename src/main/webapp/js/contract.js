@@ -48,7 +48,6 @@ function getContractList() {
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backData);
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.list);
         },
@@ -129,7 +128,6 @@ function signing(data) {
         dataType: 'json',
         data: data,
         success: function (o) {
-            console.log(o);
             if (o.code == 'SUCCESS') {
                 alert('签约成功!' );
                 data.finish = true;
@@ -151,7 +149,6 @@ function enableAdd() {
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
-                console.log(o);
                 if (o.code == 'SUCCESS') {
                     alert('添加成功!' );
                     $('#table').bootstrapTable('append', o.contract);
@@ -174,7 +171,6 @@ function search() {
         data: $("#search_form").serialize(),
         success: function (o) {
             if (o.code == 'SUCCESS') {
-                console.log(o);
                 $('#table').bootstrapTable('removeAll');
                 $('#table').bootstrapTable('append', o.list);
             }
@@ -247,7 +243,6 @@ function enableEdit(index) {
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
-                console.log(o);
                 if (o.code == 'SUCCESS') {
                     alert('修改成功!');
                     $('#enable').removeAttr('onclick');
@@ -269,7 +264,6 @@ function del(data,index) {
             url: '/contract/delete.do',
             data:'id=' + data.id,
             success : function(o) {
-                console.log(o.code);
                 if (o.code == 'FAIL') {
                     alert("删除失败");
                 }else if(o.code == 'SUCCESS'){

@@ -9,4 +9,5 @@
     <select id="selectRoleLazy" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT * FROM `contract_goods` AS cg WHERE cg.contract = #{contractId,jdbcType=VARCHAR};
     </select>
+    
 </mapper>
