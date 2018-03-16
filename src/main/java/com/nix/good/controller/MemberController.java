@@ -48,8 +48,7 @@ public class MemberController extends BaseController{
      * 注册/添加用户
      * */
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public Map<String,Object> createMember(@ModelAttribute MemberModel memberModel,HttpServletRequest request,
-                                           @RequestParam(value = "admin",defaultValue = "false") Boolean admin,@ModelAttribute RoleModel role) {
+    public Map<String,Object> createMember(@ModelAttribute MemberModel memberModel,HttpServletRequest request, @RequestParam(value = "admin",defaultValue = "false") Boolean admin,@ModelAttribute RoleModel role) {
         memberModel.setRole(role);
         try {
             if (memberModel.getRole().getValue() != MemberModel.Role.customer.ordinal()) {

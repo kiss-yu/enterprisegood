@@ -19,7 +19,7 @@ function enableAdd() {
     if(checkInput()){
         $.ajax({
             type: 'POST',
-            url: "/member/create.do",
+            url: "/member/create.do?admin=true",
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {

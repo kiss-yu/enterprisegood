@@ -18,7 +18,12 @@
 </div>
 
 <div id="center">
-    <input type="text" class="searchbox" id="search"/>
+    <select name="filed">
+        <option value="name">姓名</option>
+        <option value="memberId">用户名</option>
+        <option value="age">年龄</option>
+    </select>
+    <input type="text" class="searchbox" id="search" name="content"/>
     <button type="button" class="btn btn-primary" id="searchbtn">查找</button>
     <button type="button" class="btn btn-danger rightmeau" id="deletebtn" onclick="delSelects()">删除用户</button>
     <button type="button" class="btn btn-primary rightmeau" id="addbtn">添加用户</button>
