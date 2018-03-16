@@ -164,6 +164,7 @@ public class ContractController extends BaseController{
                                    @RequestParam(value = "field",defaultValue = "") String field,
                                    @RequestParam(value = "content",defaultValue = "") String content,
                                    HttpServletRequest request) {
+        page = -1;
         List<ContractModel> list;
         List<ContractDto> dtoList = null;
 //        if (MemberManager.getCurrentUser(request).getRole() == 4) {

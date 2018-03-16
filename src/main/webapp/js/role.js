@@ -169,9 +169,7 @@ function enableEdit(index) {
 }
 
 function del(data) {
-    console.log(data)
     if(confirm('确认删除?') === true){
-        console.log(data.id);
         $.ajax({
             method:'POST',
             url: '/member/delete.do?id=' + data.id,
@@ -196,7 +194,7 @@ function delSelects() {
     }else{
         var ids = new Array();
         for (var i = 0; i < data.length; i++) {
-            ids.push(data.id);
+            ids.push(data[i].id);
         }
         if(confirm('确认删除所有选中数据?') === true){
             $.ajax({

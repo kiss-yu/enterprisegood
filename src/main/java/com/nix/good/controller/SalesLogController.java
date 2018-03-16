@@ -43,6 +43,7 @@ public class SalesLogController extends BaseController{
                                    @RequestParam(value = "field",defaultValue = "") String field,
                                    @RequestParam(value = "content",defaultValue = "") String content) {
         List<SalesLogModel> list;
+        page = -1;
         if (!field.isEmpty() && !content.isEmpty()) {
             list = salesLogService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
         }else {

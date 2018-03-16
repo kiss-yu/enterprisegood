@@ -135,6 +135,7 @@ public class MemberController extends BaseController{
                                    @RequestParam(value = "field",defaultValue = "") String field,
                                    @RequestParam(value = "content",defaultValue = "") String content) {
         List<MemberModel> list;
+        page = -1;
         if (!field.isEmpty() && !content.isEmpty()) {
             list = memberService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
         }else {
