@@ -84,6 +84,7 @@
                 `admin` = #{admin.memberId},
             </if>
         </trim>
+        WHERE id = #{id}
     </update>
     <select id="selectByStringId" parameterType="java.lang.String"  resultMap="BaseResultMap">
         SELECT * FROM `contract` WHERE contractId=#{id}

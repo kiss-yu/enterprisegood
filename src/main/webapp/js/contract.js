@@ -1,4 +1,5 @@
 var param = {};
+var member = JSON.parse(sessionStorage.getItem("member"));
 $(function() {
     $('#searchbtn').attr('onclick','search()');
     $('#addbtn').click(function (){
@@ -88,7 +89,7 @@ function getContractList() {
             title : '签约状态',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15',// 宽度
+            width : '10',// 宽度
             formatter: function (value, row, index) {
                 return value == true ? '已签约' : '未签约';
             }
@@ -97,27 +98,49 @@ function getContractList() {
             title : '客户姓名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15',// 宽度
+            width : '10',// 宽度
         },  {
             field : 'admin.name',// 返回值名称
-            title : '签约同意管理姓名',// 列名
+            title : '签约管理',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15',// 宽度
+            width : '10',// 宽度
         }, {
             field : '',// 返回值名称
-            title : '操作',// 列名
+            title : '    操作    ',// 列名
             align : 'center',// 水平居中显示
             valign :'middle',// 垂直居中显示
-            width : '25',// 宽度
+            width : '35',// 宽度
             formatter: function (value, row, index) {
                 return "<button onclick='show("+JSON.stringify(row)+")'>查看</button>" +
-                    "<button onclick='edit("+JSON.stringify(row)+")'>编辑</button>" +
-                    "<button onclick='del("+JSON.stringify(row)+")'>删除</button>";
+                    "<button onclick='edit("+JSON.stringify(row)+"," + index + ")'>编辑</button>" +
+                    "<button onclick='del("+JSON.stringify(row)+")'>删除</button>" +
+                    (row.finish ||  member == null || (member.role != 0 && member.role != 1)? ("") : ("<button onclick='signing("+JSON.stringify(row)+")'>签约</button>"));
             }
         }]
         // 列配置项,详情请查看 列参数 表格
         /* 事件 */
+    });
+}
+function signing(data) {
+    $.ajax({
+        type: 'POST',
+        url: "/contract/signing.do",
+        dataType: 'json',
+        data: data,
+        success: function (o) {
+            console.log(o);
+            if (o.code == 'SUCCESS') {
+                alert('签约成功!' );
+                data.finish = true;
+                $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
+                $('#table').bootstrapTable('append', data);
+            }else if(o.code == 'FAIL'){
+                alert('签约失败！');
+            }
+        },
+        error: function () {
+        }
     });
 }
 function enableAdd() {
@@ -131,6 +154,7 @@ function enableAdd() {
                 console.log(o);
                 if (o.code == 'SUCCESS') {
                     alert('添加成功!' );
+                    $('#table').bootstrapTable('append', o.contract);
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
                 }else if(o.code == 'FAIL'){
@@ -143,27 +167,21 @@ function enableAdd() {
     }
 }
 function search() {
-    var info = $('#search').val();
-    if(info == null || info == ''){
-        $.ajax({
-            type: 'POST',
-            url: "/contract/create.do",
-            dataType: 'json',
-            data: $("#info-form").serialize(),
-            success: function (o) {
+    $.ajax({
+        type: 'post',
+        url: "/contract/list.do",
+        dataType: 'json',
+        data: $("#search_form").serialize(),
+        success: function (o) {
+            if (o.code == 'SUCCESS') {
                 console.log(o);
-                if (o.code == 'SUCCESS') {
-                    alert('修改成功!');
-                    $('#enable').removeAttr('onclick');
-                    $("#infoOperate").css('display','none');
-                }else if(o.code == 'FAIL'){
-                    alert('修改失败！');
-                }
-            },
-            error: function () {
+                $('#table').bootstrapTable('removeAll');
+                $('#table').bootstrapTable('append', o.list);
             }
-        });
-    }
+        },
+        error: function () {
+        }
+    });
 }
 function checkInput() {
     if($('#contractIdbox').val() == null || $('#goodIdbox').val() == ''){
@@ -198,8 +216,7 @@ function dismiss() {
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
 }
-function edit(data) {
-
+function edit(data,index) {
 
     $("#contractIdbox").removeAttr("disabled");
     $("#createDatebox").removeAttr("disabled");
@@ -217,12 +234,12 @@ function edit(data) {
     $('#enable').css('display','block');
     $("#infoOperate").css('display','block');
 
-    $('#enable').attr('onclick','enableEdit()');
+    $('#enable').attr('onclick','enableEdit(' + index+ ')');
 
     $("#infoOperate").css('display','block');
 
 }
-function enableEdit() {
+function enableEdit(index) {
     if(checkInput()){
         $.ajax({
             type: 'put',
@@ -232,10 +249,10 @@ function enableEdit() {
             success: function (o) {
                 console.log(o);
                 if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
                     alert('修改成功!');
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
+                    $('#table').bootstrapTable('updateRow', {index: index,row: o.contract});
                 }else if(o.code == 'FAIL'){
                     alert('修改失败！');
                 }
@@ -245,7 +262,7 @@ function enableEdit() {
         });
     }
 }
-function del(data) {
+function del(data,index) {
     if(confirm('确认删除?') == true){
         $.ajax({
             method:'POST',
@@ -256,8 +273,8 @@ function del(data) {
                 if (o.code == 'FAIL') {
                     alert("删除失败");
                 }else if(o.code == 'SUCCESS'){
+                    $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
                     alert("删除成功");
-                    getMemberList();
                 }
             }
         });
@@ -283,6 +300,7 @@ function delSelects() {
                     if (o.code == 'FAIL') {
                         alert("删除失败");
                     }else if(o.code == 'SUCCESS'){
+                        $('#table').bootstrapTable('remove', {field: 'id', values: ids});
                         alert("删除成功");
                     }
                 }

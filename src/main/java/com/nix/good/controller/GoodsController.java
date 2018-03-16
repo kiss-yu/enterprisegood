@@ -100,6 +100,6 @@ public class GoodsController extends BaseController{
         }else {
             list = goodsService.list(page,size,order,sort,null);
         }
-        return render("list",list).build();
+        return render("list",list).render("code",SUCCESS).build();
     }
 }

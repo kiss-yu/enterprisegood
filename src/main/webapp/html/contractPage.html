@@ -20,7 +20,13 @@
 </div>
 
 <div id="center">
-    <input type="text" class="searchbox" id="search"/>
+    <form id="search_form">
+        <select name="field">
+            <option value="contractId">合同编号</option>
+            <option value="createDate">创建日期</option>
+        </select>
+        <input type="text" class="searchbox" id="search" name="content"/>
+    </form>
     <button type="button" class="btn btn-primary" id="searchbtn">查找</button>
     <button type="button" class="btn btn-primary rightmeau" id="deletebtn" onclick="delSelects()">删除</button>
     <button type="button" class="btn btn-primary rightmeau" id="addbtn">添加</button>

@@ -174,6 +174,6 @@ public class ContractController extends BaseController{
                 list = contractService.list(page,size,order,sort,null);
             }
 //        }
-        return render("list",list).build();
+        return render("list",list).render("code",SUCCESS).build();
     }
 }
