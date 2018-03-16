@@ -5,11 +5,8 @@ body{padding: 0px;margin: 0px;}
 span.title_con{font-family:"微软雅黑";font-style: normal;font-size: 2em;font-weight:800 ;color: #39A631;padding-left: 1em;}
 .second_title_con{font-size: 20px !important;padding-left: 2em !important;}
 .header_title{margin:20px 0 10px 0}
-#editbtn,#addbtn,#deletebtn{float: right !important;margin-right: 50px;margin-top: 8px;}
-#searchbtn{margin-top: 8px;margin-left: 55px;}
-#search{position: relative;left: 50px;top: 5px;width: 250px !important;height: 33px; !important;}
-th{font-size: 16px;color: #0567e0;}
-td{font-size: 16px;color: #333333;}
+th{color: #0567e0;}
+td{color: #333333;}
 .tableStyle{padding-left: 50px;padding-right: 50px;padding-top: 30px;}
 .table span:hover{color:blue;cursor: pointer;}
 .pagination-detail{font-size: 14px !important;color: #999999 !important;}
@@ -18,5 +15,4 @@ td{font-size: 16px;color: #333333;}
 .infobtn{float: right;margin-right: 50px;}
 .infoOperate{display:none;background-color: #d9d8d7;width: 500px;border: 1px solid rgb(57,166,49);border-radius: 6px;position: fixed;top:100px;left: 39%;}
 #infoOperatetitle{height: 50px;width: 100%;font-size: 30px;line-height: 50px;background-color: #8EC172;text-align: center;}
-#selectRole,#sexbox{width: 170px;height: 26px;}
 .middle {height: 786px;width: 100%;z-index: 0;position: relative;}
