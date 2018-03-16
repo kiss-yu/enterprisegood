@@ -16,6 +16,7 @@ public class ContractDto {
         this.createDate = model.getCreateDate();
         this.customer = model.getCustomer();
         this.admin = model.getAdmin();
+        this.finish = model.getFinish();
         List<GoodsCountDto> list = new ArrayList<>();
         List<GoodsCountModel> models = model.getGoodCountList();
         if (models != null) {
@@ -50,6 +51,16 @@ public class ContractDto {
      * */
     @NotNull
     private MemberModel admin;
+
+    private Boolean finish;
+
+    public Boolean getFinish() {
+        return finish;
+    }
+
+    public void setFinish(Boolean finish) {
+        this.finish = finish;
+    }
 
     public String getContractId() {
         return contractId;

@@ -9,5 +9,30 @@
     <select id="selectRoleLazy" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT * FROM `contract_goods` AS cg WHERE cg.contract = #{contractId,jdbcType=VARCHAR};
     </select>
-    
+    <insert id="insert">
+        insert into `contract_goods`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="count != null">
+                `count`,
+            </if>
+            <if test="contract != null">
+                `contract`,
+            </if>
+            <if test="goods != null">
+                `goods`,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="count != null">
+                #{count},
+            </if>
+            <if test="contract != null">
+                #{contract.contractId},
+            </if>
+            <if test="goods != null">
+                #{goods.goodId},
+            </if>
+        </trim>
+    </insert>
 </mapper>

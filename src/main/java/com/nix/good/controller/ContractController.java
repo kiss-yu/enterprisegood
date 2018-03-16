@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +34,13 @@ public class ContractController extends BaseController{
      * */
     @Role({0,2})
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public Map<String,Object> create(@ModelAttribute ContractModel contractModel,
-                                     @RequestParam(value = "consumerId",defaultValue = "") String consumerId,
-                                     @RequestParam(value = "adminId",defaultValue = "") String adminId,
+    public Map<String,Object> create(
+            @ModelAttribute ContractModel contractModel,
+            @RequestParam(value = "consumerId",defaultValue = "") String consumerId,
+            @RequestParam(value = "adminId",defaultValue = "") String adminId,
+            @RequestParam(value = "goodIds",defaultValue = "[]") String[] goodIds,
+            @RequestParam(value = "goodCounts",defaultValue = "[]") Integer[] counts,
+
             HttpServletRequest request) {
         try {
             MemberModel currentMember = MemberManager.getCurrentUser(request);
@@ -59,7 +64,7 @@ public class ContractController extends BaseController{
             contractModel.setCreateDate(new Date());
             render("code",SUCCESS)
                     .render("contract",contractModel);
-            contractService.add(contractModel);
+            contractService.add(contractModel,goodIds,counts);
         } catch (Exception e) {
             e.printStackTrace();
             render("code",FAIL);
@@ -161,6 +166,7 @@ public class ContractController extends BaseController{
                                    @RequestParam(value = "content",defaultValue = "") String content,
                                    HttpServletRequest request) {
         List<ContractModel> list;
+        List<ContractDto> dtoList = null;
 //        if (MemberManager.getCurrentUser(request).getRole() == 4) {
 //            if (!field.isEmpty() && !content.isEmpty()) {
 //                list = contractService.list(page,size,order,sort,"`" + field + "`" + " like %" + content + "%" + " and " + " customer = " + MemberManager.getCurrentUser(request).getMemberId());
@@ -174,6 +180,12 @@ public class ContractController extends BaseController{
                 list = contractService.list(page,size,order,sort,null);
             }
 //        }
-        return render("list",list).render("code",SUCCESS).build();
+        if (list != null) {
+                dtoList = new ArrayList<>();
+                for (ContractModel contractModel:list) {
+                    dtoList.add(new ContractDto(contractModel));
+                }
+        }
+        return render("list",dtoList).render("code",SUCCESS).build();
     }
 }
