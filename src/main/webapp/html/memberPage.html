@@ -10,6 +10,7 @@
     <script type="text/javascript" src="../resources/bootstrap.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
+
 </head>
 <body>
 
@@ -19,14 +20,14 @@
 
 <form id="center" class="form-horizontal">
     <div class="col-sm-1" style="margin-left: 40px">
-        <button type="button" class="btn btn-primary form-control" id="addbtn">添加用户</button>
+        <button type="button" class="btn btn-primary form-control" id="addbtn" style="min-width: 77px;">添加用户</button>
     </div>
     <div class="col-sm-1">
-        <button type="button" class="btn btn-danger form-control" id="deletebtn" onclick="delSelects()">删除用户</button>
+        <button type="button" class="btn btn-danger form-control" id="deletebtn" onclick="delSelects()" style="min-width: 77px;">删除用户</button>
     </div>
     <div class="form-group">
-        <div class="col-sm-1">
-            <select name="filed" class="form-control">
+        <div class="col-sm-1" style="min-width: 100px;">
+            <select id="filed" class="form-control">
                 <option value="name">姓名</option>
                 <option value="memberId">用户名</option>
                 <option value="age">年龄</option>
@@ -107,6 +108,7 @@
 
     </div>
 </form>
+<script src="../resources/md5.js"></script>
 <script type="text/javascript" src="../js/member.js"></script>
 </body>
 </html>

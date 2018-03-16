@@ -1,7 +1,6 @@
 
 var param = {};
 
-
 $('#addbtn').click(function (){
     $('#namebox').val('');
     $('#selectRole').val();
@@ -11,9 +10,9 @@ $('#addbtn').click(function (){
     $('#enable').attr('onclick','enableAdd()');
     $('#enable').css('display','block');
     $("#infoOperate").css('display','block');
+
 });
 
-$('#searchbtn').attr('onclick','search()');
 
 function enableAdd() {
     if(checkInput()){
@@ -39,32 +38,7 @@ function enableAdd() {
         });
     }
 }
-function search() {
-    var info = $('#search').val();
-    if(info == null || info === ''){
-        $.ajax({
-            type: 'POST',
-            url: "/member/create.do",
-            dataType: 'json',
-            data: $("#info-form").serialize(),
-            success: function (o) {
-                console.log(o);
-                if (o.code === 'SUCCESS') {
-                    alert('修改成功!');
-                    $('#enable').removeAttr('onclick');
-                    $("#infoOperate").css('display','none');
-                    //添加成功后再table增加一行数据
-                    $('#table').bootstrapTable('removeAll');
-                    $('#table').bootstrapTable('append', o.list);
-                }else if(o.code === 'FAIL'){
-                    alert('修改失败！' + o.msg == null ? '' : o.msg);
-                }
-            },
-            error: function () {
-            }
-        });
-    }
-}
+
 function getMemberList() {
     $('#table').bootstrapTable({
         method: 'POST',
@@ -91,7 +65,6 @@ function getMemberList() {
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
             console.log(backData);
-            console.log(backData.list.length);
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.list);
         },
@@ -216,11 +189,9 @@ function checkInput() {
 function show(data) {
 
     $('#infoOperatetitle').text('详情');
-    $("#namebox").attr("disabled","true");
-    $("#selectRole").attr("disabled","true");
-    $("#sexbox").attr("disabled","true");
-    $("#agebox").attr("disabled","true");
+    $("#namebox,#memberId,#selectRole,#sexbox,#agebox,#password").attr("disabled","true");
 
+    $("#memberId").val(data.id);
     $('#namebox').val(data.name);
     $('#selectRole').val(data.role.value);
     $('#sexbox').val(data.sex ? 0 : 1);
@@ -230,10 +201,7 @@ function show(data) {
 }
 
 function dismiss() {
-    $("#namebox").removeAttr("disabled");
-    $("#selectRole").removeAttr("disabled");
-    $("#sexbox").removeAttr("disabled");
-    $("#agebox").removeAttr("disabled");
+    $("#namebox,#selectRole,#sexbox,#agebox").removeAttr("disabled");
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
 }
@@ -241,15 +209,13 @@ function dismiss() {
 function edit(data,index) {
     //在查看时候设置了$("#namebox").attr("disabled","true");
     //编辑修改时都应该设置$("#namebox").removeAttr("disabled");
-    $("#namebox").removeAttr("disabled");
-    $("#selectRole").removeAttr("disabled");
-    $("#sexbox").removeAttr("disabled");
-    $("#agebox").removeAttr("disabled");
+    $("#namebox,#selectRole,#sexbox,#agebox,#password").removeAttr("disabled");
+
     $('#infoOperatetitle').text('编辑');
     $("#id").val(data.id);
     $("#memberId").val(data.memberId);
     $('#namebox').val(data.name);
-    $('#selectRole').val(data.role);
+    $('#selectRole').val(data.role.value);
     $('#sexbox').val(data.sex ? 0 : 1);
     $('#agebox').val(data.age);
 
@@ -261,6 +227,7 @@ function edit(data,index) {
 
 function enableEdit(index) {
     if(checkInput()){
+        $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
         $.ajax({
             type: 'put',
             url: "/member/update.do",
@@ -269,11 +236,10 @@ function enableEdit(index) {
             success: function (o) {
                 console.log(o);
                 if (o.code === 'SUCCESS') {
-                    console.log(o.msg);
                     alert('修改成功!');
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
-                    //当前行修改成功后再table中修改改行
+
                     $('#table').bootstrapTable('updateRow', {index: index, row: o.member});
 
                 }else if(o.code === 'FAIL'){
@@ -297,14 +263,16 @@ function del(data) {
                 if (o.code === 'FAIL') {
                     alert("删除失败" );
                 }else if(o.code === 'SUCCESS'){
-                    alert("删除成功");
+
                     //删除一列数据成功在table中移除那行
                     $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
+                    alert("删除成功");
                 }
             }
         });
     }
 }
+
 function delSelects() {
     var data = $('#table').bootstrapTable('getSelections');
 
@@ -314,22 +282,25 @@ function delSelects() {
     }else{
         var ids = new Array();
         for (var i = 0; i < data.length; i++) {
-            ids.push(data.id);
+            ids.push(data[i].id);
         }
         if(confirm('确认删除所有选中数据?') === true){
             $.ajax({
                 method:'POST',
                 url: '/member/delete.do',
-                data:{id:ids},
+                data:{
+                    id:ids
+                },
                 traditional:true,
                 success : function(o) {
                     console.log(o.code);
                     if (o.code === 'FAIL') {
                         alert("删除失败" );
                     }else if(o.code === 'SUCCESS'){
-                        alert("删除成功");
+
                         //多行删除成功在table中移除多行
                         $('#table').bootstrapTable('remove', {field: 'id', values: ids});
+                        alert("删除成功");
                     }
                 }
             });
@@ -337,5 +308,26 @@ function delSelects() {
     }
 }
 
+$('#searchbtn').click(function () {
+    var info = $('#search').val();
+    var fiel = $("#filed").val();
+
+    $.ajax({
+        type: 'POST',
+        url: "/member/list.do",
+        dataType: 'json',
+        data: {
+            field: fiel,
+            content: info
+        },
+        success: function (data) {
+            console.log(data);
+            if (data.code === 'SUCCESS') {
+                $('#table').bootstrapTable('removeAll');
+                $('#table').bootstrapTable('append', data.list);
+            }
+        }
+    })
+});
 
 getMemberList();
