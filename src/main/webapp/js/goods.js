@@ -2,10 +2,10 @@ var param = {};
 $(function() {
     $('#searchbtn').attr('onclick','search()');
     $('#addbtn').click(function (){
-        $('#goodIdbox').val();
-        $('#createDatebox').val();
-        $('#inventorybox').val();
-        $('#pricebox').val();
+        $('#goodIdbox').val('');
+        $('#createDatebox').val('');
+        $('#inventorybox').val('');
+        $('#pricebox').val('');
         $('#infoOperatetitle').text('添加');
         $('#enable').attr('onclick','enableAdd()');
         $('#enable').css('display','block');
@@ -185,16 +185,16 @@ function show(data) {
 
 }
 function dismiss() {
+    $("#goodIdbox").removeAttr("disabled");
+    $("#createDatebox").removeAttr("disabled");
+    $("#inventorybox").removeAttr("disabled");
+    $("#pricebox").removeAttr("disabled");
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
 }
 function edit(data) {
 
     $('#infoOperatetitle').text('编辑');
-    $("#goodIdbox").removeAttr("disabled");
-    $("#createDatebox").removeAttr("disabled");
-    $("#inventorybox").removeAttr("disabled");
-    $("#pricebox").removeAttr("disabled");
     $("#id").val(data.id);
     $("#goodIdbox").val(data.goodId);
     $('#createDatebox').val(data.createDate);
@@ -232,7 +232,7 @@ function enableEdit() {
 function del(data) {
     if(confirm('确认删除?') == true){
         $.ajax({
-            method:'POST',
+            method:'DELETE',
             url: '/goods/delete/'+ data.id +'.do',
             success : function(o) {
                 console.log(o.code);
@@ -253,9 +253,9 @@ function delSelects() {
         alert("请至少选中一条数据");
         return;
     }else{
-        var ids = "";
+        var ids = new Array();
         for (var i = 0; i < data.length; i++) {
-            ids += data[i].ID + ",";
+            ids.push(data[i].id);
         }
 
         var id=ids.substring(0, (ids.length - 1));
@@ -263,7 +263,8 @@ function delSelects() {
         if(confirm('确认删除所有选中数据?') == true){
             $.ajax({
                 method:'DELETE',
-                url: '/member/delete/'+ id +'.do',
+                url: '/goods/delete.do',
+                data:ids,
                 success : function(o) {
                     console.log(o.code);
                     if (o.code == 'FAIL') {
