@@ -32,31 +32,67 @@
     <table id="table" class="table table-hover"></table>
 </div>
 
-<form id="info-form">
+<form id="info-form" class="form-horizontal">
     <div class="infoOperate" id="infoOperate">
         <input id="id" name="id" hidden>
+
         <div id="infoOperatetitle"></div>
-        <div class="info">用户名
-            <input id="memberId" name="memberId" ></div>
-        <div class="info">姓名<input type="text" id="namebox" name="name"/></div>
-        <div class="info">角色
-            <select id="selectRole" name="value">
-                <option value="0">系统管理员</option>
-                <option value="1">合同部用户</option>
-                <option value="2">销售部用户</option>
-                <option value="3">客户部用户</option>
-                <option value="4">用户</option>
-            </select>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="memberId" class="col-sm-2 control-label">账号</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="memberId" name="memberId">
+            </div>
         </div>
-        <div class="info">性别
-            <select id="sexbox" name="sex">
-                <option value="0">男</option>
-                <option value="1">女</option>
-            </select>
+        <div class="form-group">
+            <label for="namebox" class="col-sm-2 control-label">姓名</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="namebox" name="name">
+            </div>
         </div>
-        <div class="info">年龄<input type="text" id="agebox" name="age"/></div>
-        <input type="button" class="btn btn-default" id="cancel" onclick="dismiss()" value="取消" name="">
-        <input type="button" class="btn btn-primary" id="enable" value="确认" name="">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">角色</label>
+            <div class="col-sm-8">
+                <select class="form-control" id="selectRole" name="value" style="font-size: 10px">
+                    <option value="0">系统管理员</option>
+                    <option value="1">合同部用户</option>
+                    <option value="2">销售部用户</option>
+                    <option value="3">客户部用户</option>
+                    <option value="4">用户</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">性别</label>
+            <div class="col-sm-8">
+                <select class="form-control" id="sexbox" name="sex" style="font-size: 10px">
+                    <option value="0">男</option>
+                    <option value="1">女</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="agebox" class="col-sm-2 control-label">年龄</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="agebox" name="age">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-8">
+                <input type="password" class="form-control"  id="password" name="password">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-3">
+                <input type="button" class="btn btn-primary" id="enable" value="确认" name="">
+            </div>
+            <div class="col-sm-4">
+                <input type="button" class="btn btn-default" id="cancel" onclick="dismiss()" value="返回" name="">
+            </div>
+        </div>
+
     </div>
 </form>
 <script type="text/javascript" src="../js/member.js"></script>

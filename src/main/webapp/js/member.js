@@ -212,7 +212,7 @@ function checkInput() {
 /*展示方法*/
 function show(data) {
 
-    $('#infoOperatetitle').text('查看');
+    $('#infoOperatetitle').text('详情');
     $("#namebox").attr("disabled","true");
     $("#selectRole").attr("disabled","true");
     $("#sexbox").attr("disabled","true");
