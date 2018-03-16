@@ -19,13 +19,13 @@ function getGoodList() {
         striped : true,// 隔行变色效果
         pagination : true,// 在表格底部显示分页条
         //pageNumber : 1,// 首页页码
-        pageList : [3,5,10],// 设置可供选择的页面数据条数
+        pageList : [5,10],// 设置可供选择的页面数据条数
         clickToSelect : false,// 设置true 将在点击行时，自动选择rediobox 和 checkbox
         cache : false,// 禁用 AJAX 数据缓存
         sortName : 'id',// 定义排序列
         sortOrder : 'asc',// 定义排序方式 getRceiptlistWithPaging
         url : '/goods/list.do',// 服务器数据的加载地址
-        sidePagination : 'server',// 设置在哪里进行分页
+        sidePagination : 'client',// 设置在哪里进行分页
         /*showRefresh: true, */ //显示刷新按钮
         contentType : 'application/json',// 发送到服务器的数据编码类型
         dataType : 'json',// 服务器返回的数据类型
@@ -93,9 +93,9 @@ function getGoodList() {
             valign :'middle',// 垂直居中显示
             width : '10',// 宽度
             formatter: function (value, row, index) {
-                return "<button onclick='show("+JSON.stringify(row)+")'>查看</button>" +
-                    "<button onclick='edit("+JSON.stringify(row)+")'>编辑</button>" +
-                    "<button onclick='del("+JSON.stringify(row)+")'>删除</button>";
+                return "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='show("+JSON.stringify(row)+")' value='详情'>" +
+                    "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='edit("+JSON.stringify(row)+","+index +")' value='编辑'>" +
+                    "<input class='btn btn-danger' type='button' onclick='del("+JSON.stringify(row)+")' value='删除'>";
             }
         }]
         // 列配置项,详情请查看 列参数 表格
@@ -170,11 +170,8 @@ function checkInput() {
 }
 /*展示方法*/
 function show(data) {
-    $('#infoOperatetitle').text('查看');
-    $("#goodIdbox").attr("disabled","true");
-    $("#createDatebox").attr("disabled","true");
-    $("#inventorybox").attr("disabled","true");
-    $("#pricebox").attr("disabled","true");
+    $('#infoOperatetitle').text('详情');
+    $("#goodIdbox,#createDatebox,#inventorybox,#pricebox").attr("disabled","true");
 
     $('#goodIdbox').val(data.goodId);
     $('#createDatebox').val(data.createDate);
@@ -185,10 +182,7 @@ function show(data) {
 
 }
 function dismiss() {
-    $("#goodIdbox").removeAttr("disabled");
-    $("#createDatebox").removeAttr("disabled");
-    $("#inventorybox").removeAttr("disabled");
-    $("#pricebox").removeAttr("disabled");
+    $("#goodIdbox,#createDatebox,#inventorybox,#pricebox").removeAttr("disabled");
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
 }
@@ -214,10 +208,15 @@ function enableEdit(index) {
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
+                console.log(o.goods);
                 if (o.code == 'SUCCESS') {
                     alert('修改成功!');
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
+
+                    $('#table').bootstrapTable('updateRow', {index: index, row: o.goods});
+
+
                 }else if(o.code == 'FAIL'){
                     alert('修改失败！');
                 }
@@ -230,15 +229,17 @@ function enableEdit(index) {
 function del(data) {
     if(confirm('确认删除?') == true){
         $.ajax({
-            method:'DELETE',
-            url: '/goods/delete/'+ data.id +'.do',
+            method:'POST',
+            url: '/goods/delete.do?id=' + data.id,
             success : function(o) {
                 console.log(o.code);
                 if (o.code == 'FAIL') {
                     alert("删除失败");
                 }else if(o.code == 'SUCCESS'){
+
+                    //删除一列数据成功在table中移除那行
+                    $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
                     alert("删除成功");
-                    getGoodList();
                 }
             }
         });
@@ -254,13 +255,12 @@ function delSelects() {
         var ids = new Array();
         for (var i = 0; i < data.length; i++) {
             ids.push(data[i].id);
+            console.log(data[i].id);
         }
-
-        var id=ids.substring(0, (ids.length - 1));
-
+        console.log(data);
         if(confirm('确认删除所有选中数据?') == true){
             $.ajax({
-                method:'DELETE',
+                method:'POST',
                 url: '/goods/delete.do',
                 data:ids,
                 success : function(o) {
@@ -268,8 +268,8 @@ function delSelects() {
                     if (o.code == 'FAIL') {
                         alert("删除失败");
                     }else if(o.code == 'SUCCESS'){
+                        $('#table').bootstrapTable('remove', {field: 'id', values: ids});
                         alert("删除成功");
-                        getGoodList();
                     }
                 }
             });
