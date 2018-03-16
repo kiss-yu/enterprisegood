@@ -36,7 +36,7 @@ public class ContractController extends BaseController{
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Map<String,Object> create(
             @ModelAttribute ContractModel contractModel,
-            @RequestParam(value = "consumerId",required=false) String consumerId,
+            @RequestParam(value = "customerId",required=false) String customerId,
             @RequestParam(value = "adminId",required=false) String adminId,
             @RequestParam(value = "goodIds",required=false) String[] goodIds,
             @RequestParam(value = "goodCounts",required=false) Integer[] counts,
@@ -44,8 +44,11 @@ public class ContractController extends BaseController{
         try {
             MemberModel currentMember = MemberManager.getCurrentUser(request);
             if (currentMember.getRole().getValue() == MemberModel.Role.admin.ordinal()) {
-                MemberModel consumer = memberService.findById(consumerId);
+                MemberModel consumer = memberService.findById(customerId);
                 MemberModel admin = memberService.findById(adminId);
+                if (admin == null) {
+                    admin = currentMember;
+                }
                 if (consumer == null || admin == null) {
                     render("code",FAIL);
                 }else {
@@ -55,7 +58,8 @@ public class ContractController extends BaseController{
             } else if (currentMember.getRole().getValue() == MemberModel.Role.customer.ordinal()) {
                 contractModel.setCustomer(currentMember);
             } else if (currentMember.getRole().getValue() == MemberModel.Role.contractMember.ordinal()) {
-                MemberModel consumer = memberService.findById(consumerId);
+                MemberModel consumer = memberService.findById(customerId);
+                contractModel.setAdmin(currentMember);
                 contractModel.setCustomer(consumer);
             }else {
                 return render("code",FAIL).build();
@@ -109,7 +113,7 @@ public class ContractController extends BaseController{
      * 修改
      * */
     @Role({0,2})
-    @RequestMapping(value = "/update",method = RequestMethod.PUT)
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Map<String,Object> update(@ModelAttribute ContractModel model,
                                      @RequestParam(value = "consumerId",required=false) Integer consumerId,
                                      @RequestParam(value = "adminId",required=false) Integer adminId,

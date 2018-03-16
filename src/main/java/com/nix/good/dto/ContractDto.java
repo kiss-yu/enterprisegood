@@ -17,6 +17,7 @@ public class ContractDto {
         this.customer = model.getCustomer();
         this.admin = model.getAdmin();
         this.finish = model.getFinish();
+        this.id = model.getId();
         List<GoodsCountDto> list = new ArrayList<>();
         List<GoodsCountModel> models = model.getGoodCountList();
         if (models != null) {
@@ -27,6 +28,7 @@ public class ContractDto {
         this.goodCountList = list;
     }
 
+    private Integer id;
 
     /**
      * 合同编号
@@ -53,6 +55,14 @@ public class ContractDto {
     private MemberModel admin;
 
     private Boolean finish;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Boolean getFinish() {
         return finish;

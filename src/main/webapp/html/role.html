@@ -17,10 +17,16 @@
     <span class="title_con second_title_con">角色管理</span>
 </div>
 
-<div id="center">
-    <button type="button" class="btn btn-danger rightmeau" id="deletebtn" onclick="delSelects()">删除</button>
-    <button type="button" class="btn btn-primary rightmeau" id="addbtn">添加</button>
-</div>
+<form id="center" class="form-horizontal">
+    <div class="col-sm-1" style="margin-left: 40px">
+        <button type="button" class="btn btn-primary form-control" id="addbtn">添加</button>
+    </div>
+    <div class="col-sm-1">
+        <button type="button" class="btn btn-danger form-control" id="deletebtn" onclick="delSelects()">删除</button>
+    </div>
+    <div class="form-group">
+    </div>
+</form>
 <div class="tableStyle">
     <table id="table" class="table table-hover"></table>
 </div>

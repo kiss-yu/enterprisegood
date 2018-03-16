@@ -1,6 +1,5 @@
 var param = {};
 $(function() {
-    $('#searchbtn').attr('onclick','search()');
     $('#addbtn').click(function (){
         $('#contractIdbox').val('');
         $('#createDatebox').val('');
@@ -25,7 +24,7 @@ function getContractList() {
         sortName : 'id',// 定义排序列
         sortOrder : 'asc',// 定义排序方式 getRceiptlistWithPaging
         url : '/contract/list.do',// 服务器数据的加载地址
-        sidePagination : 'server',// 设置在哪里进行分页
+        sidePagination : 'client',// 设置在哪里进行分页
         /*showRefresh: true, */ //显示刷新按钮
         contentType : 'application/json',// 发送到服务器的数据编码类型
         dataType : 'json',// 服务器返回的数据类型
@@ -45,12 +44,12 @@ function getContractList() {
             checkbox : true,
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '5',// 宽度
+            width : '1',// 宽度
         },{
             title: '序号',//标题  可不加
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '5',// 宽度
+            width : '1',// 宽度
             formatter: function (value, row, index) {
                 return index+1;
             }
@@ -59,62 +58,87 @@ function getContractList() {
             title : 'id',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '6',// 宽度
+            width : '1',// 宽度
             visible : false
         }, {
             field : 'contractId',// 返回值名称
             title : '合同编号',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '20',// 宽度
+            width : '20'// 宽度
         }, {
             field : 'createDate',// 返回值名称
             title : '创建日期',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15',// 宽度
+            width : '10'// 宽度
+        },  {
+            field : 'finish',// 返回值名称
+            title : '状态',// 列名
+            align : 'center',// 水平居中显示
+            valign : 'middle',// 垂直居中显示
+            width : '10',// 宽度
+            formatter: function (value, row, index) {
+                return value === true ? '已签约' : '未签约';
+            }
         }, {
             field : 'customer.name',// 返回值名称
             title : '客户姓名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15',// 宽度
-        },  {
+            width : '10'// 宽度
+        }, {
+            field : 'customer.memberId',// 返回值名称
+            align : 'center',// 水平居中显示
+            visible : false
+        }, {
             field : 'admin.name',// 返回值名称
-            title : '签约同意管理姓名',// 列名
+            title : '管理姓名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15',// 宽度
+            width : '5'// 宽度
+        },{
+            field : 'admin.memberId',// 返回值名称
+            align : 'center',// 水平居中显示
+            visible : false
         }, {
-            field : '',// 返回值名称
             title : '操作',// 列名
             align : 'center',// 水平居中显示
             valign :'middle',// 垂直居中显示
-            width : '25',// 宽度
+            width : '1',// 宽度
             formatter: function (value, row, index) {
-                return "<button onclick='show("+JSON.stringify(row)+")'>查看</button>" +
-                    "<button onclick='edit("+JSON.stringify(row)+")'>编辑</button>" +
-                    "<button onclick='del("+JSON.stringify(row)+")'>删除</button>";
+                return "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='show("+JSON.stringify(row)+")' value='详情'>" +
+                    "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='edit("+JSON.stringify(row)+","+index +")' value='编辑'>" +
+                    "<input class='btn btn-danger' type='button' onclick='del("+JSON.stringify(row)+")' value='删除'>" +
+                    (row.finish ? "" : ("<input class='btn btn-info' type='button' onclick='signing("+JSON.stringify(row)+","+index +")' value='签约'>"));
             }
         }]
         // 列配置项,详情请查看 列参数 表格
         /* 事件 */
     });
 }
-function signing(data) {
+function signing(data,index) {
+    $('#id').val(data.id);
+    $('#contractId').val(data.contractId);
+    $('#createDate').val(data.createDate);
+    $('#finish').val(1);
+    $('#customerId').val(data.customer.memberId);
+    $('#customerName').val(data.customer.name);
+    $('#adminId').val(data.admin.memberId);
+    $('#adminName').val(data.admin.name);
     $.ajax({
         type: 'POST',
         url: "/contract/signing.do",
         dataType: 'json',
-        data: data,
+        data: $("#info-form").serialize(),
         success: function (o) {
             if (o.code == 'SUCCESS') {
                 alert('签约成功!' );
                 data.finish = true;
-                $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
-                $('#table').bootstrapTable('append', data);
+                //当前行修改成功后再table中修改改行
+                $('#table').bootstrapTable('updateRow', {index: index, row: data});
             }else if(o.code == 'FAIL'){
-                alert('签约失败！');
+                alert('签约失败！' + o.msg == null ? "" : o.msg);
             }
         },
         error: function () {
@@ -125,17 +149,17 @@ function enableAdd() {
     if(checkInput()){
         $.ajax({
             type: 'POST',
-            url: "/goods/create.do",
+            url: "/contract/create.do",
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
                 if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
-                    alert('修改成功!' + o.goods == null ? '' : o.goods);
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
+                    //添加成功后再table增加一行数据
+                    $('#table').bootstrapTable('prepend', o.contract);
                 }else if(o.code == 'FAIL'){
-                    alert('修改失败！' + o.goods == null ? '' : o.goods);
+                    alert('添加失败！' + o.msg == null ? '' : o.msg);
                 }
             },
             error: function () {
@@ -143,88 +167,72 @@ function enableAdd() {
         });
     }
 }
-function search() {
-    $.ajax({
-        type: 'post',
-        url: "/contract/list.do",
-        dataType: 'json',
-        data: $("#search_form").serialize(),
-        success: function (o) {
-            if (o.code == 'SUCCESS') {
-                $('#table').bootstrapTable('removeAll');
-                $('#table').bootstrapTable('append', o.list);
-            }
-        }
-    });
-}
+
 function checkInput() {
-    if($('#goodIdbox').val() == null || $('#goodIdbox').val() == ''){
-        alert('请输入商品编号！');
+    if($('#contractId').val() == null || $('#contractId').val() == ''){
+        alert('合同编号不合法');
         return false;
     }
-    if($('#createDatebox').val() == null || $('#createDatebox').val() == ''){
+    if($('#createDate').val() == null || $('#createDate').val() == ''){
         alert('请输入创建日期！');
         return false;
     }
-    if($('#inventorybox').val() == null || $('#inventorybox').val() == ''){
-        alert('请输入库存！');
-        return false;
-    }
-    if($('#pricebox').val() == null || $('#pricebox').val() == ''){
-        alert('请输入单价！');
+    if($('#customerId').val() == null || $('#customerId').val() == ''){
+        alert('签约客户不合法');
         return false;
     }
     return true;
 }
 /*展示方法*/
 function show(data) {
-    $('#infoOperatetitle').text('查看');
-    $("#goodIdbox").attr("disabled","true");
-    $("#createDatebox").attr("disabled","true");
-    $("#inventorybox").attr("disabled","true");
-    $("#pricebox").attr("disabled","true");
+    disableAll();
+    $('#contractId').val(data.contractId);
+    $('#createDate').val(data.createDate);
+    $('#finish').val(data.finish ? 1 : 0);
+    $('#customerId').val(data.customer.memberId);
+    $('#customerName').val(data.customer.name);
+    $('#adminId').val(data.admin.memberId);
+    $('#adminName').val(data.admin.name);
 
-    $('#goodIdbox').val(data.goodId);
-    $('#createDatebox').val(data.createDate);
-    $('#inventorybox').val(data.inventory);
-    $('#pricebox').val(data.price);
+}
+function disableAll() {
+    $("#contractId #createDate #finish #customerId #adminId").attr("disabled","true");
     $('#enable').css('display','none');
     $("#infoOperate").css('display','block');
 
 }
 function dismiss() {
-    $("#goodIdbox").removeAttr("disabled");
-    $("#createDatebox").removeAttr("disabled");
-    $("#inventorybox").removeAttr("disabled");
-    $("#pricebox").removeAttr("disabled");
+    $("#contractId #createDate #finish #customerId #adminId").removeAttr("disabled");
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
 }
-function edit(data) {
+function edit(data,index) {
+    dismiss();
+    $('#id').val(data.id);
+    $('#contractId').val(data.contractId);
+    $('#createDate').val(data.createDate);
+    $('#finish').val(data.finish ? 1 : 0);
+    $('#customerId').val(data.customer.memberId);
+    $('#customerName').val(data.customer.name);
+    $('#adminId').val(data.admin.memberId);
+    $('#adminName').val(data.admin.name);
 
-    $('#infoOperatetitle').text('编辑');
-    $("#id").val(data.id);
-    $("#goodIdbox").val(data.goodIdbox);
-    $('#createDatebox').val(data.createDatebox);
-    $('#inventorybox').val(data.inventorybox);
-    $('#pricebox').val(data.pricebox);
-
-    $('#enable').attr('onclick','enableEdit()');
+    $('#enable').attr('onclick','enableEdit(' + index + ')');
 
     $("#infoOperate").css('display','block');
 
 }
-function enableEdit() {
+function enableEdit(index) {
     if(checkInput()){
         $.ajax({
-            type: 'put',
-            url: "/goods/update.do",
+            type: 'POST',
+            url: "/contract/update.do",
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
                 if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
-                    alert('修改成功!'  + o.goods == null ? '' : o.goods);
+                    //当前行修改成功后再table中修改改行
+                    $('#table').bootstrapTable('updateRow', {index: index, row: o.contract});
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
                 }else if(o.code == 'FAIL'){
@@ -238,18 +246,16 @@ function enableEdit() {
 }
 function del(data) {
     if(confirm('确认删除?') == true){
-        var id = new Array();
-        id.push(data.id)
         $.ajax({
-            method:'DELETE',
-            url: '/contract/delete.do',
-            data:id,
+            method:'POST',
+            url: '/contract/delete.do?id=' + data.id,
             success : function(o) {
                 if (o.code == 'FAIL') {
                     alert("删除失败");
                 }else if(o.code == 'SUCCESS'){
                     alert("删除成功");
-                    getMemberList();
+                    //删除一列数据成功在table中移除那行
+                    $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
                 }
             }
         });
@@ -257,7 +263,6 @@ function del(data) {
 }
 function delSelects() {
     var data = $('#table').bootstrapTable('getSelections');
-
     if (data.length == 0) {
         alert("请至少选中一条数据");
         return;
@@ -266,22 +271,37 @@ function delSelects() {
         for (var i = 0; i < data.length; i++) {
             ids.push(data[i].id);
         }
-
         if(confirm('确认删除所有选中数据?') == true){
             $.ajax({
-                method:'DELETE',
+                method:'POST',
                 url: '/contract/delete.do',
-                data:ids,
+                data:{id:ids},
+                traditional:true,
                 success : function(o) {
-                    console.log(o.code);
                     if (o.code == 'FAIL') {
                         alert("删除失败");
                     }else if(o.code == 'SUCCESS'){
                         alert("删除成功");
-                        getMemberList();
+                        //删除一列数据成功在table中移除那行
+                        $('#table').bootstrapTable('remove', {field: 'id', values: ids});
                     }
                 }
             });
         }
     }
 }
+$('#searchbtn').click(function () {
+    console.log("ok")
+    $.ajax({
+        type: 'post',
+        url: "/contract/list.do",
+        dataType: 'json',
+        data: $("#center").serialize(),
+        success: function (o) {
+            if (o.code == 'SUCCESS') {
+                $('#table').bootstrapTable('removeAll');
+                $('#table').bootstrapTable('append', o.list);
+            }
+        }
+    })
+});
