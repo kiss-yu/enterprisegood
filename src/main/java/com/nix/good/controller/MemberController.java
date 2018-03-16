@@ -2,6 +2,7 @@ package com.nix.good.controller;
 
 import com.nix.good.common.Role;
 import com.nix.good.model.MemberModel;
+import com.nix.good.model.RoleModel;
 import com.nix.good.service.impl.MemberService;
 import com.nix.good.util.MemberManager;
 import com.nix.good.web.controller.BaseController;
@@ -47,7 +48,8 @@ public class MemberController extends BaseController{
      * 注册/添加用户
      * */
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public Map<String,Object> createMember(@ModelAttribute MemberModel memberModel,HttpServletRequest request,Boolean admin) {
+    public Map<String,Object> createMember(@ModelAttribute MemberModel memberModel,HttpServletRequest request,Boolean admin,@ModelAttribute RoleModel role) {
+        memberModel.setRole(role);
         try {
             if (memberModel.getRole().getValue() != MemberModel.Role.customer.ordinal()) {
                 if (!admin) {

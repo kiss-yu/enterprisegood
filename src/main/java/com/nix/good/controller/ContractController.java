@@ -36,11 +36,10 @@ public class ContractController extends BaseController{
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Map<String,Object> create(
             @ModelAttribute ContractModel contractModel,
-            @RequestParam(value = "consumerId",defaultValue = "") String consumerId,
-            @RequestParam(value = "adminId",defaultValue = "") String adminId,
-            @RequestParam(value = "goodIds",defaultValue = "[]") String[] goodIds,
-            @RequestParam(value = "goodCounts",defaultValue = "[]") Integer[] counts,
-
+            @RequestParam(value = "consumerId",required=false) String consumerId,
+            @RequestParam(value = "adminId",required=false) String adminId,
+            @RequestParam(value = "goodIds",required=false) String[] goodIds,
+            @RequestParam(value = "goodCounts",required=false) Integer[] counts,
             HttpServletRequest request) {
         try {
             MemberModel currentMember = MemberManager.getCurrentUser(request);
@@ -112,8 +111,8 @@ public class ContractController extends BaseController{
     @Role({0,2})
     @RequestMapping(value = "/update",method = RequestMethod.PUT)
     public Map<String,Object> update(@ModelAttribute ContractModel model,
-                                     @RequestParam(value = "consumerId",defaultValue = "-1") Integer consumerId,
-                                     @RequestParam(value = "adminId",defaultValue = "-1") Integer adminId,
+                                     @RequestParam(value = "consumerId",required=false) Integer consumerId,
+                                     @RequestParam(value = "adminId",required=false) Integer adminId,
                                      HttpServletRequest request) {
         try {
             MemberModel consumer = memberService.findById(consumerId);
