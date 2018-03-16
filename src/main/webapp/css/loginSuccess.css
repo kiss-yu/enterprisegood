@@ -7,6 +7,10 @@ span.title_con{font-family:"微软雅黑";font-style: normal;font-size: 2em;font
 .header_title{margin:20px 0 10px 0}
 th{color: #0567e0;}
 td{color: #333333;}
+.form-group{
+    margin-left: 20px !important;
+    margin-top: 5px !important;
+}
 .tableStyle{padding-left: 50px;padding-right: 50px;padding-top: 30px;}
 .table span:hover{color:blue;cursor: pointer;}
 .pagination-detail{font-size: 14px !important;color: #999999 !important;}

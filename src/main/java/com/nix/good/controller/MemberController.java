@@ -48,20 +48,23 @@ public class MemberController extends BaseController{
      * 注册/添加用户
      * */
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public Map<String,Object> createMember(@ModelAttribute MemberModel memberModel,HttpServletRequest request, @RequestParam(value = "admin",defaultValue = "false") Boolean admin,@ModelAttribute RoleModel role) {
+    public Map<String,Object> createMember(@ModelAttribute MemberModel memberModel,
+                                           HttpServletRequest request,
+                                           @ModelAttribute RoleModel role) {
         memberModel.setRole(role);
+        MemberModel currentMember = MemberManager.getCurrentUser(request);
         try {
             if (memberModel.getRole().getValue() != MemberModel.Role.customer.ordinal()) {
-                if (!admin) {
+                if (currentMember == null) {
                     return render("code",FAIL).build();
                 }
-                if (MemberManager.getCurrentUser(request).getRole().getValue() != MemberModel.Role.admin.ordinal() &&
-                        MemberManager.getCurrentUser(request).getRole().getValue() != MemberModel.Role.customerMember.ordinal()) {
+                if (currentMember.getRole().getValue() != MemberModel.Role.admin.ordinal() &&
+                        currentMember.getRole().getValue() != MemberModel.Role.customerMember.ordinal()) {
                     return render("code",FAIL).build();
                 }
             }
             memberService.add(memberModel);
-            if (!admin) {
+            if (currentMember == null) {
                 MemberManager.addUser(request,memberModel);
                 render("member",memberModel);
             }
