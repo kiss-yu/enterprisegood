@@ -217,7 +217,7 @@ function show(data) {
     $("#agebox").attr("disabled","true");
 
     $('#namebox').val(data.name);
-    $('#selectRole').val(data.role);
+    $('#selectRole').val(data.role.value);
     $('#sexbox').val(data.sex ? 0 : 1);
     $('#agebox').val(data.age);
     $('#enable').css('display','none');
