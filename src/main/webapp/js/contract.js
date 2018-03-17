@@ -1,4 +1,17 @@
 var param = {};
+
+function legal(value) {
+    try {
+        var role = JSON.parse(sessionStorage.getItem("member")).role.value;
+        for (var i = 0;i < value.length;i ++) {
+            if (value[i] == role) {
+                return true;
+            }
+        }
+    }catch (e){
+    }
+    return false;
+}
 $(function() {
     $('#addbtn').click(function (){
         $('#contractIdbox').val('');
@@ -11,6 +24,10 @@ $(function() {
         $("#infoOperate").css('display','block');
     });
     getContractList();
+
+    if (legal([0,1])) {
+        $(".role_controller").css("display","block");
+    }
 });
 function getContractList() {
     $('#table').bootstrapTable({
@@ -108,9 +125,9 @@ function getContractList() {
             width : '1',// 宽度
             formatter: function (value, row, index) {
                 return "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='show("+JSON.stringify(row)+")' value='详情'>" +
-                    "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='edit("+JSON.stringify(row)+","+index +")' value='编辑'>" +
-                    "<input class='btn btn-danger' type='button' onclick='del("+JSON.stringify(row)+")' value='删除'>" +
-                    (row.finish ? "" : ("<input class='btn btn-info' type='button' onclick='signing("+JSON.stringify(row)+","+index +")' value='签约'>"));
+                    (legal([0,1])?"<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='edit("+JSON.stringify(row)+","+index +")' value='编辑'>":"") +
+                    (legal([0,1]) ?"<input class='btn btn-danger' type='button' onclick='del("+JSON.stringify(row)+")' value='删除'>" : "") +
+                    (!row.finish && legal([0,1])?  ("<input class='btn btn-info' type='button' onclick='signing("+JSON.stringify(row)+","+index +")' value='签约'>") : "");
             }
         }]
         // 列配置项,详情请查看 列参数 表格

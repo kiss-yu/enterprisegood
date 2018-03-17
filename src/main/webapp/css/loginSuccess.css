@@ -11,6 +11,9 @@ td{color: #333333;}
     margin-left: 20px !important;
     margin-top: 5px !important;
 }
+.role_hidden{
+    display: none;
+}
 .tableStyle{padding-left: 50px;padding-right: 50px;padding-top: 30px;}
 .table span:hover{color:blue;cursor: pointer;}
 .pagination-detail{font-size: 14px !important;color: #999999 !important;}

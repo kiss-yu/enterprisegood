@@ -32,7 +32,7 @@ public class ContractController extends BaseController{
     /**
      * 创建合同
      * */
-    @Role({0,2})
+    @Role({0,2,4})
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Map<String,Object> create(
             @ModelAttribute ContractModel contractModel,
