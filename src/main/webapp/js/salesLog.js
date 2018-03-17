@@ -112,19 +112,16 @@ $('#searchbtn').click(function () {
 /*展示方法*/
 function show(data) {
 
-
     $("#createDatebox").attr("disabled","true");
     $("#countbox").attr("disabled","true");
     $("#goodnamebox").attr("disabled","true");
     $("#membernamebox").attr("disabled","true");
-    $("#contractIdbox").attr("disabled","true");
     $("#describebox").attr("disabled","true");
 
     $('#createDatebox').val(data.createDate);
     $('#countbox').val(data.count);
-    $('#goodnamebox').val(data.good.name);
+    $('#goodnamebox').val(undefined === data.good ? '':data.good.name);
     $('#membernamebox').val(data.member.name);
-    $('#contractIdbox').val(data.contractId);
     $('#describebox').val(data.describe);
     $('#enable').css('display','none');
     $("#infoOperate").css('display','block');

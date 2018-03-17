@@ -14,10 +14,14 @@ function legal(value) {
 }
 $(function() {
     $('#addbtn').click(function (){
-        $('#contractIdbox').val('');
-        $('#createDatebox').val('');
-        $('#customer.namebox').val('');
-        $('#admin.namebox').val('');
+        role();
+        $('#contractId').val('');
+        $('#createDate').val('');
+        $('#finish').val(1);
+        $('#customerId').val('');
+        $('#customerName').val('');
+        $('#adminId').val('');
+        $('#adminName').val('');
         $('#infoOperatetitle').text('添加');
         $('#enable').attr('onclick','enableAdd()');
         $('#enable').css('display','block');
@@ -28,7 +32,20 @@ $(function() {
     if (legal([0,1])) {
         $(".role_controller").css("display","block");
     }
+    if (legal([4])) {
+        $(".add_role_controller").css("display","block");
+
+    }
 });
+function role() {
+
+    if (legal([4])) {
+        $('.role_user').hide();
+    }
+    if (legal([1])) {
+        $('.role_contract').hide();
+    }
+}
 function getContractList() {
     $('#table').bootstrapTable({
         method: 'POST',
@@ -173,6 +190,7 @@ function enableAdd() {
                 if (o.code == 'SUCCESS') {
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
+                    addGood(false);
                     //添加成功后再table增加一行数据
                     $('#table').bootstrapTable('prepend', o.contract);
                 }else if(o.code == 'FAIL'){
@@ -203,6 +221,10 @@ function checkInput() {
 /*展示方法*/
 function show(data) {
     disableAll();
+    var goods = data.goodCountList;
+    for (var i = 0;i < goods.length;i ++) {
+        addGoodItem(goods[i],false);
+    }
     $('#contractId').val(data.contractId);
     $('#createDate').val(data.createDate);
     $('#finish').val(data.finish ? 1 : 0);
@@ -221,10 +243,16 @@ function disableAll() {
 function dismiss() {
     $("#contractId #createDate #finish #customerId #adminId").removeAttr("disabled");
     $("#infoOperate").css('display','none');
+    addGood(false);
     $('#enable').css('display','block');
 }
 function edit(data,index) {
     dismiss();
+    role();
+    var goods = data.goodCountList;
+    for (var i = 0;i < goods.length;i ++) {
+        addGoodItem(goods[i],true);
+    }
     $('#id').val(data.id);
     $('#contractId').val(data.contractId);
     $('#createDate').val(data.createDate);
@@ -252,6 +280,7 @@ function enableEdit(index) {
                     $('#table').bootstrapTable('updateRow', {index: index, row: o.contract});
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
+                    addGood(false);
                 }else if(o.code == 'FAIL'){
                     alert('修改失败！');
                 }
@@ -321,3 +350,69 @@ $('#searchbtn').click(function () {
         }
     })
 });
+function getMemberMsg(id,input) {
+    $.ajax({
+        type: 'get',
+        url: "/member/-1.do?memberId=" + id,
+        dataType: 'json',
+        success: function (o) {
+            if (o.member != null) {
+                input.val(o.member.name);
+            }else {
+                input.val("不存在用户");
+            }
+        }
+    })
+}
+function addGood(b) {
+    b ? $("#good-add").show() : $("#good-add").hide();
+}
+var goodName;
+function setGood() {
+    var count = $("#count");
+    var btn = $("#goodAddButton");
+    var inventory = $("#good-inventory");
+    $.ajax({
+        type: 'get',
+        url: "/goods/-1.do?goodId=" + $("#input-goodId").val(),
+        dataType: 'json',
+        success: function (o) {
+            if (o.goods != null) {
+                inventory.val(o.goods.inventory - count.val());
+                if (inventory.val() > 0 && count.val() > 0) {
+                    btn.removeAttr("disabled");
+                    goodName = o.goods.name;
+                }else {
+                    $("#goodAddButton").attr("disabled","true");
+                }
+            }else {
+                inventory.val("0");
+            }
+        }
+    })
+}
+
+function addGoodItem(good,btn) {
+    var goodId = good == null ? $("#input-goodId").val() : good.goods.goodId;
+    var count = good == null ? $("#count").val() : good.count;
+    var name = good == null ? goodName : good.goods.name;
+    var dom = "" + 
+        "<li class='list-group-item ' id='" + goodId + "'>\n" +
+        "                <input hidden name='goodId' value='" + goodId + "'>\n" +
+        "                <input hidden name='count' value='" + count + "'>\n" +
+        "                <span class='good-name'>产品名:</span>\n" +
+        "                <span class='goodName'>" + name + "</span>\n" +
+        "                <span class='good-count'>数量:</span>\n" +
+        "                <span class='goodCount'>" + count + "</span>\n" +
+        (!btn ? "" : "<input type='button' class='btn btn-danger right' value='移除' onclick='removeGood(\"" + goodId + "\")'>") +
+        "</li>";
+    $("#goodsListUl").append(dom);
+    $("#count").val(0);
+    $("#input-goodId").val('');
+    $("#good-inventory").val(0);
+    $("#goodAddButton").attr("disabled","true");
+}
+function removeGood(btn) {
+    var ul = $("#goodsListUl");
+    ul.children("#" + btn).remove();
+}

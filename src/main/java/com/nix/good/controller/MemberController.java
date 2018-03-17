@@ -96,7 +96,11 @@ public class MemberController extends BaseController{
      * */
     @Role({0,3})
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Map<String,Object> memberMessage(@PathVariable("id") Integer id) {
+    public Map<String,Object> memberMessage(@PathVariable("id") Integer id,
+                                            @RequestParam(value = "memberId",required = false) String memberId) {
+        if (id == -1) {
+            return render("member",memberService.findById(memberId)).build();
+        }
         return render("member",memberService.findById(id)).build();
     }
 

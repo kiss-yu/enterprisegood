@@ -96,8 +96,13 @@ public class GoodsController extends BaseController{
      * */
     @Role({0,1,2,3,4})
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public Map<String,Object> select(@PathVariable("id") Integer id) {
+    public Map<String,Object> select(@PathVariable("id") Integer id,
+                                     @RequestParam(value = "goodId",required = false) String goodId) {
         try {
+            if (id == -1) {
+                return render("code",SUCCESS)
+                        .render("goods",goodsService.findById(goodId)).build();
+            }
             render("code",SUCCESS)
                     .render("goods",goodsService.findById(id));
         }catch (Exception e) {
