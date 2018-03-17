@@ -27,6 +27,7 @@ $(function () {
 });
 window.onload = function(){
     var member = JSON.parse(sessionStorage.getItem("member"));
+    $('#showMemberName').text('欢迎您，' + member.name);
     switch (member.role.value) {
         case 4:$(".role_4").css("display","inline-block");break;
         case 0:$(".role_0").css("display","inline-block");break;

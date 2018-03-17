@@ -124,10 +124,12 @@ function show(data) {
     $('#membernamebox').val(data.member.name);
     $('#describebox').val(data.describe);
     $('#enable').css('display','none');
+    $(".log-window").css('display',"block");
     $("#infoOperate").css('display','block');
 }
 
 function dismiss() {
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
+    $(".log-window").css('display',"none");
 }

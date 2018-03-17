@@ -5,6 +5,7 @@ $('#addbtn').click(function (){
     $('#name').val('');
     $('#value').val('');
     $('#infoOperatetitle').text('添加');
+    $(".log-window").css('display',"block");
     $('#enable').attr('onclick','enableAdd()');
     $('#enable').css('display','block');
     $("#infoOperate").css('display','block');
@@ -18,6 +19,7 @@ function enableAdd() {
             data: $("#info-form").serialize(),
             success: function (o) {
                 if (o.code === 'SUCCESS') {
+                    dismiss();
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
                     //添加成功后再table增加一行数据
@@ -120,6 +122,7 @@ function show(data) {
     $('#name').val(data.name);
     $('#value').val(data.value);
     $('#enable').css('display','none');
+    $(".log-window").css('display',"block");
     $("#infoOperate").css('display','block');
 }
 
@@ -129,6 +132,7 @@ function dismiss() {
     $("#value").removeAttr("disabled");
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
+    $(".log-window").css('display',"none");
 }
 
 function edit(data,index) {
@@ -139,6 +143,7 @@ function edit(data,index) {
     $("#id").val(data.id);
     $("#name").val(data.name);
     $('#value').val(data.value);
+    $(".log-window").css('display',"block");
     $('#enable').attr('onclick','enableEdit('+index+')');
     $("#infoOperate").css('display','block');
 }
@@ -156,7 +161,7 @@ function enableEdit(index) {
                     $("#infoOperate").css('display','none');
                     //当前行修改成功后再table中修改改行
                     $('#table').bootstrapTable('updateRow', {index: index, row: o.role});
-
+                    dismiss();
                 }else if(o.code === 'FAIL'){
                     alert('修改失败！' + o.msg == null ? '' : o.msg);
                 }

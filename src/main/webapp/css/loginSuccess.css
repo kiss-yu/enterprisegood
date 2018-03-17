@@ -19,7 +19,7 @@ td{color: #333333;}
 .pagination-detail{font-size: 14px !important;color: #999999 !important;}
 .dropdown-toggle{color: #999999 !important;line-height: 5px !important;height: 25px;}
 .btn-default:hover{color: #333333 !important;}
-.infobtn{float: right;margin-right: 50px;}
+.infobtn{position: absolute;top: 4%;right: -1%;margin-right: 50px;}
 .infoOperate{display:none;background-color: #d9d8d7;width: 40%;border: 1px solid rgb(57,166,49);border-radius: 6px;position: fixed;top:100px;left: 30%;}
 #infoOperatetitle{height: 50px;width: 100%;font-size: 30px;line-height: 50px;background-color: #8EC172;text-align: center;}
 .middle {height: 786px;width: 100%;z-index: 0;position: relative;}
@@ -36,4 +36,11 @@ td{color: #333333;}
     left: 0;
     right: 0;
     display:none;
+}
+#showMemberName{
+    position: absolute;
+    right: 41px;
+    top: -16px;
+    font-size: 15px;
+    color: red;
 }

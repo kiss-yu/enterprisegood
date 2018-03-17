@@ -136,11 +136,7 @@ function enableAdd() {
                 if (o.code === 'SUCCESS') {
                     //添加成功后再table增加一行数据
                     $('#table').bootstrapTable('prepend', o.goods);
-                    $('#enable').removeAttr('onclick');
                     dismiss();
-
-                    $(".log-window").css('display',"block");
-                    $("#infoOperate").css('display','none');
                 }else if(o.code === 'FAIL'){
                     alert('添加失败！' + o.msg == null ? '' : o.msg);
                 }
