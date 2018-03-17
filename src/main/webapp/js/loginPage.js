@@ -16,6 +16,7 @@ function checkInput() {
 
 function checkLogin(){
     if(checkInput()) {
+
         $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
         $.ajax({
             type: 'post',

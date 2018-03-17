@@ -2,11 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/loginPage.css" />
     <title>用户登录-企业客户和信息管理系统</title>
+    <link rel="stylesheet" href="../css/loginPage.css" />
     <script type="text/javascript" src="../resources/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="../resources/jquery.validate.min.js"></script>
     <script type="text/javascript" src="../resources/md5.js"></script>
+    <link rel="stylesheet" href="../resources/bootstrap.min.css" />
     <script type="text/javascript" src="../js/loginPage.js"></script>
 </head>
 <body>
@@ -22,19 +23,27 @@
         <div class="con_title">
             <span class="con_title_sp">欢迎登录企业客户和信息管理系统</span>
         </div>
-        <form action="/member/login" method="post" id="loginForm">
-            <div class="con_panel">
-                <div class="con_input">
-                    <span>用户名：</span><input type="text" placeholder="账号" id="account" name="memberId"/>
+
+        <form class="form-horizontal" action="/member/login" method="post" id="loginForm" style="margin-top: 20px;">
+            <div class="form-group">
+                <label for="account" class="col-sm-2 control-label">账号</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="account" placeholder="账号" name="memberId">
                 </div>
-                <div class="con_input">
-                    <span>密&nbsp;&nbsp;&nbsp;&nbsp;码：</span>
-                    <input type="password" placeholder="密码" id="password" />
-                    <input type="password" name="password" hidden/>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-8">
+                    <input type="password" class="form-control" id="password" placeholder="密码" name='password'>
                 </div>
-                <input type="button" value="登    录" class="submit-btn" onclick="checkLogin()" />
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="button" class="btn btn-info" id="login" value="登录" onclick="checkLogin()" >
+                </div>
             </div>
         </form>
+
     </div>
 </div>
 
