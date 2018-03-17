@@ -5,5 +5,5 @@ import com.nix.good.service.BaseService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SalesLogService extends BaseService<SalesLogModel>{
+public class SalesService extends BaseService<SalesLogModel>{
 }

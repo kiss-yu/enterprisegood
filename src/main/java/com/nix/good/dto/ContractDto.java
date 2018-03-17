@@ -28,6 +28,12 @@ public class ContractDto {
         this.goodCountList = list;
     }
 
+    public ContractDto(Integer id, String contractId, Date createDate) {
+        this.id = id;
+        this.contractId = contractId;
+        this.createDate = createDate;
+    }
+
     private Integer id;
 
     /**

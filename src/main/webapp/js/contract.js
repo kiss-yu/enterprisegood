@@ -291,7 +291,6 @@ function delSelects() {
     }
 }
 $('#searchbtn').click(function () {
-    console.log("ok")
     $.ajax({
         type: 'post',
         url: "/contract/list.do",

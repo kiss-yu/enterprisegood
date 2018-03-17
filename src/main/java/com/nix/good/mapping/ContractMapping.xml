@@ -93,6 +93,6 @@
         DELETE FROM `contract` WHERE id=#{id}
     </delete>
     <select id="selectRoleLazy" parameterType="java.lang.String" resultType="com.nix.good.model.ContractModel">
-        SELECT c.* from `contract` AS c where c.contractId = #{contract,jdbcType=VARCHAR}
+        SELECT c.* from `contract` AS c where c.contractId = #{contractId,jdbcType=VARCHAR}
     </select>
 </mapper>

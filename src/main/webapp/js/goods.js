@@ -1,6 +1,5 @@
 var param = {};
 $(function() {
-    $('#searchbtn').attr('onclick','search()');
     $('#addbtn').click(function (){
         $('#goodIdbox').val('');
         $('#createDatebox').val('');
@@ -38,7 +37,6 @@ function getGoodList() {
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backData);
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.list);
         },
@@ -65,6 +63,12 @@ function getGoodList() {
         }, {
             field : 'goodId',// 返回值名称
             title : '商品编号',// 列名
+            align : 'center',// 水平居中显示
+            valign : 'middle',// 垂直居中显示
+            width : '1',// 宽度
+        }, {
+            field : 'name',// 返回值名称
+            title : '商品名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '1',// 宽度
@@ -110,38 +114,13 @@ function enableAdd() {
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
-                console.log(o);
                 if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
-                    alert('修改成功!' + o.goods == null ? '' : o.goods);
+                    //添加成功后再table增加一行数据
+                    $('#table').bootstrapTable('prepend', o.goods);
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
                 }else if(o.code == 'FAIL'){
-                    alert('修改失败！' + o.goods == null ? '' : o.goods);
-                }
-            },
-            error: function () {
-            }
-        });
-    }
-}
-function search() {
-    var info = $('#search').val();
-    if(info == null || info == ''){
-        $.ajax({
-            type: 'POST',
-            url: "/goods/create.do",
-            dataType: 'json',
-            data: $("#info-form").serialize(),
-            success: function (o) {
-                console.log(o);
-                if (o.code == 'SUCCESS') {
-                    console.log(o.goods);
-                    alert('修改成功!' + o.goods == null ? '' : o.goods);
-                    $('#enable').removeAttr('onclick');
-                    $("#infoOperate").css('display','none');
-                }else if(o.code == 'FAIL'){
-                    alert('修改失败！' + o.goods == null ? '' : o.goods);
+                    alert('添加失败！' + o.msg == null ? '' : o.msg);
                 }
             },
             error: function () {
@@ -208,15 +187,12 @@ function enableEdit(index) {
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
-                console.log(o.goods);
                 if (o.code == 'SUCCESS') {
                     alert('修改成功!');
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
 
                     $('#table').bootstrapTable('updateRow', {index: index, row: o.goods});
-
-
                 }else if(o.code == 'FAIL'){
                     alert('修改失败！');
                 }
@@ -232,7 +208,6 @@ function del(data) {
             method:'POST',
             url: '/goods/delete.do?id=' + data.id,
             success : function(o) {
-                console.log(o.code);
                 if (o.code == 'FAIL') {
                     alert("删除失败");
                 }else if(o.code == 'SUCCESS'){
@@ -255,16 +230,13 @@ function delSelects() {
         var ids = new Array();
         for (var i = 0; i < data.length; i++) {
             ids.push(data[i].id);
-            console.log(data[i].id);
         }
-        console.log(data);
         if(confirm('确认删除所有选中数据?') == true){
             $.ajax({
                 method:'POST',
                 url: '/goods/delete.do',
                 data:ids,
                 success : function(o) {
-                    console.log(o.code);
                     if (o.code == 'FAIL') {
                         alert("删除失败");
                     }else if(o.code == 'SUCCESS'){
@@ -276,3 +248,17 @@ function delSelects() {
         }
     }
 }
+$('#searchbtn').click(function () {
+    $.ajax({
+        type: 'post',
+        url: "/goods/list.do",
+        dataType: 'json',
+        data: $("#center").serialize(),
+        success: function (o) {
+            if (o.code == 'SUCCESS') {
+                $('#table').bootstrapTable('removeAll');
+                $('#table').bootstrapTable('append', o.list);
+            }
+        }
+    })
+});

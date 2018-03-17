@@ -91,6 +91,6 @@
         SELECT * FROM `goods` WHERE goodId=#{id}
     </select>
     <select id="selectRoleLazy" parameterType="java.lang.String" resultType="com.nix.good.model.GoodsModel">
-        SELECT g.* from `goods` AS g where g.goodId = #{goods,jdbcType=VARCHAR}
+        SELECT g.* from `goods` AS g where g.goodId = #{goodId,jdbcType=VARCHAR}
     </select>
 </mapper>

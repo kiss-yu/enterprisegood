@@ -12,12 +12,16 @@ $(function () {
         $('#showWelcome').css('display','none');
     });
     $('#sellinfo').click(function (){
-        $('#iframe').attr('src','../html/goodsPage.html');
+        $('#iframe').attr('src','../html/salesLogPage.html');
         $('#showWelcome').css('display','none');
     });
     $("#exit").click(function () {
-        $(location).attr("href","loginPage.html");
+        $(location).attr("href","/member/logout.do");
+        $(location).attr("href","../html/loginPage.html");
     })
-
+    $("#roleInfo").click(function () {
+        $('#iframe').attr("src","../html/role.html");
+        $('#showWelcome').css('display','none');
+    })
 
 });

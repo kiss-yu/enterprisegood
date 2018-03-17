@@ -1,10 +1,8 @@
 
 var param = {};
-
-$('#searchbtn').attr('onclick','search()');
 $('#infoOperatetitle').text('详情');
 $(function() {
-    $("#infoOperate").css('display','block');
+    $("#infoOperate").css('display','none');
     $('#table').bootstrapTable({
         method: 'POST',
         striped : true,// 隔行变色效果
@@ -53,32 +51,26 @@ $(function() {
             valign : 'middle',// 垂直居中显示
             width : '1',// 宽度
             visible : false
-        }, {
-            field : 'contract.contractId',// 返回值名称
-            title : '合同编号',// 列名
-            align : 'center',// 水平居中显示
-            valign : 'middle',// 垂直居中显示
-            width : '1'// 宽度
-        }, {
+        },  {
             field : 'contract.createDate',// 返回值名称
             title : '创建时间',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '1'// 宽度
         }, {
-            field : 'contract_goods.count',// 返回值名称
+            field : 'count',// 返回值名称
             title : '数量',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '10'// 宽度
         },  {
-            field : 'goods.name',// 返回值名称
+            field : 'good.name',// 返回值名称
             title : '物品名称',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '15'// 宽度
         }, {
-            field : 'contract.customer',// 返回值名称
+            field : 'member.name',// 返回值名称
             title : '客户名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
@@ -88,8 +80,7 @@ $(function() {
             title : '描述',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '15',// 宽度
-            visible : false
+            width : '15'// 宽度
         }, {
             field : '',// 返回值名称
             title : '操作',// 列名
@@ -104,32 +95,20 @@ $(function() {
         /* 事件 */
     });
 });
-function search() {
-    var info = $('#search').val();
-    if(info == null || info === ''){
-        $.ajax({
-            type: 'POST',
-            url: "/sales/list.do",
-            dataType: 'json',
-            data: $("#info-form").serialize(),
-            success: function (o) {
-                console.log(o);
-                if (o.code === 'SUCCESS') {
-                    alert('查找成功!');
-                    $('#enable').removeAttr('onclick');
-                    $("#infoOperate").css('display','none');
-                    //添加成功后再table增加一行数据
-                    $('#table').bootstrapTable('removeAll');
-                    $('#table').bootstrapTable('append', o.list);
-                }else if(o.code === 'FAIL'){
-                    alert('查找失败！' + o.list == null ? '' : o.list);
-                }
-            },
-            error: function () {
+$('#searchbtn').click(function () {
+    $.ajax({
+        type: 'post',
+        url: "/sales/list.do",
+        dataType: 'json',
+        data: $("#center").serialize(),
+        success: function (o) {
+            if (o.code == 'SUCCESS') {
+                $('#table').bootstrapTable('removeAll');
+                $('#table').bootstrapTable('append', o.list);
             }
-        });
-    }
-}
+        }
+    })
+});
 /*展示方法*/
 function show(data) {
 
@@ -143,8 +122,8 @@ function show(data) {
 
     $('#createDatebox').val(data.createDate);
     $('#countbox').val(data.count);
-    $('#goodnamebox').val(data.name);
-    $('#membernamebox').val(data.age);
+    $('#goodnamebox').val(data.good.name);
+    $('#membernamebox').val(data.member.name);
     $('#contractIdbox').val(data.contractId);
     $('#describebox').val(data.describe);
     $('#enable').css('display','none');

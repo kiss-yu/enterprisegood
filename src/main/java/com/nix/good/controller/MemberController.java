@@ -41,6 +41,7 @@ public class MemberController extends BaseController{
      * */
     @RequestMapping("/logout")
     public void logout(HttpServletRequest request) {
+        System.out.println("注销");
         MemberManager.deleteUser(request);
     }
 
