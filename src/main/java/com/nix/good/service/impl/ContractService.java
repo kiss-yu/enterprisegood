@@ -2,6 +2,7 @@ package com.nix.good.service.impl;
 
 import com.nix.good.dao.ContractMapper;
 import com.nix.good.dao.GoodsCountMapper;
+import com.nix.good.dao.GoodsMapper;
 import com.nix.good.dao.SalesMapper;
 import com.nix.good.model.ContractModel;
 import com.nix.good.model.GoodsCountModel;
@@ -12,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author 11723
@@ -27,12 +26,23 @@ public class ContractService extends BaseService<ContractModel>{
     private SalesMapper salesLogMapper;
     @Autowired
     private GoodsCountMapper goodsCountMapper;
+    @Autowired
+    private GoodsMapper goodsMapper;
 
-    public void add(ContractModel model,String[] goodIds,Integer[] counts) throws Exception {
+    public Map<String,Object> add(ContractModel model, String[] goodIds, Integer[] counts) throws Exception {
+        Map<String,Object> map = new HashMap<>();
         List<GoodsCountModel> goodsCountModels = new ArrayList<>();
         if (goodIds != null){
             for (int i = 0;i < goodIds.length;i ++) {
-                GoodsModel goodsModel = new GoodsModel();
+                GoodsModel goodsModel = goodsMapper.selectByStringId(goodIds[i]);
+                if (goodsModel == null) {
+                    map.put("msg",goodIds[i] + "商品不存在");
+                    return map;
+                }
+                if (goodsModel.getInventory() < counts[i]) {
+                    map.put("msg",goodIds[i] + "商品库存不足");
+                    return map;
+                }
                 GoodsCountModel goodsCountModel = new GoodsCountModel();
                 goodsModel.setGoodId(goodIds[i]);
                 goodsCountModel.setGoods(goodsModel);
@@ -43,6 +53,7 @@ public class ContractService extends BaseService<ContractModel>{
         }
         model.setGoodCountList(goodsCountModels);
         add(model);
+        return null;
     }
 
     @Override

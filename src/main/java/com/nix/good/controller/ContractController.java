@@ -69,7 +69,11 @@ public class ContractController extends BaseController{
             contractModel.setCreateDate(new Date());
             render("code",SUCCESS)
                     .render("contract",contractModel);
-            contractService.add(contractModel,goodIds,counts);
+            Map map =  contractService.add(contractModel,goodIds,counts);
+            if (map != null) {
+                map.put("code",FAIL);
+                return map;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             render("code",FAIL);
