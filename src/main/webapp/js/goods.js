@@ -160,11 +160,25 @@ function show(data) {
     $("#infoOperate").css('display','block');
 
 }
+
 function dismiss() {
-    $("#goodIdbox,#createDatebox,#inventorybox,#pricebox").removeAttr("disabled");
+    $("#namebox,#memberId,#selectRole,#sexbox,#agebox,#password").removeAttr("disabled");
+
+    $('#namebox').val('');
+    $('#memberId').val('');
+    $('#selectRole').val('');
+    $('#sexbox').val('');
+    $('#agebox').val('');
+    $('#password').val('');
+
+    $(".log-window").css('display',"none");
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
+
 }
+
+
+
 function edit(data) {
 
     $('#infoOperatetitle').text('编辑');
