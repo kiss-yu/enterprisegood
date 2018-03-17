@@ -137,9 +137,15 @@ public class MemberController extends BaseController{
                                    @RequestParam(value = "order",defaultValue = "id") String order,
                                    @RequestParam(value = "sort",defaultValue = "ASC") String sort,
                                    @RequestParam(value = "field",defaultValue = "") String field,
-                                   @RequestParam(value = "content",defaultValue = "") String content) {
+                                   @RequestParam(value = "content",defaultValue = "") String content,
+                                   HttpServletRequest request) {
         List<MemberModel> list;
         page = -1;
+        MemberModel currentMember = MemberManager.getCurrentUser(request);
+        if (currentMember != null && currentMember.getRole().getValue() == MemberModel.Role.customerMember.ordinal()) {
+            field = "role";
+            content = "4";
+        }
         if (!field.isEmpty() && !content.isEmpty()) {
             list = memberService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
         }else {

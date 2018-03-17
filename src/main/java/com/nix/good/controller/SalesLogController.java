@@ -22,7 +22,7 @@ public class SalesLogController extends BaseController{
     @Autowired
     private SalesService salesLogService;
 
-    @Role(0)
+    @Role({0,2})
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     public Map<String,Object> update(@RequestParam("ids") Integer[] ids) {
         try {
@@ -34,11 +34,7 @@ public class SalesLogController extends BaseController{
         }
         return build();
     }
-
-    /**
-     * 获取用户列表
-     * */
-    @Role({0,3})
+    @Role({0,1,2,5})
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public Map<String,Object> list(@RequestParam(value = "page",defaultValue = "1")  Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,

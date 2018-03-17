@@ -50,7 +50,7 @@ public class RoleController extends BaseController{
         }
         return build();
     }
-    @Role({0,3})
+    @Role({0})
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public Map<String,Object> list(@RequestParam(value = "page",defaultValue = "1")  Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,

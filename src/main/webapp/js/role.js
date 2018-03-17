@@ -1,7 +1,6 @@
 
 var param = {};
 
-
 $('#addbtn').click(function (){
     $('#name').val('');
     $('#value').val('');
