@@ -34,7 +34,7 @@ public class SalesLogController extends BaseController{
         }
         return build();
     }
-    @Role({0,1,2,5})
+    @Role({0,1,2,3,5})
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public Map<String,Object> list(@RequestParam(value = "page",defaultValue = "1")  Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,

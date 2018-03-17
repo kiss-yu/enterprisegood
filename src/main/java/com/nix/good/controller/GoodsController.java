@@ -20,7 +20,7 @@ public class GoodsController extends BaseController{
     /**
      * 添加商品
      * */
-    @Role({0,2})
+    @Role({0,5})
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Map<String,Object> add(@ModelAttribute GoodsModel goodsModel) {
         try {
@@ -40,7 +40,7 @@ public class GoodsController extends BaseController{
     /**
      * 删除商品
      * */
-    @Role({0,2})
+    @Role({0,5})
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     public Map<String,Object> delete(@RequestParam(value = "id") Integer[] id) {
         try {
@@ -54,11 +54,10 @@ public class GoodsController extends BaseController{
     /**
      * 修改
      * */
-    @Role({0,2})
+    @Role({0,5})
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Map<String,Object> update(@ModelAttribute GoodsModel goodsModel) {
         try {
-            System.out.println(goodsModel);
             goodsService.update(goodsModel);
             render("code",SUCCESS)
                     .render("goods",goodsModel);
@@ -72,7 +71,7 @@ public class GoodsController extends BaseController{
     /**
      * 查看商品
      * */
-    @Role({0,1,2,3,4})
+    @Role({0,1,2,3,4,5})
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public Map<String,Object> select(@PathVariable("id") Integer id,
                                      @RequestParam(value = "goodId",required = false) String goodId) {
@@ -93,7 +92,7 @@ public class GoodsController extends BaseController{
     /**
      * 获取商品列表
      * */
-    @Role({0,1,2,3,4})
+    @Role({0,1,2,3,4,5})
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public Map<String,Object> list(@RequestParam(value = "page",defaultValue = "1")  Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,

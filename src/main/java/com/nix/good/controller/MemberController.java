@@ -115,7 +115,9 @@ public class MemberController extends BaseController{
             return render("code",FAIL)
                     .render("msg","非法修改").build();
         }else {
-            if (currentMember.getRole().getValue() != MemberModel.Role.admin.ordinal() && !currentMember.getId().equals(memberModel.getId())) {
+            if (currentMember.getRole().getValue() != MemberModel.Role.admin.ordinal()
+                    && currentMember.getRole().getValue() != MemberModel.Role.customerMember.ordinal()
+                    && !currentMember.getId().equals(memberModel.getId())) {
                 return render("code",FAIL)
                         .render("msg","非法修改").build();
             }

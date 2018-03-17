@@ -34,14 +34,14 @@ public class ContractController extends BaseController{
     /**
      * 创建合同
      * */
-    @Role({0,2,4})
+    @Role({0,1,4})
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public Map<String,Object> create(
             @ModelAttribute ContractModel contractModel,
             @RequestParam(value = "customerId",required=false) String customerId,
             @RequestParam(value = "adminId",required=false) String adminId,
-            @RequestParam(value = "goodIds",required=false) String[] goodIds,
-            @RequestParam(value = "goodCounts",required=false) Integer[] counts,
+            @RequestParam(value = "goodId",required=false) String[] goodIds,
+            @RequestParam(value = "count",required=false) Integer[] counts,
             HttpServletRequest request) {
         try {
             MemberModel currentMember = MemberManager.getCurrentUser(request);
@@ -67,13 +67,13 @@ public class ContractController extends BaseController{
                 return render("code",FAIL).build();
             }
             contractModel.setCreateDate(new Date());
-            render("code",SUCCESS)
-                    .render("contract",contractModel);
             Map map =  contractService.add(contractModel,goodIds,counts);
             if (map != null) {
                 map.put("code",FAIL);
                 return map;
             }
+            render("code",SUCCESS)
+                    .render("contract",new ContractDto(contractModel));
         } catch (Exception e) {
             e.printStackTrace();
             render("code",FAIL);
@@ -84,7 +84,7 @@ public class ContractController extends BaseController{
     /**
      * 合同部用户确定签约合同
      * */
-    @Role({0,2})
+    @Role({0,1})
     @RequestMapping(value = "/signing",method = RequestMethod.POST)
     public Map<String,Object> signingContract(@ModelAttribute ContractModel contractModel,HttpServletRequest request) {
         try {
@@ -102,7 +102,7 @@ public class ContractController extends BaseController{
     /**
      * 删除合同
      * */
-    @Role({0,2})
+    @Role({0,1})
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
     public Map<String,Object> delete(@RequestParam(value = "id") Integer[] id) {
         try {
@@ -117,13 +117,13 @@ public class ContractController extends BaseController{
     /**
      * 修改
      * */
-    @Role({0,2})
+    @Role({0,1})
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Map<String,Object> update(@ModelAttribute ContractModel model,
-                                     @RequestParam(value = "consumerId",required=false) Integer consumerId,
-                                     @RequestParam(value = "adminId",required=false) Integer adminId,
-                                     @RequestParam(value = "goodIds",required=false) String[] goodIds,
-                                     @RequestParam(value = "goodCounts",required=false) Integer[] counts,
+                                     @RequestParam(value = "consumerId",required=false) String consumerId,
+                                     @RequestParam(value = "adminId",required=false) String adminId,
+                                     @RequestParam(value = "goodId",required=false) String[] goodIds,
+                                     @RequestParam(value = "count",required=false) Integer[] counts,
                                      HttpServletRequest request) {
         try {
             MemberModel consumer = memberService.findById(consumerId);
@@ -136,7 +136,7 @@ public class ContractController extends BaseController{
                 return map;
             }
             render("code",SUCCESS)
-                    .render("contract",model);
+                    .render("contract",new ContractDto(model));
         } catch (Exception e) {
             e.printStackTrace();
             render("code",FAIL);
@@ -147,7 +147,7 @@ public class ContractController extends BaseController{
     /**
      * 查看合同
      * */
-    @Role({0,2,4})
+    @Role({0,1,4})
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public Map<String,Object> select(@PathVariable("id") Integer id,HttpServletRequest request) {
         ContractModel model = contractService.findById(id);
@@ -170,7 +170,7 @@ public class ContractController extends BaseController{
     /**
      * 获取商品列表
      * */
-    @Role({0,2,4})
+    @Role({0,1,4})
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public Map<String,Object> list(@RequestParam(value = "page",defaultValue = "1") Integer page,
                                    @RequestParam(value = "size",defaultValue = "20") Integer size,

@@ -13,7 +13,22 @@ $(function() {
 
     });
     getGoodList();
+    if (legal([0,5])) {
+        $(".role_controller").css("display","block");
+    }
 });
+function legal(value) {
+    try {
+        var role = JSON.parse(sessionStorage.getItem("member")).role.value;
+        for (var i = 0;i < value.length;i ++) {
+            if (value[i] == role) {
+                return true;
+            }
+        }
+    }catch (e){
+    }
+    return false;
+}
 function getGoodList() {
     $('#table').bootstrapTable({
         method: 'POST',
@@ -100,8 +115,8 @@ function getGoodList() {
             width : '10',// 宽度
             formatter: function (value, row, index) {
                 return "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='show("+JSON.stringify(row)+")' value='详情'>" +
-                    "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='edit("+JSON.stringify(row)+","+index +")' value='编辑'>" +
-                    "<input class='btn btn-danger' type='button' onclick='del("+JSON.stringify(row)+")' value='删除'>";
+                    (legal([0,5]) ? ("<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='edit("+JSON.stringify(row)+","+index +")' value='编辑'>") : "") +
+                        (legal([0,5]) ? ("<input class='btn btn-danger' type='button' onclick='del("+JSON.stringify(row)+")' value='删除'>") : "");
             }
         }]
         // 列配置项,详情请查看 列参数 表格
@@ -122,6 +137,7 @@ function enableAdd() {
                     //添加成功后再table增加一行数据
                     $('#table').bootstrapTable('prepend', o.goods);
                     $('#enable').removeAttr('onclick');
+                    dismiss();
 
                     $(".log-window").css('display',"block");
                     $("#infoOperate").css('display','none');
@@ -203,17 +219,17 @@ function edit(data) {
 function enableEdit(index) {
     if(checkInput()){
         $.ajax({
-            type: 'put',
+            type: 'POST',
             url: "/goods/update.do",
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
                 if (o.code == 'SUCCESS') {
+                    $('#table').bootstrapTable('updateRow', {index: index, row: o.goods});
                     alert('修改成功!');
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
-
-                    $('#table').bootstrapTable('updateRow', {index: index, row: o.goods});
+                    dismiss();
                 }else if(o.code == 'FAIL'){
                     alert('修改失败！');
                 }
