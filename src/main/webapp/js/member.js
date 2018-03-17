@@ -3,18 +3,19 @@ var param = {};
 
 $('#addbtn').click(function (){
     $('#namebox').val('');
-    $('#selectRole').val();
-    $('#sexbox').val();
+    $('#selectRole').val('');
+    $('#sexbox').val('');
     $('#agebox').val('');
     $('#infoOperatetitle').text('添加');
     $('#enable').attr('onclick','enableAdd()');
     $('#enable').css('display','block');
     $("#infoOperate").css('display','block');
-
+    $(".log-window").css('display',"block");
 });
 
 
 function enableAdd() {
+
     if(checkInput()){
         $.ajax({
             type: 'POST',
@@ -197,18 +198,30 @@ function show(data) {
     $('#sexbox').val(data.sex ? 0 : 1);
     $('#agebox').val(data.age);
     $('#enable').css('display','none');
+    $(".log-window").css('display',"block");
     $("#infoOperate").css('display','block');
 }
 
 function dismiss() {
-    $("#namebox,#selectRole,#sexbox,#agebox").removeAttr("disabled");
+    $("#namebox,#memberId,#selectRole,#sexbox,#agebox,#password").removeAttr("disabled");
+
+    $('#namebox').val('');
+    $('#memberId').val('');
+    $('#selectRole').val('');
+    $('#sexbox').val('');
+    $('#agebox').val('');
+    $('#password').val('');
+
+    $(".log-window").css('display',"none");
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
+
 }
 
 function edit(data,index) {
     //在查看时候设置了$("#namebox").attr("disabled","true");
     //编辑修改时都应该设置$("#namebox").removeAttr("disabled");
+
     $("#namebox,#selectRole,#sexbox,#agebox,#password").removeAttr("disabled");
 
     $('#infoOperatetitle').text('编辑');
@@ -221,6 +234,7 @@ function edit(data,index) {
 
     $('#enable').attr('onclick','enableEdit('+index+')');
 
+    $(".log-window").css('display',"block");
     $("#infoOperate").css('display','block');
 
 }
@@ -275,7 +289,6 @@ function del(data) {
 
 function delSelects() {
     var data = $('#table').bootstrapTable('getSelections');
-
     if (data.length === 0) {
         alert("请至少选中一条数据");
         return;

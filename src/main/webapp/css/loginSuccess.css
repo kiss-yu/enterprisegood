@@ -8,7 +8,7 @@ span.title_con{font-family:"微软雅黑";font-style: normal;font-size: 2em;font
 th{color: #0567e0;}
 td{color: #333333;}
 .form-group{
-    margin-left: 20px !important;
+    padding-left: 10px !important;
     margin-top: 5px !important;
 }
 .role_hidden{
@@ -23,3 +23,17 @@ td{color: #333333;}
 .infoOperate{display:none;background-color: #d9d8d7;width: 500px;border: 1px solid rgb(57,166,49);border-radius: 6px;position: fixed;top:100px;left: 39%;}
 #infoOperatetitle{height: 50px;width: 100%;font-size: 30px;line-height: 50px;background-color: #8EC172;text-align: center;}
 .middle {height: 786px;width: 100%;z-index: 0;position: relative;}
+.log-window{
+    width: 100%;
+    height: 100%;
+    background-color:#999999;
+    opacity: 0.5;
+    margin: auto;
+    position: absolute;
+    z-index:1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display:none;
+}

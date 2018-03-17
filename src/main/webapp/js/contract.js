@@ -61,12 +61,12 @@ function getContractList() {
             checkbox : true,
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '1',// 宽度
+            width : '1%'// 宽度
         },{
             title: '序号',//标题  可不加
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '1',// 宽度
+            width : '1%',// 宽度
             formatter: function (value, row, index) {
                 return index+1;
             }
@@ -75,26 +75,26 @@ function getContractList() {
             title : 'id',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '1',// 宽度
+            width : '1%',// 宽度
             visible : false
         }, {
             field : 'contractId',// 返回值名称
             title : '合同编号',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '20'// 宽度
+            width : '5%'// 宽度
         }, {
             field : 'createDate',// 返回值名称
             title : '创建日期',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '10'// 宽度
+            width : '10%'// 宽度
         },  {
             field : 'finish',// 返回值名称
             title : '状态',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '10',// 宽度
+            width : '10%',// 宽度
             formatter: function (value, row, index) {
                 return value === true ? '已签约' : '未签约';
             }
@@ -103,7 +103,7 @@ function getContractList() {
             title : '客户姓名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '10'// 宽度
+            width : '5%'// 宽度
         }, {
             field : 'customer.memberId',// 返回值名称
             align : 'center',// 水平居中显示
@@ -113,7 +113,7 @@ function getContractList() {
             title : '管理姓名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '5'// 宽度
+            width : '5%'// 宽度
         },{
             field : 'admin.memberId',// 返回值名称
             align : 'center',// 水平居中显示
@@ -122,12 +122,12 @@ function getContractList() {
             title : '操作',// 列名
             align : 'center',// 水平居中显示
             valign :'middle',// 垂直居中显示
-            width : '1',// 宽度
+            width : '10%',// 宽度
             formatter: function (value, row, index) {
                 return "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='show("+JSON.stringify(row)+")' value='详情'>" +
                     (legal([0,1])?"<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='edit("+JSON.stringify(row)+","+index +")' value='编辑'>":"") +
                     (legal([0,1]) ?"<input class='btn btn-danger' type='button' onclick='del("+JSON.stringify(row)+")' value='删除'>" : "") +
-                    (!row.finish && legal([0,1])?  ("<input class='btn btn-info' type='button' onclick='signing("+JSON.stringify(row)+","+index +")' value='签约'>") : "");
+                    (!row.finish && legal([0,1])?  ("<input class='btn btn-info' type='button'  style='margin-left: 5px' onclick='signing("+JSON.stringify(row)+","+index +")' value='签约'>") : "");
             }
         }]
         // 列配置项,详情请查看 列参数 表格
