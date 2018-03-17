@@ -13,7 +13,7 @@
 
 </head>
 <body>
-
+<div class="log-window"></div>
 <div class="header_title">
     <span class="title_con second_title_con">用户信息</span>
 </div>
@@ -46,9 +46,8 @@
 </div>
 
 <form id="info-form" class="form-horizontal">
-    <div class="infoOperate" id="infoOperate">
-        <input id="id" name="id" hidden>
-
+    <div class="infoOperate" id="infoOperate" style="z-index:2;">
+        <input id="id" name="id" hidden/>
         <div id="infoOperatetitle"></div>
 
         <div class="form-group" style="margin-top: 20px;">
@@ -107,6 +106,9 @@
 
     </div>
 </form>
+
+
+
 <script src="../resources/md5.js"></script>
 <script type="text/javascript" src="../js/member.js"></script>
 </body>
