@@ -60,7 +60,7 @@ public class RoleController extends BaseController{
                                    @RequestParam(value = "content",defaultValue = "") String content) {
         List<RoleModel> list;
         page = -1;
-        if (!field.isEmpty() && !content.isEmpty()) {
+        if (!field.isEmpty() || !content.isEmpty()) {
             list = roleService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
         }else {
             list = roleService.list(page,size,order,sort,null);

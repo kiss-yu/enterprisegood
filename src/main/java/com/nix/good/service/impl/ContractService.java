@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author 11723
@@ -27,8 +29,7 @@ public class ContractService extends BaseService<ContractModel>{
     private GoodsCountMapper goodsCountMapper;
 
     public void add(ContractModel model,String[] goodIds,Integer[] counts) throws Exception {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        super.add(model);
+        List<GoodsCountModel> goodsCountModels = new ArrayList<>();
         if (goodIds != null){
             for (int i = 0;i < goodIds.length;i ++) {
                 GoodsModel goodsModel = new GoodsModel();
@@ -37,16 +38,30 @@ public class ContractService extends BaseService<ContractModel>{
                 goodsCountModel.setGoods(goodsModel);
                 goodsCountModel.setContract(model);
                 goodsCountModel.setCount(counts[i]);
-                goodsCountMapper.insert(goodsCountModel);
-                SalesLogModel salesLogModel = new SalesLogModel();
-                salesLogModel.setCount(counts[i]);
-                salesLogModel.setCreateDate(new Date());
-                salesLogModel.setGood(goodsModel);
-                salesLogModel.setMember(model.getCustomer());
-                salesLogModel.setContract(model);
-                salesLogModel.setDescribe(format.format(new Date()) + model.getCustomer().getName() + "签约" + goodsModel.getGoodId() + " 数量：" + counts[i]);
-                salesLogMapper.insert(salesLogModel);
+                goodsCountModels.add(goodsCountModel);
             }
         }
+        model.setGoodCountList(goodsCountModels);
+        add(model);
+    }
+
+    @Override
+    public void add(ContractModel model) throws Exception {
+        try {
+            super.add(model);
+            List<GoodsCountModel> goodsCountModelList = model.getGoodCountList();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            for (GoodsCountModel goodsCountModel:goodsCountModelList) {
+                goodsCountMapper.insert(goodsCountModel);
+                SalesLogModel salesLogModel = new SalesLogModel();
+                salesLogModel.setCount(goodsCountModel.getCount());
+                salesLogModel.setCreateDate(new Date());
+                salesLogModel.setGood(goodsCountModel.getGoods());
+                salesLogModel.setMember(model.getCustomer());
+                salesLogModel.setContract(model);
+                salesLogModel.setDescribe(format.format(new Date()) + model.getCustomer().getName() + "签约" + goodsCountModel.getGoods().getGoodId() + " 数量：" + goodsCountModel.getCount());
+                salesLogMapper.insert(salesLogModel);
+            }
+        }catch (Exception e){}
     }
 }

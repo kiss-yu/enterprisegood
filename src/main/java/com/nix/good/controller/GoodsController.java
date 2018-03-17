@@ -8,6 +8,7 @@ import com.nix.good.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,29 @@ public class GoodsController extends BaseController{
                 .render("goods",goodsModel)
                 .build();
     }
+
+//    @RequestMapping(value = "/ss")
+//    public Map<String,Object> add() {
+//        try {
+//            for (int i = 16;i < 1000;i ++) {
+//                GoodsModel goodsModel = new GoodsModel();
+//                goodsModel.setGoodId("good" + i);
+//                goodsModel.setName("测试产品" + i);
+//                goodsModel.setCreateDate(new Date());
+//                goodsModel.setInventory((int) (Math.random() * 10000));
+//                goodsModel.setPrice(BigDecimal.valueOf(Math.random() * 500));
+//                goodsService.add(goodsModel);
+//            }
+//
+//            return render("code",SUCCESS)
+//                    .build();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return render("code",FAIL)
+//                .build();
+//    }
+
     /**
      * 删除商品
      * */
@@ -96,7 +120,7 @@ public class GoodsController extends BaseController{
                                    @RequestParam(value = "content",defaultValue = "") String content) {
         List<GoodsModel> list;
         page = -1;
-        if (!field.isEmpty() && !content.isEmpty()) {
+        if (!field.isEmpty() || !content.isEmpty()) {
             list = goodsService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
         }else {
             list = goodsService.list(page,size,order,sort,null);

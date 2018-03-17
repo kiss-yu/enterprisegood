@@ -3,8 +3,11 @@ package com.nix.good.controller;
 import com.nix.good.common.Role;
 import com.nix.good.dto.ContractDto;
 import com.nix.good.model.ContractModel;
+import com.nix.good.model.GoodsCountModel;
+import com.nix.good.model.GoodsModel;
 import com.nix.good.model.MemberModel;
 import com.nix.good.service.impl.ContractService;
+import com.nix.good.service.impl.GoodsService;
 import com.nix.good.service.impl.MemberService;
 import com.nix.good.util.MemberManager;
 import com.nix.good.web.controller.BaseController;
@@ -13,10 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 11723
@@ -29,6 +29,8 @@ public class ContractController extends BaseController{
     private ContractService contractService;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private GoodsService goodsService;
     /**
      * 创建合同
      * */
@@ -93,6 +95,39 @@ public class ContractController extends BaseController{
         }
         return render("code",FAIL).render("msg","非法签约").build();
     }
+
+//    @RequestMapping(value = "/ss")
+//    public Map<String,Object> signingContract() {
+//        try {
+//            List<GoodsModel> goodsModelList = goodsService.list(-1,-1,"id","asc",null);
+//            List<MemberModel> memberModelList = memberService.list(-1,-1,"id","asc"," role = 4");
+//            List<MemberModel> adminList = memberService.list(-1,-1,"id","asc"," role = 0 or role=1");
+//            for (int i = 0;i < 500;i ++) {
+//                ContractModel model = new ContractModel();
+//                model.setContractId("contract_" + i);
+//                model.setFinish(Math.random() > 0.5);
+//                model.setCreateDate(new Date());
+//                model.setCustomer(memberModelList.get((int) (Math.random() * memberModelList.size())));
+//                model.setAdmin(adminList.get((int) (Math.random() * adminList.size())));
+//                List<GoodsCountModel> goods = new ArrayList<>();
+//                for (int j = 0;j < Math.random()*100;j ++) {
+//                    GoodsCountModel goodsCountModel = new GoodsCountModel();
+//                    GoodsModel goodsModel = goodsModelList.get((int)(Math.random() * goodsModelList.size()));
+//                    goodsCountModel.setGoods(goodsModel);
+//                    goodsCountModel.setContract(model);
+//                    goodsCountModel.setCount((int) (Math.random() * goodsModel.getInventory()));
+//                    goods.add(goodsCountModel);
+//                }
+//                model.setGoodCountList(goods);
+//                contractService.add(model);
+//            }
+//            return render("code",SUCCESS).build();
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return render("code",FAIL).build();
+//    }
 
     /**
      * 删除合同
@@ -171,19 +206,19 @@ public class ContractController extends BaseController{
         page = -1;
         List<ContractModel> list;
         List<ContractDto> dtoList = null;
-//        if (MemberManager.getCurrentUser(request).getRole() == 4) {
-//            if (!field.isEmpty() && !content.isEmpty()) {
-//                list = contractService.list(page,size,order,sort,"`" + field + "`" + " like %" + content + "%" + " and " + " customer = " + MemberManager.getCurrentUser(request).getMemberId());
-//            }else {
-//                list = contractService.list(page,size,order,sort," customer = " + MemberManager.getCurrentUser(request).getMemberId());
-//            }
-//        }else {
-            if (!field.isEmpty() && !content.isEmpty()) {
+        if (MemberManager.getCurrentUser(request).getRole().getValue() == 4) {
+            if (!field.isEmpty() || !content.isEmpty()) {
+                list = contractService.list(page,size,order,sort,"`" + field + "`" + " like %" + content + "%" + " and " + " customer = \"" + MemberManager.getCurrentUser(request).getMemberId() + "\"");
+            }else {
+                list = contractService.list(page,size,order,sort," customer = \"" + MemberManager.getCurrentUser(request).getMemberId() + "\"");
+            }
+        }else {
+            if (!field.isEmpty() || !content.isEmpty()) {
                 list = contractService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
             }else {
                 list = contractService.list(page,size,order,sort,null);
             }
-//        }
+        }
         if (list != null) {
                 dtoList = new ArrayList<>();
                 for (ContractModel contractModel:list) {

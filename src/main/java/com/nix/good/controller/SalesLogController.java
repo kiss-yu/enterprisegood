@@ -45,7 +45,7 @@ public class SalesLogController extends BaseController{
         List<SalesLogModel> list;
         List<SalesLogDto> dtoList = null;
         page = -1;
-        if (!field.isEmpty() && !content.isEmpty()) {
+        if (!field.isEmpty() || !content.isEmpty()) {
             list = salesLogService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
         }else {
             list = salesLogService.list(page,size,order,sort,null);

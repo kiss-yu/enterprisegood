@@ -146,7 +146,7 @@ public class MemberController extends BaseController{
             field = "role";
             content = "4";
         }
-        if (!field.isEmpty() && !content.isEmpty()) {
+        if (!field.isEmpty() || !content.isEmpty()) {
             list = memberService.list(page,size,order,sort,"`" + field + "`" + " like \"%" + content + "%\"");
         }else {
             list = memberService.list(page,size,order,sort,null);
