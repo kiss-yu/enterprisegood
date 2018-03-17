@@ -18,6 +18,8 @@ $(function() {
         $('#finish').val('');
         $('#infoOperatetitle').text('添加');
 
+        showData("",1);
+
         $('#enable').attr('onclick','enableAdd()');
         $('#enable').css('display','block');
         $(".log-window").css('display',"block");
@@ -374,7 +376,9 @@ function getMemberMsg(id,input) {
 function addGood(b) {
     b ? $("#good-add").show() : $("#good-add").hide();
 }
+
 var goodName;
+
 function setGood() {
     var count = $("#count");
     var btn = $("#goodAddButton");
@@ -406,13 +410,13 @@ function showData(listData,num) {
     temp.push('<thead><tr><th>商品名</th><th>数量</th></tr><tbody>');
     if(num===0){//看
         for (var i = 0; i < showNum; i++) {
-            temp.push("<tr><td>" + listData[i].goods.name + "</td><td>" + listData[i].count +  "</td>");
+            temp.push("<tr id='"+ listData[i].goods.goodId +"'><td>" + listData[i].goods.name + "</td><td>" + listData[i].count +  "</td>");
         }
     }
     else if(num===1){//改
         for (var i = 0; i < showNum; i++) {
             temp.push("<tr><td>" + listData[i].goods.name + "</td><td>" + listData[i].count
-                + "</td><td><input type='button' class='btn btn-danger' value='删除' onclick='removeGood(" + listData[i].goods.goodId + ")'>" +
+                + "</td><td><input type='button' class='btn btn-danger' value='删除'>" +
                 +  "</td>");
         }
     }
@@ -443,6 +447,5 @@ function showData(listData,num) {
 
 }*/
 function removeGood(btn) {
-    var ul = $("#goodsListUl");
-    ul.children("#" + btn).remove();
+    $("#goodsList").children("#" + btn).remove();
 }
