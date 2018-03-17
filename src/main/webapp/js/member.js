@@ -1,6 +1,23 @@
 
 var param = {};
 
+function dismiss() {
+    $("#namebox,#memberId,#selectRole,#sexbox,#agebox,#password").removeAttr("disabled");
+
+    $('#namebox').val('');
+    $('#memberId').val('');
+    $('#selectRole').val('');
+    $('#sexbox').val('');
+    $('#agebox').val('');
+    $('#password').val('');
+
+    $(".log-window").css('display',"none");
+    $("#infoOperate").css('display','none');
+    $('#enable').removeAttr('onclick');
+    $('#enable').css('display','block');
+
+}
+
 $('#addbtn').click(function (){
     $('#namebox').val('');
     $('#selectRole').val('');
@@ -17,6 +34,8 @@ $('#addbtn').click(function (){
 function enableAdd() {
 
     if(checkInput()){
+
+        $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
         $.ajax({
             type: 'POST',
             url: "/member/create.do?admin=true",
@@ -26,12 +45,13 @@ function enableAdd() {
                 console.log(o);
                 if (o.code === 'SUCCESS') {
                     alert('添加成功!');
-                    $('#enable').removeAttr('onclick');
-                    $("#infoOperate").css('display','none');
+                    dismiss();
+
                     //添加成功后再table增加一行数据
                     $('#table').bootstrapTable('prepend', o.member);
                 }else if(o.code === 'FAIL'){
                     alert('添加失败！');
+                    dismiss();
                 }
             },
             error: function () {
@@ -202,22 +222,6 @@ function show(data) {
     $("#infoOperate").css('display','block');
 }
 
-function dismiss() {
-    $("#namebox,#memberId,#selectRole,#sexbox,#agebox,#password").removeAttr("disabled");
-
-    $('#namebox').val('');
-    $('#memberId').val('');
-    $('#selectRole').val('');
-    $('#sexbox').val('');
-    $('#agebox').val('');
-    $('#password').val('');
-
-    $(".log-window").css('display',"none");
-    $("#infoOperate").css('display','none');
-    $('#enable').css('display','block');
-
-}
-
 function edit(data,index) {
     //在查看时候设置了$("#namebox").attr("disabled","true");
     //编辑修改时都应该设置$("#namebox").removeAttr("disabled");
@@ -243,7 +247,7 @@ function enableEdit(index) {
     if(checkInput()){
         $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
         $.ajax({
-            type: 'put',
+            type: 'POST',
             url: "/member/update.do",
             dataType: 'json',
             data: $("#info-form").serialize(),
@@ -251,13 +255,13 @@ function enableEdit(index) {
                 console.log(o);
                 if (o.code === 'SUCCESS') {
                     alert('修改成功!');
-                    $('#enable').removeAttr('onclick');
-                    $("#infoOperate").css('display','none');
+                    dismiss();
 
                     $('#table').bootstrapTable('updateRow', {index: index, row: o.member});
 
                 }else if(o.code === 'FAIL'){
                     alert('修改失败！' + o.msg == null ? '' : o.msg);
+                    dismiss();
                 }
             },
             error: function () {
@@ -309,11 +313,14 @@ function delSelects() {
                     console.log(o.code);
                     if (o.code === 'FAIL') {
                         alert("删除失败" );
+                        dismiss();
                     }else if(o.code === 'SUCCESS'){
 
                         //多行删除成功在table中移除多行
                         $('#table').bootstrapTable('remove', {field: 'id', values: ids});
+                        dismiss();
                         alert("删除成功");
+
                     }
                 }
             });
