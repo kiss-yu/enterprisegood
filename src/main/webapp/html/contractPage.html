@@ -12,39 +12,6 @@
     <script type="text/javascript" src="../resources/bootstrap.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
-    <style>
-        .good-add{
-            height: 40px;
-            width: 100%;
-        }
-        .good-input{
-            width: 20%;
-            height: 25px;
-            line-height: 25px;
-            padding: 0;
-        }
-        #goodsList{
-            top: 100px;
-            width: 400px;
-            margin-left: 5%;
-            position: absolute;
-
-        }
-        .good-name{
-            color: red;
-            font-size: 20px;
-        }
-        .good-count{
-            color: blue;
-            font-size: 20px;
-        }
-        .right{
-            float: right;
-        }
-        .list-group-item{
-            background-color: burlywood;
-        }
-    </style>
 </head>
 <body>
 <div class="log-window"></div>
@@ -81,69 +48,73 @@
 </div>
 
 <form id="info-form" class="form-horizontal">
-    <div class="infoOperate" id="infoOperate">
+    <div class="infoOperate" id="infoOperate" style="z-index:2; width: 60%;">
         <input id="id" name="id" hidden>
         <div id="infoOperatetitle"></div>
-        <div class="form-group" style="margin-top: 20px;">
-            <label for="contractId" class="col-sm-2 control-label">合同编号</label>
-            <div class="col-sm-8">
-                <input type="text" class="form-control"  id="contractId" name="contractId">
+
+        <div class="col-md-6">
+            <div class="form-group" style="margin-top: 20px;">
+                <label for="contractId" class="col-sm-3 control-label">合同编号</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control"  id="contractId" name="contractId">
+                </div>
             </div>
-        </div>
-        <div class="form-group" style="margin-top: 20px;">
-            <label for="createDate" class="col-sm-2 control-label">创建日期</label>
-            <div class="col-sm-8">
-                <input type="date" class="form-control"  id="createDate" name="createDate">
+            <div class="form-group" style="margin-top: 20px;">
+                <label for="createDate" class="col-sm-3 control-label">创建日期</label>
+                <div class="col-sm-8">
+                    <input type="date" class="form-control"  id="createDate" name="createDate">
+                </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">状态</label>
+                <div class="col-sm-8">
+                    <select class="form-control" id="finish" name="finish">
+                        <option value="1">已签约</option>
+                        <option value="0">未签约</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <label for="customerId" class="col-sm-3 control-label" >客户编号</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="customerId" name="customerId" onkeyup="getMemberMsg($(this).val(),$('#customerName'))">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="customerName" class="col-sm-3 control-label">客户姓名</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="customerName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="adminId" class="col-sm-3 control-label">管理员编号</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="adminId" name="adminId" onkeyup="getMemberMsg($(this).val(),$('#adminName'))">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="adminName" class="col-sm-3 control-label">管理员编号</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="adminName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="goodButton" class="col-sm-3 control-label">产品</label>
+                <div class="col-sm-8">
+                    <input type="button" class="form-control" id="goodButton" value="添加产品" onclick="addGood(true)">
+                </div>
+            </div>
+
+            <div class="form-group" class="good-add" id="good-add" style="margin-top: 20px;display: none">
+                <input type="text" placeholder="签约产品Id" class="good-input" style="margin-left: 5%" onkeyup="setGood()" id="input-goodId">
+                <input type="text" placeholder="签约产品数量" class="good-input" value="0" id="count" onkeyup="setGood()">
+                <input type="text" placeholder="库存" disabled class="good-input" id="good-inventory">
+                <input type="button" id="goodAddButton" class="good-input good-input-btn btn btn-primary" value="添加" disabled onclick="addGoodItem(null,true)">
+            </div>
+
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-2 control-label">状态</label>
-            <div class="col-sm-8">
-                <select class="form-control" id="finish" name="finish">
-                    <option value="1">已签约</option>
-                    <option value="0">未签约</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group role_user" style="margin-top: 20px;">
-            <label for="customerId" class="col-sm-2 control-label" >客户id</label>
-            <div class="col-sm-8">
-                <input type="text" class="form-control"  id="customerId" name="customerId" onkeyup="getMemberMsg($(this).val(),$('#customerName'))">
-            </div>
-        </div>
-        <div class="form-group role_user" style="margin-top: 20px;">
-            <label for="customerName" class="col-sm-2 control-label">客户姓名</label>
-            <div class="col-sm-8">
-                <input type="text" class="form-control"  id="customerName" disabled>
-            </div>
-        </div>
-        <div class="form-group role_user role_contract" style="margin-top: 20px;">
-            <label for="adminId" class="col-sm-2 control-label">签约管理id</label>
-            <div class="col-sm-8">
-                <input type="text" class="form-control"  id="adminId" name="adminId" onkeyup="getMemberMsg($(this).val(),$('#adminName'))">
-            </div>
-        </div>
-        <div class="form-group role_user role_contract" style="margin-top: 20px;">
-            <label for="adminName" class="col-sm-2 control-label">签约管理姓名</label>
-            <div class="col-sm-8">
-                <input type="text" class="form-control"  id="adminName" disabled>
-            </div>
-        </div>
-        <div class="form-group" style="margin-top: 20px;">
-            <label for="goodButton" class="col-sm-2 control-label">产品</label>
-            <div class="col-sm-8">
-                <input type="button" class="form-control" id="goodButton" value="添加产品" onclick="addGood(true)">
-            </div>
-        </div>
-
-        <div class="form-group" class="good-add" id="good-add" style="margin-top: 20px;display: none">
-            <input type="text" placeholder="签约产品Id" class="good-input" style="margin-left: 5%" onkeyup="setGood()" id="input-goodId">
-            <input type="text" placeholder="签约产品数量" class="good-input" value="0" id="count" onkeyup="setGood()">
-            <input type="text" placeholder="库存" disabled class="good-input" id="good-inventory">
-            <input type="button" id="goodAddButton" class="good-input good-input-btn btn btn-primary" value="添加" disabled onclick="addGoodItem(null,true)">
-        </div>
-
+        <div class="col-md-6"id="goodsList"></div>
         <div class="form-group">
             <div class="col-sm-4 col-sm-offset-3">
                 <input type="button" class="btn btn-primary" id="enable" value="确认" name="">
@@ -154,10 +125,6 @@
         </div>
     </div>
 
-    <div id="goodsList">
-        <ul class="list-group" id="goodsListUl" style="border-radius: 10px">
-        </ul>
-    </div>
 </form>
 <script type="text/javascript" src="../js/contract.js"></script>
 <script type="text/javascript" src="../js/time.js"></script>
