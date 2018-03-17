@@ -8,7 +8,9 @@ $(function() {
         $('#infoOperatetitle').text('添加');
         $('#enable').attr('onclick','enableAdd()');
         $('#enable').css('display','block');
+        $(".log-window").css('display',"block");
         $("#infoOperate").css('display','block');
+
     });
     getGoodList();
 });
@@ -107,6 +109,8 @@ function getGoodList() {
     });
 }
 function enableAdd() {
+
+    console.info($("#info-form").serialize());
     if(checkInput()){
         $.ajax({
             type: 'POST',
@@ -114,12 +118,14 @@ function enableAdd() {
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
-                if (o.code == 'SUCCESS') {
+                if (o.code === 'SUCCESS') {
                     //添加成功后再table增加一行数据
                     $('#table').bootstrapTable('prepend', o.goods);
                     $('#enable').removeAttr('onclick');
+
+                    $(".log-window").css('display',"block");
                     $("#infoOperate").css('display','none');
-                }else if(o.code == 'FAIL'){
+                }else if(o.code === 'FAIL'){
                     alert('添加失败！' + o.msg == null ? '' : o.msg);
                 }
             },
@@ -129,19 +135,19 @@ function enableAdd() {
     }
 }
 function checkInput() {
-    if($('#goodIdbox').val() == null || $('#goodIdbox').val() == ''){
+    if($('#goodIdbox').val() == null || $('#goodIdbox').val() === ''){
         alert('请输入商品编号！');
         return false;
     }
-    if($('#createDatebox').val() == null || $('#createDatebox').val() == ''){
+    if($('#createDatebox').val() == null || $('#createDatebox').val() === ''){
         alert('请输入创建日期！');
         return false;
     }
-    if($('#inventorybox').val() == null || $('#inventorybox').val() == ''){
+    if($('#inventorybox').val() == null || $('#inventorybox').val() === ''){
         alert('请输入库存！');
         return false;
     }
-    if($('#pricebox').val() == null || $('#pricebox').val() == ''){
+    if($('#pricebox').val() == null || $('#pricebox').val() === ''){
         alert('请输入单价！');
         return false;
     }
@@ -150,32 +156,47 @@ function checkInput() {
 /*展示方法*/
 function show(data) {
     $('#infoOperatetitle').text('详情');
-    $("#goodIdbox,#createDatebox,#inventorybox,#pricebox").attr("disabled","true");
+    $("#goodIdbox,#createDatebox,#inventorybox,#pricebox,#namebox").attr("disabled","true");
 
     $('#goodIdbox').val(data.goodId);
     $('#createDatebox').val(data.createDate);
+    $('#namebox').val(data.name);
     $('#inventorybox').val(data.inventory);
     $('#pricebox').val(data.price);
     $('#enable').css('display','none');
+    $(".log-window").css('display',"block");
     $("#infoOperate").css('display','block');
 
 }
+
 function dismiss() {
-    $("#goodIdbox,#createDatebox,#inventorybox,#pricebox").removeAttr("disabled");
+    $("#goodIdbox,#createDatebox,#inventorybox,#pricebox,#namebox").removeAttr("disabled");
+
+    $('#namebox').val('');
+    $('#memberId').val('');
+    $('#selectRole').val('');
+    $('#sexbox').val('');
+    $('#agebox').val('');
+    $('#password').val('');
+
+    $(".log-window").css('display',"none");
     $("#infoOperate").css('display','none');
     $('#enable').css('display','block');
+
 }
+
 function edit(data) {
 
     $('#infoOperatetitle').text('编辑');
     $("#id").val(data.id);
     $("#goodIdbox").val(data.goodId);
+    $('#namebox').val(data.name);
     $('#createDatebox').val(data.createDate);
     $('#inventorybox').val(data.inventory);
     $('#pricebox').val(data.price);
 
     $('#enable').attr('onclick','enableEdit()');
-
+    $(".log-window").css('display',"block");
     $("#infoOperate").css('display','block');
 
 }

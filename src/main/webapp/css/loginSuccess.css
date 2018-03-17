@@ -20,7 +20,7 @@ td{color: #333333;}
 .dropdown-toggle{color: #999999 !important;line-height: 5px !important;height: 25px;}
 .btn-default:hover{color: #333333 !important;}
 .infobtn{float: right;margin-right: 50px;}
-.infoOperate{display:none;background-color: #d9d8d7;width: 500px;border: 1px solid rgb(57,166,49);border-radius: 6px;position: fixed;top:100px;left: 39%;}
+.infoOperate{display:none;background-color: #d9d8d7;width: 40%;border: 1px solid rgb(57,166,49);border-radius: 6px;position: fixed;top:100px;left: 30%;}
 #infoOperatetitle{height: 50px;width: 100%;font-size: 30px;line-height: 50px;background-color: #8EC172;text-align: center;}
 .middle {height: 786px;width: 100%;z-index: 0;position: relative;}
 .log-window{
