@@ -130,14 +130,11 @@ function getMemberList() {
             valign : 'middle',// 垂直居中显示
             width : '10'// 宽度
         },  {
-            field : 'role.value',// 返回值名称
+            field : 'role.name',// 返回值名称
             title : '角色',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
             width : '15',// 宽度
-            formatter: function (value, row, index) {
-                return getRole(value);
-            }
         }, {
             field : 'sex',// 返回值名称
             title : '性别',// 列名
@@ -169,30 +166,6 @@ function getMemberList() {
         /* 事件 */
     });
 }
-function getRole(data) {
-
-    if(data === 0){
-        return '系统管理员';
-    }else if(data === 1){
-        return '合同部用户';
-    }else if(data === 2){
-        return '销售部用户';
-    }else if(data === 3){
-        return '客户部用户';
-    }else if(data === 4){
-        return '用户';
-    }else if(data === '系统管理员'){
-        return 0;
-    }else if(data === '合同部用户'){
-        return 1;
-    }else if(data === '销售部用户'){
-        return 2;
-    }else if(data === '客户部用户'){
-        return 3;
-    }else if(data === '用户'){
-        return 4;
-    }
-}
 
 function checkInput() {
     if($('#namebox').val() == null || $('#namebox').val() === ''){
@@ -212,7 +185,8 @@ function show(data) {
     $('#infoOperatetitle').text('详情');
     $("#namebox,#memberId,#selectRole,#sexbox,#agebox,#password").attr("disabled","true");
 
-    $("#memberId").val(data.id);
+    $("#id").val(data.id);
+    $("#memberId").val(data.memberId);
     $('#namebox').val(data.name);
     $('#selectRole').val(data.role.value);
     $('#sexbox').val(data.sex ? 0 : 1);

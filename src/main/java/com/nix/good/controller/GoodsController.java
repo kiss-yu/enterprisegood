@@ -37,28 +37,6 @@ public class GoodsController extends BaseController{
                 .build();
     }
 
-//    @RequestMapping(value = "/ss")
-//    public Map<String,Object> add() {
-//        try {
-//            for (int i = 16;i < 1000;i ++) {
-//                GoodsModel goodsModel = new GoodsModel();
-//                goodsModel.setGoodId("good" + i);
-//                goodsModel.setName("测试产品" + i);
-//                goodsModel.setCreateDate(new Date());
-//                goodsModel.setInventory((int) (Math.random() * 10000));
-//                goodsModel.setPrice(BigDecimal.valueOf(Math.random() * 500));
-//                goodsService.add(goodsModel);
-//            }
-//
-//            return render("code",SUCCESS)
-//                    .build();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return render("code",FAIL)
-//                .build();
-//    }
-
     /**
      * 删除商品
      * */

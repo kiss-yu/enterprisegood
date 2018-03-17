@@ -99,40 +99,6 @@ public class ContractController extends BaseController{
         }
         return render("code",FAIL).render("msg","非法签约").build();
     }
-
-//    @RequestMapping(value = "/ss")
-//    public Map<String,Object> signingContract() {
-//        try {
-//            List<GoodsModel> goodsModelList = goodsService.list(-1,-1,"id","asc",null);
-//            List<MemberModel> memberModelList = memberService.list(-1,-1,"id","asc"," role = 4");
-//            List<MemberModel> adminList = memberService.list(-1,-1,"id","asc"," role = 0 or role=1");
-//            for (int i = 0;i < 500;i ++) {
-//                ContractModel model = new ContractModel();
-//                model.setContractId("contract_" + i);
-//                model.setFinish(Math.random() > 0.5);
-//                model.setCreateDate(new Date());
-//                model.setCustomer(memberModelList.get((int) (Math.random() * memberModelList.size())));
-//                model.setAdmin(adminList.get((int) (Math.random() * adminList.size())));
-//                List<GoodsCountModel> goods = new ArrayList<>();
-//                for (int j = 0;j < Math.random()*100;j ++) {
-//                    GoodsCountModel goodsCountModel = new GoodsCountModel();
-//                    GoodsModel goodsModel = goodsModelList.get((int)(Math.random() * goodsModelList.size()));
-//                    goodsCountModel.setGoods(goodsModel);
-//                    goodsCountModel.setContract(model);
-//                    goodsCountModel.setCount((int) (Math.random() * goodsModel.getInventory()));
-//                    goods.add(goodsCountModel);
-//                }
-//                model.setGoodCountList(goods);
-//                contractService.add(model);
-//            }
-//            return render("code",SUCCESS).build();
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return render("code",FAIL).build();
-//    }
-
     /**
      * 删除合同
      * */
@@ -156,13 +122,19 @@ public class ContractController extends BaseController{
     public Map<String,Object> update(@ModelAttribute ContractModel model,
                                      @RequestParam(value = "consumerId",required=false) Integer consumerId,
                                      @RequestParam(value = "adminId",required=false) Integer adminId,
+                                     @RequestParam(value = "goodIds",required=false) String[] goodIds,
+                                     @RequestParam(value = "goodCounts",required=false) Integer[] counts,
                                      HttpServletRequest request) {
         try {
             MemberModel consumer = memberService.findById(consumerId);
             MemberModel admin = memberService.findById(adminId);
             model.setAdmin(admin);
             model.setCustomer(consumer);
-            contractService.update(model);
+            Map map = contractService.update(model,goodIds,counts);
+            if (map != null) {
+                map.put("code",FAIL);
+                return map;
+            }
             render("code",SUCCESS)
                     .render("contract",model);
         } catch (Exception e) {

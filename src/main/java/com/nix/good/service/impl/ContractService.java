@@ -56,6 +56,44 @@ public class ContractService extends BaseService<ContractModel>{
         return null;
     }
 
+    public Map<String,Object> update(ContractModel model, String[] goodIds, Integer[] counts) throws Exception {
+        Map<String,Object> map = new HashMap<>();
+        List<GoodsCountModel> goodsCountModels = new ArrayList<>();
+        if (goodIds != null){
+            for (int i = 0;i < goodIds.length;i ++) {
+                GoodsModel goodsModel = goodsMapper.selectByStringId(goodIds[i]);
+                if (goodsModel == null) {
+                    map.put("msg",goodIds[i] + "商品不存在");
+                    return map;
+                }
+                if (goodsModel.getInventory() < counts[i]) {
+                    map.put("msg",goodIds[i] + "商品库存不足");
+                    return map;
+                }
+                GoodsCountModel goodsCountModel = new GoodsCountModel();
+                goodsModel.setGoodId(goodIds[i]);
+                goodsCountModel.setGoods(goodsModel);
+                goodsCountModel.setContract(model);
+                goodsCountModel.setCount(counts[i]);
+                goodsCountModels.add(goodsCountModel);
+            }
+        }
+        model.setGoodCountList(goodsCountModels);
+        update(model);
+        return null;
+    }
+
+    @Override
+    public void update(ContractModel model) throws Exception {
+        super.update(model);
+        try {
+            List<GoodsCountModel> goodsCountModelList = model.getGoodCountList();
+            for (GoodsCountModel goodsCountModel:goodsCountModelList) {
+                goodsCountMapper.insert(goodsCountModel);
+            }
+        }catch (Exception e){}
+    }
+
     @Override
     public void add(ContractModel model) throws Exception {
         try {
