@@ -40,7 +40,7 @@
 <script>
     var member = JSON.parse(sessionStorage.getItem("member"));
     switch (member.role.value) {
-        case 4:$("#memberinfo").css("display","none");$("#sellinfo").css("display","none");break;
+        case 4:$("#memberinfo #sellinfo #roleInfo").css("display","none");break;
     }
 </script>
 </body>
