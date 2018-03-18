@@ -3,6 +3,7 @@ package com.nix.good.controller;
 import com.nix.good.common.Role;
 import com.nix.good.model.MemberModel;
 import com.nix.good.model.RoleModel;
+import com.nix.good.service.RoleService;
 import com.nix.good.service.impl.MemberService;
 import com.nix.good.util.MemberManager;
 import com.nix.good.web.controller.BaseController;
@@ -24,6 +25,9 @@ import java.util.Map;
 public class MemberController extends BaseController{
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private RoleService roleService;
+
     /**
      * 用户登录
      * */
@@ -113,7 +117,9 @@ public class MemberController extends BaseController{
      * */
     @Role({0,1,2,3,4,5})
     @RequestMapping(value = "/update",method = RequestMethod.POST)
-    public Map<String,Object> update(@ModelAttribute MemberModel memberModel, HttpServletRequest request) {
+    public Map<String,Object> update(@ModelAttribute MemberModel memberModel, HttpServletRequest request,
+    @ModelAttribute RoleModel role) {
+        memberModel.setRole(role);
         MemberModel currentMember = MemberManager.getCurrentUser(request);
         if (currentMember == null) {
             return render("code",FAIL)
@@ -122,6 +128,10 @@ public class MemberController extends BaseController{
             if (currentMember.getRole().getValue() != MemberModel.Role.admin.ordinal()
                     && currentMember.getRole().getValue() != MemberModel.Role.customerMember.ordinal()
                     && !currentMember.getId().equals(memberModel.getId())) {
+                return render("code",FAIL)
+                        .render("msg","非法修改").build();
+            }
+            if (memberModel.getRole() != null && memberModel.getRole().getValue() < currentMember.getRole().getValue()) {
                 return render("code",FAIL)
                         .render("msg","非法修改").build();
             }

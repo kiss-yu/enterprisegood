@@ -46,7 +46,6 @@ function enableAdd() {
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
-                console.log(o);
                 if (o.code === 'SUCCESS') {
                     alert('添加成功!');
                     dismiss();
@@ -92,7 +91,6 @@ function getMemberList() {
         },  // 请求服务器数据时，你可以通过重写参数的方式添加一些额外的参数
         selectItemName : '',// radio or checkbox 的字段名
         onLoadSuccess:function (backData) {
-            console.log(backData);
             $('#table').bootstrapTable('removeAll');
             $('#table').bootstrapTable('append', backData.list);
         },
@@ -118,11 +116,10 @@ function getMemberList() {
             visible : false
         }, {
             field : 'memberId',// 返回值名称
-            title : 'memberId',// 列名
+            title : '用户名',// 列名
             align : 'center',// 水平居中显示
             valign : 'middle',// 垂直居中显示
-            width : '1',// 宽度
-            visible : false
+            width : '1'// 宽度
         }, {
             field : 'password',// 返回值名称
             title : 'password',// 列名
@@ -175,11 +172,11 @@ function getMemberList() {
 }
 
 function checkInput() {
-    if($('#namebox').val() == null || $('#namebox').val() === ''){
+    if($('#namebox').val() == null || $('#namebox').val() == ''){
         alert('请输入姓名！');
         return false;
     }
-    if($('#agebox').val() == null || $('#agebox').val() === ''){
+    if($('#agebox').val() == null || $('#agebox').val() == ''){
         alert('请输入年龄！');
         return false;
     }
@@ -196,7 +193,7 @@ function show(data) {
     $("#memberId").val(data.memberId);
     $('#namebox').val(data.name);
     $('#selectRole').val(data.role.value);
-    $('#sexbox').val(data.sex ? 0 : 1);
+    $('#sexbox').val(data.sex ? 1 : 0);
     $('#agebox').val(data.age);
     $('#enable').css('display','none');
     $(".log-window").css('display',"block");
@@ -214,7 +211,7 @@ function edit(data,index) {
     $("#memberId").val(data.memberId);
     $('#namebox').val(data.name);
     $('#selectRole').val(data.role.value);
-    $('#sexbox').val(data.sex ? 0 : 1);
+    $('#sexbox').val(data.sex ? 1 : 0);
     $('#agebox').val(data.age);
 
     $('#enable').attr('onclick','enableEdit('+index+')');
@@ -235,11 +232,9 @@ function enableEdit(index) {
             dataType: 'json',
             data: $("#info-form").serialize(),
             success: function (o) {
-                console.log(o);
+                dismiss();
                 if (o.code === 'SUCCESS') {
                     alert('修改成功!');
-                    dismiss();
-
                     $('#table').bootstrapTable('updateRow', {index: index, row: o.member});
 
                 }else if(o.code === 'FAIL'){

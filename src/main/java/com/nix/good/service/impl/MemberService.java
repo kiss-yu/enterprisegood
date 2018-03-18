@@ -20,5 +20,4 @@ public class MemberService extends BaseService<MemberModel>{
     public MemberModel login(String memberId,String password) {
         return memberMapper.login(memberId,password);
     }
-
 }

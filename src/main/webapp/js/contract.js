@@ -137,7 +137,7 @@ function getContractList() {
             width : '10%',// 宽度
             formatter: function (value, row, index) {
                 return "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='show("+JSON.stringify(row)+")' value='详情'>" +
-                    (legal([0,1])?"<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='edit("+JSON.stringify(row)+","+index +")' value='编辑'>":"") +
+                    (legal([0,1])?"<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='edit("+JSON.stringify(row)+","+index +")' value='编辑' >":"") +
                     (legal([0,1]) ?"<input class='btn btn-danger' type='button' onclick='del("+JSON.stringify(row)+")' value='删除'>" : "") +
                     (!row.finish && legal([0,1])?  ("<input class='btn btn-info' type='button'  style='margin-left: 5px' onclick='signing("+JSON.stringify(row)+","+index +")' value='签约'>") : "");
             }
@@ -151,10 +151,14 @@ function signing(data,index) {
     $('#contractId').val(data.contractId);
     $('#createDate').val(data.createDate);
     $('#finish').val(1);
-    $('#customerId').val(data.customer.memberId);
-    $('#customerName').val(data.customer.name);
-    $('#adminId').val(data.admin.memberId);
-    $('#adminName').val(data.admin.name);
+    if (data.customer != null) {
+        $('#customerId').val(data.customer.memberId);
+        $('#customerName').val(data.customer.name);
+    }
+    if (data.admin != null) {
+        $('#adminId').val(data.admin.memberId);
+        $('#adminName').val(data.admin.name);
+    }
     $.ajax({
         type: 'POST',
         url: "/contract/signing.do",
@@ -186,6 +190,7 @@ function enableAdd() {
             data: $("#info-form").serialize(),
             success: function (o) {
                 if (o.code == 'SUCCESS') {
+                    dismiss();
                     $('#enable').removeAttr('onclick');
                     $("#infoOperate").css('display','none');
                     addGood(false);
@@ -213,10 +218,6 @@ function checkInput() {
         alert('请输入创建日期！');
         return false;
     }
-    if($('#customerId').val() == null || $('#customerId').val() == ''){
-        alert('签约客户不合法');
-        return false;
-    }
     return true;
 }
 /*展示方法*/
@@ -228,23 +229,27 @@ function show(data) {
     $("#infoOperate").css('display','block');
     $('.role_user').show();
     $('.role_contract').show();
-    $("#contractId,#createDate,#finish,#customerId,#adminId,#goodButton,#adminName,#customerName").attr("disabled","true");
+    $("#contractId,#createDate,#finish,#customerId,#adminId,#goodButton").attr("disabled","true");
     for (var i = 0;data.goodCountList != null && i < data.goodCountList.length;i ++) {
         showData(data.goodCountList[i],false);
     }
     $('#contractId').val(data.contractId);
     $('#createDate').val(data.createDate);
     $('#finish').val(data.finish ? 1 : 0);
-    $('#customerId').val(data.customer.memberId);
-    $('#customerName').val(data.customer.name);
-    $('#adminId').val(data.admin.memberId);
-    $('#adminName').val(data.admin.name);
+    if (data.customer != null) {
+        $('#customerId').val(data.customer.memberId);
+        $('#customerName').val(data.customer.name);
+    }
+    if (data.admin != null) {
+        $('#adminId').val(data.admin.memberId);
+        $('#adminName').val(data.admin.name);
+    }
 
 }
 
 
 function dismiss() {
-
+    goodIdArray = new Array();
     $('#contractId').val('');
     $('#createDate').val('');
     $('#finish').val('');
@@ -253,13 +258,12 @@ function dismiss() {
     $('#adminId').val('');
     $('#adminName').val('');
 
-    $("#contractId,#createDate,#finish,#customerId,#adminId,#goodButton,#customerName,#adminName").removeAttr("disabled");
+    $("#contractId,#createDate,#finish,#customerId,#adminId,#goodButton").removeAttr("disabled");
     $('#goodsListBody').html("");
     $(".log-window").css('display',"none");
     $("#infoOperate").css('display','none');
     addGood(false);
     $('#enable').css('display','block');
-    goodIdArray = new Array();
 }
 
 function edit(data,index) {
@@ -274,10 +278,14 @@ function edit(data,index) {
     $('#contractId').val(data.contractId);
     $('#createDate').val(data.createDate);
     $('#finish').val(data.finish ? 1 : 0);
-    $('#customerId').val(data.customer.memberId);
-    $('#customerName').val(data.customer.name);
-    $('#adminId').val(data.admin.memberId);
-    $('#adminName').val(data.admin.name);
+    if (data.customer != null) {
+        $('#customerId').val(data.customer.memberId);
+        $('#customerName').val(data.customer.name);
+    }
+    if (data.admin != null) {
+        $('#adminId').val(data.admin.memberId);
+        $('#adminName').val(data.admin.name);
+    }
 
     $('#enable').attr('onclick','enableEdit(' + index + ')');
 
@@ -293,6 +301,7 @@ function enableEdit(index) {
             data: $("#info-form").serialize(),
             success: function (o) {
                 if (o.code == 'SUCCESS') {
+                    dismiss();
                     //当前行修改成功后再table中修改改行
                     $('#table').bootstrapTable('updateRow', {index: index, row: o.contract});
                     $('#enable').removeAttr('onclick');

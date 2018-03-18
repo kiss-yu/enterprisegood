@@ -134,9 +134,9 @@ function enableAdd() {
             data: $("#info-form").serialize(),
             success: function (o) {
                 if (o.code === 'SUCCESS') {
+                    dismiss();
                     //添加成功后再table增加一行数据
                     $('#table').bootstrapTable('prepend', o.goods);
-                    dismiss();
                 }else if(o.code === 'FAIL'){
                     alert('添加失败！' + o.msg == null ? '' : o.msg);
                 }

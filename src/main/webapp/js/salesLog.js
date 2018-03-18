@@ -125,8 +125,8 @@ function show(data) {
 
     $('#createDatebox').val(data.createDate);
     $('#countbox').val(data.count);
-    $('#goodnamebox').val(undefined === data.good ? '':data.good.name);
-    $('#membernamebox').val(data.member.name);
+    $('#goodnamebox').val(data.good == null ? '':data.good.name);
+    $('#membernamebox').val(data.member == null ? "" : data.member.name);
     $('#describebox').val(data.describe);
     $('#enable').css('display','none');
     $(".log-window").css('display',"block");
