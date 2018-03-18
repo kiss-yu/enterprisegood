@@ -12,6 +12,14 @@
     <script type="text/javascript" src="../resources/bootstrap.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table.js"></script>
     <script type="text/javascript" src="../resources/bootstrap-table-zh-CN.js"></script>
+    <style>
+        .good-input{
+            width: 20%;
+            height: 25px;
+            line-height: 25px;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
 <div class="log-window"></div>
@@ -65,7 +73,7 @@
                     <input type="date" class="form-control"  id="createDate" name="createDate">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group role_user">
                 <label class="col-sm-3 control-label">状态</label>
                 <div class="col-sm-8">
                     <select class="form-control" id="finish" name="finish">
@@ -74,28 +82,28 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group" style="margin-top: 20px;">
+            <div class="form-group role_user" style="margin-top: 20px;">
                 <label for="customerId" class="col-sm-3 control-label" >客户编号</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" placeholder="请输入客户编号" id="customerId" name="customerId" onkeyup="getMemberMsg($(this).val(),$('#customerName'))">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group role_user">
                 <label for="customerName" class="col-sm-3 control-label">客户姓名</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="customerName"  placeholder="请输入客户姓名">
+                    <input type="text" class="form-control" id="customerName"  placeholder="请输入客户姓名" disabled>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group role_contract role_user">
                 <label for="adminId" class="col-sm-3 control-label">管理员编号</label>
                 <div class="col-sm-8">
                     <input type="text" class="form-control" id="adminId" placeholder="请输入管理员编号" name="adminId" onkeyup="getMemberMsg($(this).val(),$('#adminName'))">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group role_contract role_user">
                 <label for="adminName" class="col-sm-3 control-label">管理员姓名</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="adminName" placeholder="请输入管理员姓名">
+                    <input type="text" class="form-control" id="adminName" placeholder="请输入管理员姓名" disabled>
                 </div>
             </div>
             <div class="form-group">
@@ -109,12 +117,24 @@
                 <input type="text" placeholder="签约产品Id" class="good-input" style="margin-left: 5%" onkeyup="setGood()" id="input-goodId">
                 <input type="text" placeholder="签约产品数量" class="good-input" value="0" id="count" onkeyup="setGood()">
                 <input type="text" placeholder="库存" disabled class="good-input" id="good-inventory">
-                <input type="button" id="goodAddButton" class="good-input good-input-btn btn btn-primary" value="添加" disabled onclick="addGoodItem(null,true)">
+                <input type="button" id="goodAddButton" class="good-input good-input-btn btn btn-primary" value="添加" disabled onclick="showData(null,true)">
             </div>
 
         </div>
 
-        <div class="col-md-6"id="goodsList"></div>
+        <div class="col-md-6"id="goodsList">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>商品名</th>
+                    <th>数量</th>
+                </tr>
+                </thead>
+                <tbody id="goodsListBody">
+
+                </tbody>
+            </table>
+        </div>
         <div class="form-group">
             <div class="col-sm-4 col-sm-offset-3">
                 <input type="button" class="btn btn-primary" id="enable" value="确认" name="">

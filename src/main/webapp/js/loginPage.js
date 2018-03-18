@@ -16,7 +16,6 @@ function checkInput() {
 
 function checkLogin(){
     if(checkInput()) {
-
         $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
         $.ajax({
             type: 'post',
@@ -31,7 +30,10 @@ function checkLogin(){
                     alert('用户名或者密码错误！');
                 }
             },
-            error: function () {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
+                }
             }
         });
     }

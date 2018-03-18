@@ -28,7 +28,10 @@ function enableAdd() {
                     alert('添加失败！');
                 }
             },
-            error: function () {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
+                }
             }
         });
     }
@@ -166,7 +169,10 @@ function enableEdit(index) {
                     alert('修改失败！' + o.msg == null ? '' : o.msg);
                 }
             },
-            error: function () {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
+                }
             }
         });
     }
@@ -184,6 +190,11 @@ function del(data) {
                     alert("删除成功");
                     //删除一列数据成功在table中移除那行
                     $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
                 }
             }
         });
@@ -213,6 +224,11 @@ function delSelects() {
                         alert("删除成功");
                         //多行删除成功在table中移除多行
                         $('#table').bootstrapTable('remove', {field: 'id', values: ids});
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status == 401) {
+                        alert("权限不足！！！")
                     }
                 }
             });

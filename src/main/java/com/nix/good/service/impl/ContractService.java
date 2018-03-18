@@ -59,6 +59,10 @@ public class ContractService extends BaseService<ContractModel>{
     public Map<String,Object> update(ContractModel model, String[] goodIds, Integer[] counts) throws Exception {
         Map<String,Object> map = new HashMap<>();
         List<GoodsCountModel> goodsCountModels = new ArrayList<>();
+        List<GoodsCountModel> oldGoodsCountModels = contractMapper.select(model.getId()).getGoodCountList();
+        for (int i = 0;oldGoodsCountModels != null && i < oldGoodsCountModels.size();i ++) {
+            goodsCountMapper.deleteByKey(model.getContractId(),oldGoodsCountModels.get(i).getGoods().getGoodId());
+        }
         if (goodIds != null){
             for (int i = 0;i < goodIds.length;i ++) {
                 GoodsModel goodsModel = goodsMapper.selectByStringId(goodIds[i]);
@@ -79,6 +83,14 @@ public class ContractService extends BaseService<ContractModel>{
             }
         }
         model.setGoodCountList(goodsCountModels);
+        if (!model.getFinish()) {
+            model.setAdmin(null);
+        }else {
+            if (model.getAdmin() == null) {
+                map.put("msg","不存在管理的合同不合法");
+                return map;
+            }
+        }
         update(model);
         return null;
     }

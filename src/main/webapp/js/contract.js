@@ -17,9 +17,6 @@ $(function() {
         role();
         $('#finish').val('');
         $('#infoOperatetitle').text('添加');
-
-        showData("",1);
-
         $('#enable').attr('onclick','enableAdd()');
         $('#enable').css('display','block');
         $(".log-window").css('display',"block");
@@ -173,7 +170,10 @@ function signing(data,index) {
                 alert('签约失败！' + o.msg == null ? "" : o.msg);
             }
         },
-        error: function () {
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            if (XMLHttpRequest.status == 401) {
+                alert("权限不足！！！")
+            }
         }
     });
 }
@@ -192,10 +192,13 @@ function enableAdd() {
                     //添加成功后再table增加一行数据
                     $('#table').bootstrapTable('prepend', o.contract);
                 }else if(o.code == 'FAIL'){
-                    alert('添加失败！' + o.msg == null ? '' : o.msg);
+                    alert( o.msg == null ? '添加失败！' : o.msg);
                 }
             },
-            error: function () {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
+                }
             }
         });
     }
@@ -223,10 +226,12 @@ function show(data) {
     $('#enable').css('display','none');
     $(".log-window").css('display',"block");
     $("#infoOperate").css('display','block');
+    $('.role_user').show();
+    $('.role_contract').show();
     $("#contractId,#createDate,#finish,#customerId,#adminId,#goodButton,#adminName,#customerName").attr("disabled","true");
-
-    showData(data.goodCountList,0);
-
+    for (var i = 0;data.goodCountList != null && i < data.goodCountList.length;i ++) {
+        showData(data.goodCountList[i],false);
+    }
     $('#contractId').val(data.contractId);
     $('#createDate').val(data.createDate);
     $('#finish').val(data.finish ? 1 : 0);
@@ -249,18 +254,21 @@ function dismiss() {
     $('#adminName').val('');
 
     $("#contractId,#createDate,#finish,#customerId,#adminId,#goodButton,#customerName,#adminName").removeAttr("disabled");
-    $('#goodsList').html("");
+    $('#goodsListBody').html("");
     $(".log-window").css('display',"none");
     $("#infoOperate").css('display','none');
     addGood(false);
     $('#enable').css('display','block');
+    goodIdArray = new Array();
 }
 
 function edit(data,index) {
 
     $('#infoOperatetitle').text('编辑');
     role();
-    showData(data.goodCountList,1);
+    for (var i = 0;data.goodCountList != null && i < data.goodCountList.length;i ++) {
+        showData(data.goodCountList[i],true);
+    }
 
     $('#id').val(data.id);
     $('#contractId').val(data.contractId);
@@ -291,10 +299,13 @@ function enableEdit(index) {
                     $("#infoOperate").css('display','none');
                     addGood(false);
                 }else if(o.code == 'FAIL'){
-                    alert('修改失败！');
+                    alert(o.msg == null ? '修改失败！' : o.msg);
                 }
             },
-            error: function () {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
+                }
             }
         });
     }
@@ -306,11 +317,16 @@ function del(data) {
             url: '/contract/delete.do?id=' + data.id,
             success : function(o) {
                 if (o.code == 'FAIL') {
-                    alert("删除失败");
+                    alert(o.msg == null ? "删除失败" : o.msg);
                 }else if(o.code == 'SUCCESS'){
                     alert("删除成功");
                     //删除一列数据成功在table中移除那行
                     $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
                 }
             }
         });
@@ -334,7 +350,7 @@ function delSelects() {
                 traditional:true,
                 success : function(o) {
                     if (o.code == 'FAIL') {
-                        alert("删除失败");
+                        alert(o.msg == null ? "删除失败" : o.msg);
                     }else if(o.code == 'SUCCESS'){
                         alert("删除成功");
                         //删除一列数据成功在table中移除那行
@@ -370,6 +386,11 @@ function getMemberMsg(id,input) {
             }else {
                 input.val("不存在用户");
             }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            if (XMLHttpRequest.status == 401) {
+                alert("权限不足！！！")
+            }
         }
     })
 }
@@ -399,53 +420,45 @@ function setGood() {
             }else {
                 inventory.val("0");
             }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            if (XMLHttpRequest.status == 401) {
+                alert("权限不足！！！")
+            }
         }
     })
 }
-
-function showData(listData,num) {
-    var temp = [], showNum = listData.length;
-
-    temp.push('<table class="table">');
-    temp.push('<thead><tr><th>商品名</th><th>数量</th></tr><tbody>');
-    if(num===0){//看
-        for (var i = 0; i < showNum; i++) {
-            temp.push("<tr id='"+ listData[i].goods.goodId +"'><td>" + listData[i].goods.name + "</td><td>" + listData[i].count +  "</td>");
-        }
-    }
-    else if(num===1){//改
-        for (var i = 0; i < showNum; i++) {
-            temp.push("<tr><td>" + listData[i].goods.name + "</td><td>" + listData[i].count
-                + "</td><td><input type='button' class='btn btn-danger' value='删除'>" +
-                +  "</td>");
-        }
-    }
-    temp.push('</tbody></table>');
-
-    $('#goodsList').html(temp.join(''));
-}
-
-/*function addGoodItem(good,btn) {
+var goodIdArray = new Array();
+function showData(good,btn) {
     var goodId = good == null ? $("#input-goodId").val() : good.goods.goodId;
     var count = good == null ? $("#count").val() : good.count;
     var name = good == null ? goodName : good.goods.name;
-    var dom = "" +
-        "<li class='list-group-item ' id='" + goodId + "'>\n" +
-        "<input hidden name='goodId' value='" + goodId + "'>\n" +
-        "<input hidden name='count' value='" + count + "'>\n" +
-        "<span class='good-name'>产品名:</span>\n" +
-        "<span class='goodName'>" + name + "</span>\n" +
-        "<span class='good-count'>数量:</span>\n" +
-        "<span class='goodCount'>" + count + "</span>\n" +
-        (!btn ? "" : "<input type='button' class='btn btn-danger right' value='移除' onclick='removeGood(\"" + goodId + "\")'>") +
-        "</li>";
-    $("#goodsListUl").append(dom);
-    $("#count").val(0);
-    $("#input-goodId").val('');
-    $("#good-inventory").val(0);
-    $("#goodAddButton").attr("disabled","true");
-
-}*/
+    for (var i = 0;i < goodIdArray.length;i ++) {
+        if (goodId === goodIdArray[i]) {
+            alert("产品已存在");
+            return;
+        }
+    }
+    goodIdArray.push(goodId);
+    var dom;
+    if (!btn) {
+        dom = "<tr><td>" + name + "</td><td>" + count +  "</td></tr>";
+    } else {
+        dom = "<tr class='" + goodId + "'>" +
+            "<td hidden><input hidden name='goodId' value='" + goodId + "'></td>" +
+            "<td hidden><input hidden name='count' value='" + count + "'></td>" +
+            "<td>" + name + "</td>" +
+            "<td>" + count + "</td>" +
+            "<td><input type='button' class='btn btn-danger' value='删除' onclick='removeGood(\"" + goodId + "\")'></td>" +
+            "</tr>";
+    }
+    $("#goodsListBody").append(dom);
+}
 function removeGood(btn) {
-    $("#goodsList").children("#" + btn).remove();
+    $("#goodsListBody").children("." + btn).remove();
+    for (var i = 0;i < goodIdArray.length;i ++) {
+        if (btn === goodIdArray[i]) {
+            goodIdArray.splice(i,1);
+        }
+    }
 }

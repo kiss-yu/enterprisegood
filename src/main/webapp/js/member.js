@@ -34,8 +34,12 @@ $('#addbtn').click(function (){
 function enableAdd() {
 
     if(checkInput()){
-
-        $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
+        if ($("#password").val() != null && $("#password").val() != '') {
+            console.log($("#password").val())
+            $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
+        }else {
+            $(" input[ name='password' ] ").val(hex_md5('123456'));
+        }
         $.ajax({
             type: 'POST',
             url: "/member/create.do?admin=true",
@@ -54,7 +58,10 @@ function enableAdd() {
                     dismiss();
                 }
             },
-            error: function () {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
+                }
             }
         });
     }
@@ -219,7 +226,9 @@ function edit(data,index) {
 
 function enableEdit(index) {
     if(checkInput()){
-        $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
+        if ($("#password").val() != null && $("#password").val() != '') {
+            $(" input[ name='password' ] ").val(hex_md5($("#password").val()));
+        }
         $.ajax({
             type: 'POST',
             url: "/member/update.do",
@@ -238,7 +247,10 @@ function enableEdit(index) {
                     dismiss();
                 }
             },
-            error: function () {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
+                }
             }
         });
     }
@@ -259,6 +271,11 @@ function del(data) {
                     //删除一列数据成功在table中移除那行
                     $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
                     alert("删除成功");
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
                 }
             }
         });
@@ -296,6 +313,11 @@ function delSelects() {
                         alert("删除成功");
 
                     }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status == 401) {
+                        alert("权限不足！！！")
+                    }
                 }
             });
         }
@@ -319,6 +341,11 @@ $('#searchbtn').click(function () {
             if (data.code === 'SUCCESS') {
                 $('#table').bootstrapTable('removeAll');
                 $('#table').bootstrapTable('append', data.list);
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            if (XMLHttpRequest.status == 401) {
+                alert("权限不足！！！")
             }
         }
     })

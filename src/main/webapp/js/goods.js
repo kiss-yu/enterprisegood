@@ -141,7 +141,10 @@ function enableAdd() {
                     alert('添加失败！' + o.msg == null ? '' : o.msg);
                 }
             },
-            error: function () {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
+                }
             }
         });
     }
@@ -230,7 +233,10 @@ function enableEdit(index) {
                     alert('修改失败！');
                 }
             },
-            error: function () {
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
+                }
             }
         });
     }
@@ -248,6 +254,11 @@ function del(data) {
                     //删除一列数据成功在table中移除那行
                     $('#table').bootstrapTable('remove', {field: 'id', values: [data.id]});
                     alert("删除成功");
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                if (XMLHttpRequest.status == 401) {
+                    alert("权限不足！！！")
                 }
             }
         });
@@ -276,6 +287,11 @@ function delSelects() {
                         $('#table').bootstrapTable('remove', {field: 'id', values: ids});
                         alert("删除成功");
                     }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (XMLHttpRequest.status == 401) {
+                        alert("权限不足！！！")
+                    }
                 }
             });
         }
@@ -291,6 +307,11 @@ $('#searchbtn').click(function () {
             if (o.code == 'SUCCESS') {
                 $('#table').bootstrapTable('removeAll');
                 $('#table').bootstrapTable('append', o.list);
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            if (XMLHttpRequest.status == 401) {
+                alert("权限不足！！！")
             }
         }
     })

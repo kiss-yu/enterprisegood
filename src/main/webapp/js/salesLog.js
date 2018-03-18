@@ -88,7 +88,7 @@ $(function() {
             valign :'middle',// 垂直居中显示
             width : '5',// 宽度
             formatter: function (value, row, index) {
-                return "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='show("+JSON.stringify(row)+")' value='详情'>";
+                return "<input class='btn btn-info' type='button' style='margin-right: 5px' onclick='show("+JSON.stringify(row)+")' value='详情'>" ;
             }
         }]
         // 列配置项,详情请查看 列参数 表格
@@ -105,6 +105,11 @@ $('#searchbtn').click(function () {
             if (o.code == 'SUCCESS') {
                 $('#table').bootstrapTable('removeAll');
                 $('#table').bootstrapTable('append', o.list);
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            if (XMLHttpRequest.status == 401) {
+                alert("权限不足！！！")
             }
         }
     })

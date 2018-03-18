@@ -63,6 +63,10 @@ public class MemberController extends BaseController{
                         currentMember.getRole().getValue() != MemberModel.Role.customerMember.ordinal()) {
                     return render("code",FAIL).build();
                 }
+                if (memberModel.getRole().getValue() == MemberModel.Role.admin.ordinal() &&
+                        currentMember.getRole().getValue() != MemberModel.Role.admin.ordinal() ){
+                    return render("code",FAIL).build();
+                }
             }
             memberService.add(memberModel);
             if (currentMember == null) {
@@ -94,7 +98,7 @@ public class MemberController extends BaseController{
     /**
      * 查看用户信息
      * */
-    @Role({0,3})
+    @Role({0,3,1})
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public Map<String,Object> memberMessage(@PathVariable("id") Integer id,
                                             @RequestParam(value = "memberId",required = false) String memberId) {
@@ -107,7 +111,7 @@ public class MemberController extends BaseController{
     /**
      * 修改用户信息
      * */
-    @Role({0,1,2,3,4})
+    @Role({0,1,2,3,4,5})
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public Map<String,Object> update(@ModelAttribute MemberModel memberModel, HttpServletRequest request) {
         MemberModel currentMember = MemberManager.getCurrentUser(request);
@@ -123,6 +127,9 @@ public class MemberController extends BaseController{
             }
         }
         try {
+            if (memberModel.getPassword() == null || memberModel.getPassword().isEmpty()) {
+                memberModel.setPassword(null);
+            }
             memberService.update(memberModel);
             render("code",SUCCESS)
                     .render("member",memberModel);

@@ -35,4 +35,7 @@
             </if>
         </trim>
     </insert>
+    <delete id="deleteByKey">
+        DELETE FROM contract_goods WHERE contract = #{contractId} and goods = #{goodId}
+    </delete>
 </mapper>
