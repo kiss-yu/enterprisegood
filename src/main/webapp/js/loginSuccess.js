@@ -23,6 +23,9 @@ $(function () {
         $('#iframe').attr("src","../html/role.html");
         $('#showWelcome').css('display','none');
     })
+    $('#myCarousel').carousel({
+        interval: 2000
+    });
 
 });
 window.onload = function(){

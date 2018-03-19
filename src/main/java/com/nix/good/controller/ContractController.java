@@ -89,7 +89,9 @@ public class ContractController extends BaseController{
     public Map<String,Object> signingContract(@ModelAttribute ContractModel contractModel,HttpServletRequest request) {
         try {
             MemberModel admin = MemberManager.getCurrentUser(request);
-            if (admin != null) {
+            if (admin != null &&
+                    (admin.getRole().getValue() == MemberModel.Role.admin.ordinal()
+                            || admin.getRole().getValue() == MemberModel.Role.contractMember.ordinal())) {
                 contractModel.setAdmin(admin);
                 contractService.update(contractModel);
                 return render("code",SUCCESS).build();

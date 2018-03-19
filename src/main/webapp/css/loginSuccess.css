@@ -1,10 +1,22 @@
 @charset "utf-8";
 body{padding: 0px;margin: 0px;}
+#lengend {
+    position: relative;
+    left: 46.5%;
+    font-size: 25px;
+    color: #006dcc;
+    font-weight: bold;
+
+}
 #header{width: auto;min-height: 70px;line-height: 70px;}
 #header{border-bottom: medium solid #39A631;}
 span.title_con{font-family:"微软雅黑";font-style: normal;font-size: 2em;font-weight:800 ;color: #39A631;padding-left: 1em;}
 .second_title_con{font-size: 20px !important;padding-left: 2em !important;}
-.header_title{margin:20px 0 10px 0}
+.second_title{background-color: white !important;height: 85px;}
+.header_title{
+    height: 85px;
+    background: rgb(164,202,126);
+}
 th{color: #0567e0;}
 td{color: #333333;}
 .form-group{
@@ -43,4 +55,9 @@ td{color: #333333;}
     top: -16px;
     font-size: 15px;
     color: red;
+}
+#showWelcome img{
+    width: 40%;
+    height: 300px;
+    margin-left: 30%;
 }
